@@ -1,0 +1,981 @@
+{
+  "active": false,
+  "connections": {
+    "Get File": {
+      "main": [
+        [
+          {
+            "node": "Merge Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If file too large": {
+      "main": [
+        [
+          {
+            "node": "Get File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Items": {
+      "main": [
+        [
+          {
+            "node": "isDiffOrNew",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "isDiffOrNew": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Same file - Do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "File is different",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "File is new",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Same file - Do nothing": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File is different": {
+      "main": [
+        [
+          {
+            "node": "Edit existing file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File is new": {
+      "main": [
+        [
+          {
+            "node": "Create new file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new file": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit existing file": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get file data": {
+      "main": [
+        [
+          {
+            "node": "If file too large",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Globals": {
+      "main": [
+        [
+          {
+            "node": "Get file data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Merge Items",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "tag?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "/": {
+      "main": [
+        [
+          {
+            "node": "Globals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tag?": {
+      "main": [
+        [
+          {
+            "node": "/",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Globals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-10T09:08:47.851Z",
+  "id": "NDWCXN8zzZvmtgi3",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Subworkflow",
+        "height": 751,
+        "width": 2547,
+        "color": 6
+      },
+      "id": "1ffaf29d-4e06-4f0c-ad76-8159ecb10f71",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -432,
+        -144
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d513345-6484-431f-afb7-7cf045c90f4f",
+              "name": "Done",
+              "type": "boolean",
+              "value": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "46384656-885b-4793-8e90-a4f570fb9dca",
+      "name": "Return",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1920,
+        64
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.download_url }}",
+        "options": {}
+      },
+      "id": "5fa9054f-29ac-4203-a2fb-2d255088479e",
+      "name": "Get File",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1008,
+        -64
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 1,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "45ce825e-9fa6-430c-8931-9aaf22c42585",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.content }}",
+              "rightValue": ""
+            },
+            {
+              "id": "9619a55f-7fb1-4f24-b1a7-7aeb82365806",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.error }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "35b27d7b-5ecb-45ee-84bd-c4f529690ee5",
+      "name": "If file too large",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        816,
+        -32
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {},
+      "id": "83a542ee-45d3-41d6-ac6d-8e9cad0fe676",
+      "name": "Merge Items",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        816,
+        224
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const orderJsonKeys = (jsonObj) => {\n  const ordered = {};\n  Object.keys(jsonObj).sort().forEach(key => {\n    ordered[key] = jsonObj[key];\n  });\n  return ordered;\n}\n\n// Check if file returned with content\nif (Object.keys($input.all()[0].json).includes(\"content\")) {\n  // Decode base64 content and parse JSON\n  const origWorkflow = JSON.parse(Buffer.from($input.all()[0].json.content, 'base64').toString());\n  const n8nWorkflow = $input.all()[1].json;\n  \n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"different\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n// No file returned / new workflow\n} else if (Object.keys($input.all()[0].json).includes(\"data\")) {\n  const origWorkflow = JSON.parse($input.all()[0].json.data);\n  const n8nWorkflow = $input.all()[1].json;\n  \n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"different\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n\n} else {\n  // Order JSON object\n  const n8nWorkflow = $input.all()[1].json;\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n  \n  // Proper formatting\n  $input.all()[0].json.github_status = \"new\";\n  $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n}\n\n// Return items\nreturn $input.all();"
+      },
+      "id": "5b5a5389-c115-4ac4-9934-00b85eeacf4d",
+      "name": "isDiffOrNew",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1008,
+        224
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{$json.github_status}}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "same"
+            },
+            {
+              "value2": "different",
+              "output": 1
+            },
+            {
+              "value2": "new",
+              "output": 2
+            }
+          ]
+        }
+      },
+      "id": "bb740639-326b-45a8-be95-1271a435766d",
+      "name": "Check Status",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        1232,
+        224
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "643c75b4-aa83-4029-8674-4ea46ac2a2c1",
+      "name": "Same file - Do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1456,
+        64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "31f7a43f-a9d4-4762-91de-4d0f8e0c22b3",
+      "name": "File is different",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1456,
+        224
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "e4eaa06f-3c61-4306-b381-a6f0504deb74",
+      "name": "File is new",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1456,
+        384
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Globals').item.json.repo.owner }}"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Globals').item.json.repo.name }}"
+        },
+        "filePath": "={{ $('Globals').item.json.repo.path }}{{$('Execute Workflow Trigger').first().json.id}}.json",
+        "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+      },
+      "id": "33adae48-8c77-4339-bd94-32656f1cae25",
+      "name": "Create new file",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        1680,
+        384
+      ],
+      "typeVersion": 1,
+      "webhookId": "94f0e232-9f67-4cd2-8a29-43ac6e30575b",
+      "credentials": {
+        "githubApi": {
+          "id": "DqwULfWidhZUOsJf",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Globals').item.json.repo.owner }}"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Globals').item.json.repo.name }}"
+        },
+        "filePath": "={{ $('Globals').item.json.repo.path }}{{$('Execute Workflow Trigger').first().json.id}}.json",
+        "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+      },
+      "id": "48510fad-cfce-449d-b1ed-05bc470782d7",
+      "name": "Edit existing file",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        1680,
+        208
+      ],
+      "typeVersion": 1,
+      "webhookId": "3104986e-5f13-4a0f-8e8a-987d679a53a6",
+      "credentials": {
+        "githubApi": {
+          "id": "DqwULfWidhZUOsJf",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $json.repo.owner }}"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $json.repo.name }}"
+        },
+        "filePath": "={{ $json.repo.path }}{{ $('Execute Workflow Trigger').item.json.id }}.json",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "3b678be1-78c5-49d0-981f-76156a652afc",
+      "name": "Get file data",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        608,
+        -32
+      ],
+      "typeVersion": 1,
+      "alwaysOutputData": true,
+      "webhookId": "603b527f-da5a-45fd-b86d-b69c91957524",
+      "credentials": {
+        "githubApi": {
+          "id": "DqwULfWidhZUOsJf",
+          "name": "GitHub account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6cf546c5-5737-4dbd-851b-17d68e0a3780",
+              "name": "repo.owner",
+              "type": "string",
+              "value": "tynna-bighouse"
+            },
+            {
+              "id": "452efa28-2dc6-4ea3-a7a2-c35d100d0382",
+              "name": "repo.name",
+              "type": "string",
+              "value": "n8n-workflow-backup"
+            },
+            {
+              "id": "81c4dc54-86bf-4432-a23f-22c7ea831e74",
+              "name": "repo.path",
+              "type": "string",
+              "value": "=workflows/{{ $json.tags[0].name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d4d74d47-95a1-49ff-a2e5-aec7b3a2073f",
+      "name": "Globals",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        400,
+        128
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "content": "## Edit this node 👇",
+        "height": 80,
+        "width": 150,
+        "color": 4
+      },
+      "id": "536cc5e8-55bf-4a0f-adf6-9d510eee4a89",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        368,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "5610121b-19a1-4727-9c3e-bcf45a5a5f70",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -320,
+        304
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "12cad226-e091-4bbb-aed9-a8e01311772c",
+              "name": "tags[0].name",
+              "type": "string",
+              "value": "={{ $('Execute Workflow Trigger').item.json.tags[0].name }}/"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5429ff39-8d49-4efb-bd20-59589f43c3e9",
+      "name": "/",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        160,
+        16
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.tags[0] }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "tag"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "2656fbe3-fe35-4770-9c03-9a455ec618e4",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notExists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.tags[0] }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "none"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e683c1d1-ea3b-4fbf-9259-f4f31c471d5f",
+      "name": "tag?",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -80,
+        128
+      ],
+      "typeVersion": 3.2
+    }
+  ],
+  "pinData": {
+    "Execute Workflow Trigger": [
+      {
+        "json": {
+          "createdAt": "2025-09-08T11:24:23.511Z",
+          "updatedAt": "2025-09-10T03:08:44.000Z",
+          "id": "0YoITKQj3auSMNqH",
+          "name": "obsidian周报自动生成器",
+          "active": true,
+          "isArchived": false,
+          "nodes": [
+            {
+              "parameters": {
+                "method": "POST",
+                "url": "=https://host.docker.internal:27124/vault/{{encodeURIComponent(\"周总结/\" + \"周报-\" + $now.toFormat(\"kkkk-'W'WW\") + \".md\")}}",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpBearerAuth",
+                "sendBody": true,
+                "contentType": "raw",
+                "rawContentType": "text/markdown",
+                "body": "={{ $json.output }}",
+                "options": {
+                  "allowUnauthorizedCerts": true,
+                  "response": {
+                    "response": {
+                      "fullResponse": true
+                    }
+                  }
+                }
+              },
+              "type": "n8n-nodes-base.httpRequest",
+              "typeVersion": 4.2,
+              "position": [
+                1552,
+                -96
+              ],
+              "id": "9240cba0-cf38-40eb-91d3-5768d3368d21",
+              "name": "HTTP Request",
+              "alwaysOutputData": true,
+              "credentials": {
+                "httpBearerAuth": {
+                  "id": "fIOwv6biNqkbQECz",
+                  "name": "Bearer Auth account Obsidian"
+                }
+              }
+            },
+            {
+              "parameters": {
+                "modelName": "models/gemini-2.5-pro",
+                "options": {}
+              },
+              "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+              "typeVersion": 1,
+              "position": [
+                704,
+                160
+              ],
+              "id": "a4a8c7f3-42c3-4140-a319-bcfa4c3a0143",
+              "name": "Google Gemini Chat Model",
+              "credentials": {
+                "googlePalmApi": {
+                  "id": "bXt3B2tQFHbAwxOD",
+                  "name": "Google Gemini(PaLM) Api account egingin"
+                }
+              }
+            },
+            {
+              "parameters": {
+                "promptType": "define",
+                "text": "=# Role\n假如你是我。请完全代入我的角色进行输出，你的回答就应该是周记本身。\n\n# Task\n根据input的日记内容写一段周记，总结我这个星期的主要活动、工作进度，心情和睡眠情况。\n字数在400字左右\n\n# Style & Tone\n- 模仿我提供的日记口吻，风格要年轻化，可以适当加 emoji。\n- 排版舒服。\n- 主要活动、工作进度，心情和睡眠情况等所有的这些标题要用英语\n\n# Format\n- 以 Markdown 格式输出。\n\n# Critical Instruction (关键指令！)\n请直接输出周记内容，不要包含任何额外的解释或对话。\n\n# Input Data\n {{ $json.data }}",
+                "options": {}
+              },
+              "type": "@n8n/n8n-nodes-langchain.agent",
+              "typeVersion": 2.2,
+              "position": [
+                912,
+                -64
+              ],
+              "id": "5c0682da-022b-4450-9bd1-65d6bf81acd0",
+              "name": "AI Agent"
+            },
+            {
+              "parameters": {
+                "fieldsToAggregate": {
+                  "fieldToAggregate": [
+                    {
+                      "fieldToAggregate": "data"
+                    }
+                  ]
+                },
+                "options": {}
+              },
+              "type": "n8n-nodes-base.aggregate",
+              "typeVersion": 1,
+              "position": [
+                624,
+                -48
+              ],
+              "id": "36569248-a1f1-41c4-9195-842b1bb2d97f",
+              "name": "Aggregate"
+            },
+            {
+              "parameters": {
+                "operation": "toText",
+                "sourceProperty": "output",
+                "binaryPropertyName": "=data",
+                "options": {
+                  "fileName": "=周记-{{$now.minus({ weeks: 1 }).toFormat(\"kkkk-'W'WW\")}}.md"
+                }
+              },
+              "type": "n8n-nodes-base.convertToFile",
+              "typeVersion": 1.1,
+              "position": [
+                1328,
+                -288
+              ],
+              "id": "114e569c-ea07-409d-8e6f-fe8e587bcbe8",
+              "name": "Convert to File"
+            },
+            {
+              "parameters": {
+                "jsCode": "// 目录名\nconst diaryDir = \"日记\";\n\n// 以周一为一周起点，生成上周 7 个日期\nconst now = new Date();\nconst weekdayMon0 = (now.getDay() + 6) % 7;\nconst thisMon = new Date(now);\nthisMon.setDate(now.getDate() - weekdayMon0);\nthisMon.setHours(0,0,0,0);\n\nconst lastMon = new Date(thisMon);\nlastMon.setDate(thisMon.getDate() - 7);\n\n// 生成 YYYY-MM-DD 字符串\nfunction fmt(d){\n  const y=d.getFullYear();\n  const m=String(d.getMonth()+1).padStart(2,'0');\n  const day=String(d.getDate()).padStart(2,'0');\n  return `${y}-${m}-${day}`;\n}\n\nconst out = [];\nfor (let i=0;i<7;i++){\n  const d = new Date(lastMon);\n  d.setDate(lastMon.getDate()+i);\n  const name = `${fmt(d)}.md`;\n  out.push({ json: { path: `${diaryDir}/${name}`, name }});\n}\n\nreturn out;"
+              },
+              "type": "n8n-nodes-base.code",
+              "typeVersion": 2,
+              "position": [
+                208,
+                0
+              ],
+              "id": "e265870c-5943-42ca-b479-f9d65ffa794e",
+              "name": "筛选只要上个星期的日记"
+            },
+            {
+              "parameters": {
+                "url": "=https://host.docker.internal:27124/vault/{{encodeURIComponent($json.path)}}?format=raw",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpBearerAuth",
+                "options": {
+                  "allowUnauthorizedCerts": true,
+                  "response": {
+                    "response": {}
+                  }
+                }
+              },
+              "type": "n8n-nodes-base.httpRequest",
+              "typeVersion": 4.2,
+              "position": [
+                416,
+                -48
+              ],
+              "id": "f2aaaf26-cfd7-4ffe-a6ba-563cccbc7f3a",
+              "name": "obsidian请求节点",
+              "credentials": {
+                "httpBearerAuth": {
+                  "id": "fIOwv6biNqkbQECz",
+                  "name": "Bearer Auth account Obsidian"
+                }
+              }
+            },
+            {
+              "parameters": {
+                "assignments": {
+                  "assignments": [
+                    {
+                      "id": "ec2fb318-12b3-4cfa-9dfa-ce5951465486",
+                      "name": "output",
+                      "value": "={{ $json.output }}",
+                      "type": "string"
+                    },
+                    {
+                      "id": "41789bb9-206d-4802-b072-b67a25f4c59d",
+                      "name": "File Name",
+                      "value": "=周记-{{$now.minus({ weeks: 1 }).toFormat(\"kkkk-'W'WW\")}}.md",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "options": {}
+              },
+              "type": "n8n-nodes-base.set",
+              "typeVersion": 3.4,
+              "position": [
+                1264,
+                -64
+              ],
+              "id": "7dae958c-39fc-4bde-8303-b9ba6434ca74",
+              "name": "改文件名"
+            },
+            {
+              "parameters": {
+                "rule": {
+                  "interval": [
+                    {
+                      "field": "weeks",
+                      "triggerAtDay": [
+                        1
+                      ],
+                      "triggerAtHour": 11
+                    }
+                  ]
+                }
+              },
+              "type": "n8n-nodes-base.scheduleTrigger",
+              "typeVersion": 1.2,
+              "position": [
+                0,
+                0
+              ],
+              "id": "318ce0e2-472c-435a-9498-81334325208f",
+              "name": "Schedule Trigger"
+            }
+          ],
+          "connections": {
+            "Google Gemini Chat Model": {
+              "ai_languageModel": [
+                [
+                  {
+                    "node": "AI Agent",
+                    "type": "ai_languageModel",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Aggregate": {
+              "main": [
+                [
+                  {
+                    "node": "AI Agent",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "AI Agent": {
+              "main": [
+                [
+                  {
+                    "node": "改文件名",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Convert to File": {
+              "main": [
+                []
+              ]
+            },
+            "筛选只要上个星期的日记": {
+              "main": [
+                [
+                  {
+                    "node": "obsidian请求节点",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "obsidian请求节点": {
+              "main": [
+                [
+                  {
+                    "node": "Aggregate",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "改文件名": {
+              "main": [
+                [
+                  {
+                    "node": "HTTP Request",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Schedule Trigger": {
+              "main": [
+                [
+                  {
+                    "node": "筛选只要上个星期的日记",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            }
+          },
+          "settings": {
+            "executionOrder": "v1"
+          },
+          "staticData": {
+            "node:Schedule Trigger": {
+              "recurrenceRules": []
+            }
+          },
+          "meta": {
+            "templateCredsSetupCompleted": true
+          },
+          "pinData": {},
+          "versionId": "6a28e897-c14e-476e-b0c0-ae94073bebbe",
+          "triggerCount": 1,
+          "tags": []
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-09-10T09:08:29.352Z",
+      "updatedAt": "2025-09-10T09:08:29.352Z",
+      "id": "IrnqsodkMBTtvqPS",
+      "name": "backup"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-10T09:57:40.000Z",
+  "versionId": "0c145a2a-6357-4dab-bd5b-e824a9948620"
+}
