@@ -1,0 +1,170 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "执行EasySpider命令",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "执行EasySpider命令": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-09-08T11:18:09.162Z",
+  "id": "Y73BG089WCu3FKkS",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "easyscrape任务执行",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        272,
+        240
+      ],
+      "id": "cacbe1fd-e59e-4a08-bb1c-98d0ab0a4167",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": " http://localhost:8074/invokeTask?",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "0"
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        256
+      ],
+      "name": "HTTP Request1",
+      "id": "68ff6afa-49b1-49f7-8c54-e4b4c7b4e6f5"
+    },
+    {
+      "parameters": {
+        "command": "=/bin/sh -lc 'set -e; TS=\"{{ $now}}\"; \\\nOUT_DIR=\"/Applications/EasySpider_MacOS/Data\"; \\\nCFG_DIR=\"/Applications/EasySpider_MacOS/Config\"; \\\nUSER_DIR=\"/Applications/EasySpider_MacOS/Config/user_data\"; \\\nmkdir -p \"$OUT_DIR\" \"$USER_DIR\"; \\\necho \"IDs={{ JSON.stringify([$json.EID ?? $json.id ?? $json]) }}\"; \\\n/Applications/EasySpider_MacOS/easyspider_executestage_full \\\n --ids \"{{ JSON.stringify([$json.EID ?? $json.id ?? $json]) }}\" \\\n --user_data 0 \\\n --server_address http://host.docker.internal:8074 \\\n --config_folder \"$CFG_DIR\" \\\n --headless 0 \\\n --read_type remote \\\n --config_file_name config.json \\\n --user_folder \"$USER_DIR\" \\\n --keyboard 1 \\\n --pause_key p \\\n --saved_file_name \"$OUT_DIR/result_$TS\"'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        304,
+        480
+      ],
+      "id": "c1385488-b77d-49c9-b2c9-2765cfc72fb0",
+      "name": "Execute a command",
+      "credentials": {
+        "sshPassword": {
+          "id": "E3j7D3Khy2cdeBJJ",
+          "name": "SSH Password account nati"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "=cd /home/node/easyspider\n/Applications/EasySpider_MacOS/easyspider_executestage --ids '{{ Array.isArray($json.ids) ? JSON.stringify($json.ids) : JSON.stringify([$json.ids || $json.id || $json]) }}' --user_data {{$json.user_data || 0}} --server_address {{$json.server_address || 'http://localhost:8074'}} --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" --headless {{$json.headless || 0}} --read_type local --config_file_name {{$json.config_file_name || 'config.json'}} --saved_file_name {{$json.saved_file_name || ''}}"
+      },
+      "id": "c3f9c147-e586-4d8b-bf0a-d118db757939",
+      "name": "执行EasySpider命令",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        752,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "13c00444-0f6f-4238-9c9a-3016840a18d7",
+              "name": "EID",
+              "value": "={{ $json }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        480
+      ],
+      "id": "8145f2dd-f4f7-41b9-a11c-d1a453d30eb0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8074/invokeTask",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "0"
+            },
+            {
+              "name": "params",
+              "value": "{\"urlList_0\":\"https://www.baidu.com\"}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        496
+      ],
+      "name": "HTTP Request2",
+      "id": "8505cc69-e69a-405a-9bd5-4ba952069df6"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-10T07:52:39.000Z",
+  "versionId": "045597d9-62b7-4622-bfca-08b349318407"
+}
