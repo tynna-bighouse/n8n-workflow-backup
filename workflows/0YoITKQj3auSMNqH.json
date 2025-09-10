@@ -1,0 +1,309 @@
+{
+  "active": true,
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "改文件名",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        []
+      ]
+    },
+    "筛选只要上个星期的日记": {
+      "main": [
+        [
+          {
+            "node": "obsidian请求节点",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obsidian请求节点": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "改文件名": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "筛选只要上个星期的日记",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-08T11:24:23.511Z",
+  "id": "0YoITKQj3auSMNqH",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "obsidian周报自动生成器",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://host.docker.internal:27124/vault/{{encodeURIComponent(\"周总结/\" + \"周报-\" + $now.toFormat(\"kkkk-'W'WW\") + \".md\")}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text/markdown",
+        "body": "={{ $json.output }}",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1552,
+        -96
+      ],
+      "id": "9240cba0-cf38-40eb-91d3-5768d3368d21",
+      "name": "HTTP Request",
+      "alwaysOutputData": true,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "fIOwv6biNqkbQECz",
+          "name": "Bearer Auth account Obsidian"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        704,
+        160
+      ],
+      "id": "a4a8c7f3-42c3-4140-a319-bcfa4c3a0143",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bXt3B2tQFHbAwxOD",
+          "name": "Google Gemini(PaLM) Api account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Role\n假如你是我。请完全代入我的角色进行输出，你的回答就应该是周记本身。\n\n# Task\n根据input的日记内容写一段周记，总结我这个星期的主要活动、工作进度，心情和睡眠情况。\n字数在400字左右\n\n# Style & Tone\n- 模仿我提供的日记口吻，风格要年轻化，可以适当加 emoji。\n- 排版舒服。\n- 主要活动、工作进度，心情和睡眠情况等所有的这些标题要用英语\n\n# Format\n- 以 Markdown 格式输出。\n\n# Critical Instruction (关键指令！)\n请直接输出周记内容，不要包含任何额外的解释或对话。\n\n# Input Data\n {{ $json.data }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        -64
+      ],
+      "id": "5c0682da-022b-4450-9bd1-65d6bf81acd0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        624,
+        -48
+      ],
+      "id": "36569248-a1f1-41c4-9195-842b1bb2d97f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "output",
+        "binaryPropertyName": "=data",
+        "options": {
+          "fileName": "=周记-{{$now.minus({ weeks: 1 }).toFormat(\"kkkk-'W'WW\")}}.md"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1328,
+        -288
+      ],
+      "id": "114e569c-ea07-409d-8e6f-fe8e587bcbe8",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 目录名\nconst diaryDir = \"日记\";\n\n// 以周一为一周起点，生成上周 7 个日期\nconst now = new Date();\nconst weekdayMon0 = (now.getDay() + 6) % 7;\nconst thisMon = new Date(now);\nthisMon.setDate(now.getDate() - weekdayMon0);\nthisMon.setHours(0,0,0,0);\n\nconst lastMon = new Date(thisMon);\nlastMon.setDate(thisMon.getDate() - 7);\n\n// 生成 YYYY-MM-DD 字符串\nfunction fmt(d){\n  const y=d.getFullYear();\n  const m=String(d.getMonth()+1).padStart(2,'0');\n  const day=String(d.getDate()).padStart(2,'0');\n  return `${y}-${m}-${day}`;\n}\n\nconst out = [];\nfor (let i=0;i<7;i++){\n  const d = new Date(lastMon);\n  d.setDate(lastMon.getDate()+i);\n  const name = `${fmt(d)}.md`;\n  out.push({ json: { path: `${diaryDir}/${name}`, name }});\n}\n\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e265870c-5943-42ca-b479-f9d65ffa794e",
+      "name": "筛选只要上个星期的日记"
+    },
+    {
+      "parameters": {
+        "url": "=https://host.docker.internal:27124/vault/{{encodeURIComponent($json.path)}}?format=raw",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        -48
+      ],
+      "id": "f2aaaf26-cfd7-4ffe-a6ba-563cccbc7f3a",
+      "name": "obsidian请求节点",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "fIOwv6biNqkbQECz",
+          "name": "Bearer Auth account Obsidian"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec2fb318-12b3-4cfa-9dfa-ce5951465486",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "41789bb9-206d-4802-b072-b67a25f4c59d",
+              "name": "File Name",
+              "value": "=周记-{{$now.minus({ weeks: 1 }).toFormat(\"kkkk-'W'WW\")}}.md",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1264,
+        -64
+      ],
+      "id": "7dae958c-39fc-4bde-8303-b9ba6434ca74",
+      "name": "改文件名"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "318ce0e2-472c-435a-9498-81334325208f",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-10T03:08:44.000Z",
+  "versionId": "6a28e897-c14e-476e-b0c0-ae94073bebbe"
+}
