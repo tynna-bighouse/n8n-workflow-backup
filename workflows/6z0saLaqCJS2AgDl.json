@@ -1,0 +1,438 @@
+{
+  "active": true,
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "提取企业",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "解析搜索结果",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "企业搜索",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "替换我": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "替换我",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "提取企业": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "企业搜索": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "解析搜索结果": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-08T11:24:32.778Z",
+  "id": "6z0saLaqCJS2AgDl",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "公司名找阿里巴巴",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit?pli=1&gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -32
+      ],
+      "id": "726d0620-9fd3-41dc-a329-6f8ca72be989",
+      "name": "Google Sheets Trigger",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "IqFCGqXW6szmafFX",
+          "name": "Google Sheets Trigger account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit?pli=1&gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "alibaba url": "={{ $json['alibaba url'] }}",
+            "相关企业": "={{ $json['相关企业'] }}"
+          },
+          "matchingColumns": [
+            "相关企业"
+          ],
+          "schema": [
+            {
+              "id": "相关企业",
+              "displayName": "相关企业",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "主营业务",
+              "displayName": "主营业务",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "所在地",
+              "displayName": "所在地",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "alibaba url",
+              "displayName": "alibaba url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "交易历史 (近6个月)",
+              "displayName": "交易历史 (近6个月)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "主营市场",
+              "displayName": "主营市场",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "主图/视频质量",
+              "displayName": "主图/视频质量",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "价格区间 (FOB)",
+              "displayName": "价格区间 (FOB)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "最小起订量 (MOQ)",
+              "displayName": "最小起订量 (MOQ)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "核心资质/证书",
+              "displayName": "核心资质/证书",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "核心优势总结",
+              "displayName": "核心优势总结",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "明显劣势总结",
+              "displayName": "明显劣势总结",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1872,
+        80
+      ],
+      "id": "7c2d0bf6-6667-4bee-a7f1-5c9d1a6048e2",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fde19ae2-24bc-4cba-a6d1-58b6069c9fda",
+              "name": "相关企业",
+              "value": "={{ $json.companyName }}",
+              "type": "string"
+            },
+            {
+              "id": "3f2f1a1c-6d8f-41a8-a28b-76a5b7e3d0c9",
+              "name": "alibaba url",
+              "value": "={{ $json.store_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1600,
+        -48
+      ],
+      "id": "3d1f7ec9-77ce-45ad-b27e-2bf3fb218dad",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "batchSize": 10,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        640,
+        80
+      ],
+      "id": "8443258a-ce34-4fb5-8cae-c2b5380d39df",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "替换我",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        96
+      ],
+      "id": "6795c220-08a0-4401-bdc3-083254082267"
+    },
+    {
+      "parameters": {
+        "amount": "={{ 10 + Math.random() * 10 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        96
+      ],
+      "id": "1b3092d3-b4eb-4c04-b2f1-02dc48c05552",
+      "name": "Wait",
+      "webhookId": "6d5e29e5-ef41-4414-b09a-17e28b4b2113"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a6b917b-21c6-4320-aed8-c64e54b225cb",
+              "name": "companyName",
+              "value": "={{ $json['相关企业'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "2869e374-ca22-40ef-b63c-4debee24620e",
+      "name": "提取企业"
+    },
+    {
+      "parameters": {
+        "executeOnce": false,
+        "command": "=/bin/sh -lc 'export COMPANY_B64=\"$(printf %s \"{{ $json.companyName }}\" | base64)\"; /opt/venv/bin/python - <<'\\''PY'\\''\nimport os, sys, json, base64\nfrom ddgs import DDGS\n\ncompany = base64.b64decode(os.environ.get(\"COMPANY_B64\",\"\")).decode(\"utf-8\").strip()\n\ntry:\n    # 使用 ddgs 库搜索\n    with DDGS() as d:\n        hits = []\n        \n        # 使用 site:alibaba.com 搜索\n        query = f\"site:alibaba.com {company}\"\n        print(f\"Searching: {query}\", file=sys.stderr)\n        \n        for r in d.text(query=query, \n                       region=\"us-en\", \n                       language=\"en\",\n                       safesearch=\"off\", \n                       max_results=10,\n                       backend=\"duckduckgo\"):\n            url = (r.get(\"url\") or r.get(\"href\") or \"\").strip()\n            title = (r.get(\"title\") or r.get(\"name\") or \"\").strip()\n            if url and title and \"alibaba.com\" in url.lower():\n                hits.append({\"title\": title, \"url\": url})\n                if len(hits) >= 10:\n                    break\n    \n    result = {\n        \"companyName\": company,\n        \"query\": query,\n        \"top3\": hits[:3],  # 只返回前3个\n        \"all_results\": hits,  # 返回所有结果\n        \"total_hits\": len(hits)\n    }\n    print(json.dumps(result, ensure_ascii=False))\n    \nexcept Exception as e:\n    print(json.dumps({\"error\": str(e), \"companyName\": company}, ensure_ascii=False))\nPY'"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        816,
+        96
+      ],
+      "id": "b67c36e7-e7f5-4119-81ce-592b941735b2",
+      "name": "企业搜索"
+    },
+    {
+      "parameters": {
+        "jsCode": "function normalizeCompanyName(name) {\n  return (name || \"\")\n    .toLowerCase()\n    .replace(/[.,;:()\\-_\\/|\\u3001\\u3002]/g, \" \")\n    .replace(/\\b(limited|ltd|co|co ltd|company|inc|corp|corporation|llc)\\b/g, \" \")\n    .replace(/\\s+/g, \" \")\n    .trim();\n}\nfunction isAlibabaUrl(url) {\n  return url && /\\.alibaba\\.com/i.test(url);\n}\nfunction titleContainsCompanyName(companyName, title) {\n  const cn = normalizeCompanyName(companyName);\n  const tn = normalizeCompanyName(title);\n  const companyWords = cn.split(\" \").filter(w => w.length > 1);\n  const titleWords = tn.split(\" \");\n  if (companyWords.length === 1) {\n    return titleWords.some(w => w.includes(companyWords[0]));\n  }\n  return companyWords.every(w => titleWords.some(tw => tw.includes(w)));\n}\n\nreturn items.map(item => {\n  const txt = item.json.stdout || \"{}\";\n  let data = {};\n  try { data = JSON.parse(txt); } catch { data = {}; }\n\n  const companyName = data.companyName || item.json.companyName || \"\";\n  const results = Array.isArray(data.all_results) && data.all_results.length\n    ? data.all_results\n    : (Array.isArray(data.top3) ? data.top3 : []);\n  const totalHits = typeof data.total_hits === \"number\" ? data.total_hits : results.length;\n\n  const alibabaResults = results.filter(r => isAlibabaUrl(r.url));\n  let hasStore = false, storeUrl = \"\", matchedTitle = \"\";\n\n  for (const r of alibabaResults) {\n    const t = r.title || \"\";\n    if (titleContainsCompanyName(companyName, t)) {\n      hasStore = true;\n      storeUrl = r.url;\n      matchedTitle = t;\n      break;\n    }\n  }\n\n  return {\n    json: {\n      companyName,\n      has_store: hasStore,\n      store_url: storeUrl,\n      matched_title: matchedTitle,\n      all_alibaba_results: alibabaResults,\n      total_hits: totalHits\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1392,
+        -48
+      ],
+      "id": "76ce9bd0-c3e8-401e-a80c-29693ea3be81",
+      "name": "解析搜索结果"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
+      "sheetId": 0,
+      "lastRevision": 44,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU&revision=44&exportFormat=xlsx"
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-10T03:09:25.000Z",
+  "versionId": "1509c12b-4b17-4d5e-ba09-f8c5909e21aa"
+}
