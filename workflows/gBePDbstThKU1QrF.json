@@ -64,7 +64,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "backup",
+  "name": "n8n-backup",
   "nodes": [
     {
       "parameters": {},
@@ -165,8 +165,9 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "={{ $workflow.id }}",
-          "mode": "id"
+          "value": "NDWCXN8zzZvmtgi3",
+          "mode": "list",
+          "cachedResultName": "backup子节点"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -201,6 +202,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-10T09:45:34.000Z",
-  "versionId": "c4fe75a8-909b-4637-b487-7fb2157a52e2"
+  "updatedAt": "2025-09-11T03:41:19.000Z",
+  "versionId": "72e9d847-bb00-4d2a-b2a7-7c2983878fd0"
 }
