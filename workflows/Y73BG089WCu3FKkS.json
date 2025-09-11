@@ -1,18 +1,111 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
         [
           {
-            "node": "HTTP Request2",
+            "node": "Get row(s) in sheet",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request2": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "执行任务1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "执行任务1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
       "main": [
         [
           {
@@ -27,33 +120,16 @@
       "main": [
         [
           {
-            "node": "执行任务",
+            "node": "Append or update row in sheet",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "执行任务": {
+    "Google Sheets Trigger": {
       "main": [
-        [
-          {
-            "node": "Read/Write Files from Disk",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Read/Write Files from Disk": {
-      "main": [
-        [
-          {
-            "node": "Extract from File",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -70,11 +146,183 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        272,
-        240
+        -32160,
+        48
       ],
       "id": "cacbe1fd-e59e-4a08-bb1c-98d0ab0a4167",
       "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
+          "mode": "list",
+          "cachedResultName": "香水竞对调查",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "D2:D"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -31968,
+        112
+      ],
+      "id": "ab0750c7-7bc1-402c-a80a-7607bffe0941",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "91c230e3-30d9-4f26-892a-da55d6182307",
+              "name": "url",
+              "value": "={{$json.col_1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -31280,
+        48
+      ],
+      "id": "ad3ad3ac-d385-42dd-af90-60bd3fcbae20",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "col_1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -31504,
+        48
+      ],
+      "id": "ee782b3e-49d4-4020-a168-1359b9fbed1c",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8074/invokeTask",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "3"
+            },
+            {
+              "name": "params",
+              "value": "={{ JSON.stringify({ urlList_0: (Array.isArray($json.url) ? $json.url : JSON.parse($json.url)).join('\\n') }) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -31056,
+        48
+      ],
+      "name": "HTTP Request",
+      "id": "16562996-6520-4e31-ad8e-6a304fab0cca"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
+          "mode": "list",
+          "cachedResultName": "香水竞对调查",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "D2:D"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -32160,
+        272
+      ],
+      "id": "37ef4972-d3d9-4473-9b05-ba5b8645b6d9",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "col_1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -31936,
+        272
+      ],
+      "id": "77ba784c-d6ce-4309-b619-8ccef6494f69",
+      "name": "Aggregate1"
     },
     {
       "parameters": {
@@ -99,74 +347,25 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        672,
-        384
+        -30832,
+        48
       ],
-      "id": "8145f2dd-f4f7-41b9-a11c-d1a453d30eb0",
-      "name": "Edit Fields"
+      "id": "ca060e7a-cbef-44b5-aecc-7b36543139ae",
+      "name": "Edit Fields3"
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "http://host.docker.internal:8074/invokeTask",
-        "sendBody": true,
-        "contentType": "form-urlencoded",
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "id",
-              "value": "0"
-            },
-            {
-              "name": "params",
-              "value": "{\"urlList_0\":\"https://www.baidu.com\"}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        512,
-        544
-      ],
-      "name": "HTTP Request2",
-      "id": "8505cc69-e69a-405a-9bd5-4ba952069df6"
-    },
-    {
-      "parameters": {
-        "command": "=cd /Applications/EasySpider_MacOS\n./easyspider_executestage --ids '[{{ $json }}]' --user_data 0 --server_address http://host.docker.internal:8074 --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" --headless 0 --read_type local --config_file_name config.json --saved_file_name "
-      },
-      "type": "n8n-nodes-base.ssh",
-      "typeVersion": 1,
-      "position": [
-        272,
-        848
-      ],
-      "id": "fa6d6535-9480-4357-8bc2-8d26b2766bf1",
-      "name": "Execute a command1",
-      "alwaysOutputData": true,
-      "credentials": {
-        "sshPassword": {
-          "id": "E3j7D3Khy2cdeBJJ",
-          "name": "SSH Password account nati"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "command": "=bash -lc 'set -euo pipefail\nBIN=\"/Applications/EasySpider_MacOS\"\nCFG=\"/Users/nati/Library/Application Support/EasySpider\"\nIDS=\"{{ $json.ids }}\"                     # 例如 24 或 23,24（下面会包进 []）\nLOG=\"/tmp/es_$(date +%s).log\"\nPATTERN=\"Done!|执行完成|执行完成！\"\nTIMEOUT=1800\nSLEEP=2\n\ncd \"$BIN\"\n\nnohup ./easyspider_executestage \\\n  --ids \"[{{ $json.ids }}]\" \\\n  --user_data 0 \\\n  --server_address \"http://host.docker.internal:8074\" \\\n  --config_folder \"$CFG\" \\\n  --headless 0 \\\n  --keyboard 1 \\\n  --read_type local \\\n  --config_file_name config.json \\\n  --saved_file_name \"{{ $json.time }}\" \\\n  >\"$LOG\" 2>&1 &\n\nPID=$!\nSECONDS=0\nwhile kill -0 \"$PID\" 2>/dev/null; do\n  if grep -E -m1 \"$PATTERN\" \"$LOG\" >/dev/null 2>&1; then\n    echo \"DETECTED_DONE\"\n    # 先温和终止子进程，再终止父进程\n    pgrep -P \"$PID\" | xargs -I{} kill -TERM {} 2>/dev/null || true\n    kill -TERM \"$PID\" 2>/dev/null || true\n    for i in 1 2 3; do sleep 1; kill -0 \"$PID\" 2>/dev/null || break; done\n    pgrep -P \"$PID\" | xargs -I{} kill -KILL {} 2>/dev/null || true\n    kill -KILL \"$PID\" 2>/dev/null || true\n    exit 0\n  fi\n  if [ $SECONDS -ge $TIMEOUT ]; then\n    echo \"TIMEOUT\"\n    pgrep -P \"$PID\" | xargs -I{} kill -TERM {} 2>/dev/null || true\n    kill -TERM \"$PID\" 2>/dev/null || true\n    sleep 2\n    pgrep -P \"$PID\" | xargs -I{} kill -KILL {} 2>/dev/null || true\n    kill -KILL \"$PID\" 2>/dev/null || true\n    exit 124\n  fi\n  sleep \"$SLEEP\"\ndone\n\nexit 0'",
+        "command": "=cd \"/Applications/EasySpider_MacOS\" && ./easyspider_executestage \\\n  --ids \"[{{ $json.ids }}]\" \\\n  --user_data 0 \\\n  --server_address \"http://localhost:8074\" \\\n  --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" \\\n  --headless 0 \\\n  --keyboard 0 \\\n  --read_type local \\\n  --saved_file_name \"{{ $json.time }}\" \\\n  --config_file_name config.json",
         "cwd": "=/"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        -480,
-        1136
+        -30608,
+        48
       ],
-      "id": "8ca727e6-ab5a-4b85-8cce-c3e2f1eee3e1",
-      "name": "Execute a command2",
+      "id": "1f088be2-d54e-4d08-aa42-f00dfce265ee",
+      "name": "执行任务1",
       "executeOnce": false,
       "credentials": {
         "sshPassword": {
@@ -177,59 +376,17 @@
     },
     {
       "parameters": {
-        "command": "=cd \"/Applications/EasySpider_MacOS\" && ./easyspider_executestage \\\n  --ids \"[{{ $json.ids }}]\" \\\n  --user_data 0 \\\n  --server_address \"http://host.docker.internal:8074\" \\\n  --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" \\\n  --headless 0 \\\n  --keyboard 0 \\\n  --read_type local \\\n  --saved_file_name \"{{ $json.time }}\" \\\n  --config_file_name config.json",
-        "cwd": "=/"
-      },
-      "type": "n8n-nodes-base.ssh",
-      "typeVersion": 1,
-      "position": [
-        880,
-        304
-      ],
-      "id": "abb37991-56a5-4611-8363-459715aefe7d",
-      "name": "执行任务",
-      "executeOnce": false,
-      "credentials": {
-        "sshPassword": {
-          "id": "E3j7D3Khy2cdeBJJ",
-          "name": "SSH Password account nati"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "fileSelector": "=/home/node/Applications/EasySpider_MacOS/Data/Task_{{ $('Edit Fields').item.json.ids }}/{{ $('Edit Fields').item.json.time }}.csv",
+        "fileSelector": "=/home/node/Applications/EasySpider_MacOS/Data/Task_{{ $('Edit Fields3').item.json.ids }}/{{ $('Edit Fields3').item.json.time }}.csv",
         "options": {}
       },
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        1136,
-        336
+        -30384,
+        48
       ],
-      "id": "e091723d-d6a5-4f11-938b-64f373de51ca",
-      "name": "Read/Write Files from Disk"
-    },
-    {
-      "parameters": {
-        "resource": "file",
-        "path": "/Applications/EasySpider_MacOS/Data/Task_29/2025_09_10_09_12_21.csv",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.ssh",
-      "typeVersion": 1,
-      "position": [
-        1296,
-        -288
-      ],
-      "id": "fef4d320-72fb-42b7-8fcd-bea78c9210ca",
-      "name": "Upload a file",
-      "credentials": {
-        "sshPassword": {
-          "id": "E3j7D3Khy2cdeBJJ",
-          "name": "SSH Password account nati"
-        }
-      }
+      "id": "8d145205-22dd-4321-8877-0ab165ecfe2e",
+      "name": "Read/Write Files from Disk1"
     },
     {
       "parameters": {
@@ -238,20 +395,296 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        1344,
-        336
+        -30160,
+        48
       ],
-      "id": "0906b97c-f77f-4595-aa4b-265d50c509c8",
+      "id": "9685175f-1f09-40d9-96a2-1d5ca8820907",
       "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
+          "mode": "list",
+          "cachedResultName": "香水竞对调查",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "公司网址": "={{ $json['﻿公司网址'] }}",
+            "公司地址": "={{ $json['公司地址'] }}",
+            "alibaba url": "={{ $json.url }}"
+          },
+          "matchingColumns": [
+            "alibaba url"
+          ],
+          "schema": [
+            {
+              "id": "相关企业",
+              "displayName": "相关企业",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "主营业务",
+              "displayName": "主营业务",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "所在地",
+              "displayName": "所在地",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "alibaba url",
+              "displayName": "alibaba url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "交易历史 (近6个月)",
+              "displayName": "交易历史 (近6个月)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "主营市场",
+              "displayName": "主营市场",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "主图/视频质量",
+              "displayName": "主图/视频质量",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "价格区间 (FOB)",
+              "displayName": "价格区间 (FOB)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "最小起订量 (MOQ)",
+              "displayName": "最小起订量 (MOQ)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "核心资质/证书",
+              "displayName": "核心资质/证书",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "核心优势总结",
+              "displayName": "核心优势总结",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "明显劣势总结",
+              "displayName": "明显劣势总结",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "公司网址",
+              "displayName": "公司网址",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "网站评分",
+              "displayName": "网站评分",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "公司地址",
+              "displayName": "公司地址",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -29520,
+        48
+      ],
+      "id": "8ab4ea80-2130-4a06-bd15-5ad1aee1aedd",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "762333d3-f5ed-4264-90d2-76cdb8ad3afd",
+              "name": "﻿公司网址",
+              "value": "={{ $json['﻿公司网址'] }}",
+              "type": "string"
+            },
+            {
+              "id": "3bf241d2-7cb6-48c9-8b39-b2dcc8656a2c",
+              "name": "公司地址",
+              "value": "={{ $json['公司地址'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d517831f-5117-45a4-827b-bdfec9dafa91",
+              "name": "url",
+              "value": "={{ $('Aggregate').item.json.col_1[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -29744,
+        48
+      ],
+      "id": "24fc381d-8dbc-42b4-9aeb-f9e760eea4c3",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
+          "mode": "list",
+          "cachedResultName": "香水竞对调查",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "D2:D"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32144,
+        -128
+      ],
+      "id": "ab50a4e3-a977-4bd6-a39e-dbf2e8e6258b",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "IqFCGqXW6szmafFX",
+          "name": "Google Sheets Trigger account egingin"
+        }
+      }
     }
   ],
   "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
+      "sheetId": 0,
+      "lastRevision": 107,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU&revision=107&exportFormat=xlsx"
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-09-11T03:40:22.000Z",
-  "versionId": "b3a1cb50-954d-4678-a57a-5e3377ca0f7b"
+  "triggerCount": 1,
+  "updatedAt": "2025-09-11T14:59:28.000Z",
+  "versionId": "feed8f1f-c4c9-419f-abc4-7da13d2d00e0"
 }
