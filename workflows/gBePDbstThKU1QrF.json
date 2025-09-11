@@ -115,7 +115,7 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 7
+              "triggerAtHour": 10
             }
           ]
         }
@@ -202,6 +202,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-11T03:41:19.000Z",
-  "versionId": "72e9d847-bb00-4d2a-b2a7-7c2983878fd0"
+  "updatedAt": "2025-09-11T03:43:02.000Z",
+  "versionId": "43a7c8d7-4a68-4afb-9055-62283d64ae99"
 }
