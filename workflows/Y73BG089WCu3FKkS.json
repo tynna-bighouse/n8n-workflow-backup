@@ -5,27 +5,55 @@
       "main": [
         [
           {
-            "node": "HTTP Request1",
+            "node": "HTTP Request2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request1": {
+    "HTTP Request2": {
       "main": [
         [
           {
-            "node": "执行EasySpider命令",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "执行EasySpider命令": {
+    "Edit Fields": {
       "main": [
-        []
+        [
+          {
+            "node": "执行任务",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "执行任务": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -50,70 +78,19 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": " http://localhost:8074/invokeTask?",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "id",
-              "value": "0"
-            },
-            {}
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        512,
-        256
-      ],
-      "name": "HTTP Request1",
-      "id": "68ff6afa-49b1-49f7-8c54-e4b4c7b4e6f5"
-    },
-    {
-      "parameters": {
-        "command": "=/bin/sh -lc 'set -e; TS=\"{{ $now}}\"; \\\nOUT_DIR=\"/Applications/EasySpider_MacOS/Data\"; \\\nCFG_DIR=\"/Applications/EasySpider_MacOS/Config\"; \\\nUSER_DIR=\"/Applications/EasySpider_MacOS/Config/user_data\"; \\\nmkdir -p \"$OUT_DIR\" \"$USER_DIR\"; \\\necho \"IDs={{ JSON.stringify([$json.EID ?? $json.id ?? $json]) }}\"; \\\n/Applications/EasySpider_MacOS/easyspider_executestage_full \\\n --ids \"{{ JSON.stringify([$json.EID ?? $json.id ?? $json]) }}\" \\\n --user_data 0 \\\n --server_address http://host.docker.internal:8074 \\\n --config_folder \"$CFG_DIR\" \\\n --headless 0 \\\n --read_type remote \\\n --config_file_name config.json \\\n --user_folder \"$USER_DIR\" \\\n --keyboard 1 \\\n --pause_key p \\\n --saved_file_name \"$OUT_DIR/result_$TS\"'"
-      },
-      "type": "n8n-nodes-base.ssh",
-      "typeVersion": 1,
-      "position": [
-        304,
-        480
-      ],
-      "id": "c1385488-b77d-49c9-b2c9-2765cfc72fb0",
-      "name": "Execute a command",
-      "credentials": {
-        "sshPassword": {
-          "id": "E3j7D3Khy2cdeBJJ",
-          "name": "SSH Password account nati"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "command": "=cd /home/node/easyspider\n/Applications/EasySpider_MacOS/easyspider_executestage --ids '{{ Array.isArray($json.ids) ? JSON.stringify($json.ids) : JSON.stringify([$json.ids || $json.id || $json]) }}' --user_data {{$json.user_data || 0}} --server_address {{$json.server_address || 'http://localhost:8074'}} --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" --headless {{$json.headless || 0}} --read_type local --config_file_name {{$json.config_file_name || 'config.json'}} --saved_file_name {{$json.saved_file_name || ''}}"
-      },
-      "id": "c3f9c147-e586-4d8b-bf0a-d118db757939",
-      "name": "执行EasySpider命令",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        752,
-        320
-      ]
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "13c00444-0f6f-4238-9c9a-3016840a18d7",
-              "name": "EID",
+              "id": "928cd9ca-fcc4-4e51-a7b9-efa9253894a4",
+              "name": "ids",
               "value": "={{ $json }}",
-              "type": "number"
+              "type": "string"
+            },
+            {
+              "id": "83f61c74-70c8-43c8-9fbc-b3b40f9053aa",
+              "name": "time",
+              "value": "={{ $now.toFormat('yyyy_MM_dd_HH_mm_ss') }}",
+              "type": "string"
             }
           ]
         },
@@ -122,8 +99,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        768,
-        480
+        672,
+        384
       ],
       "id": "8145f2dd-f4f7-41b9-a11c-d1a453d30eb0",
       "name": "Edit Fields"
@@ -151,11 +128,121 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        576,
-        496
+        512,
+        544
       ],
       "name": "HTTP Request2",
       "id": "8505cc69-e69a-405a-9bd5-4ba952069df6"
+    },
+    {
+      "parameters": {
+        "command": "=cd /Applications/EasySpider_MacOS\n./easyspider_executestage --ids '[{{ $json }}]' --user_data 0 --server_address http://host.docker.internal:8074 --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" --headless 0 --read_type local --config_file_name config.json --saved_file_name "
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        272,
+        848
+      ],
+      "id": "fa6d6535-9480-4357-8bc2-8d26b2766bf1",
+      "name": "Execute a command1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "sshPassword": {
+          "id": "E3j7D3Khy2cdeBJJ",
+          "name": "SSH Password account nati"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "=bash -lc 'set -euo pipefail\nBIN=\"/Applications/EasySpider_MacOS\"\nCFG=\"/Users/nati/Library/Application Support/EasySpider\"\nIDS=\"{{ $json.ids }}\"                     # 例如 24 或 23,24（下面会包进 []）\nLOG=\"/tmp/es_$(date +%s).log\"\nPATTERN=\"Done!|执行完成|执行完成！\"\nTIMEOUT=1800\nSLEEP=2\n\ncd \"$BIN\"\n\nnohup ./easyspider_executestage \\\n  --ids \"[{{ $json.ids }}]\" \\\n  --user_data 0 \\\n  --server_address \"http://host.docker.internal:8074\" \\\n  --config_folder \"$CFG\" \\\n  --headless 0 \\\n  --keyboard 1 \\\n  --read_type local \\\n  --config_file_name config.json \\\n  --saved_file_name \"{{ $json.time }}\" \\\n  >\"$LOG\" 2>&1 &\n\nPID=$!\nSECONDS=0\nwhile kill -0 \"$PID\" 2>/dev/null; do\n  if grep -E -m1 \"$PATTERN\" \"$LOG\" >/dev/null 2>&1; then\n    echo \"DETECTED_DONE\"\n    # 先温和终止子进程，再终止父进程\n    pgrep -P \"$PID\" | xargs -I{} kill -TERM {} 2>/dev/null || true\n    kill -TERM \"$PID\" 2>/dev/null || true\n    for i in 1 2 3; do sleep 1; kill -0 \"$PID\" 2>/dev/null || break; done\n    pgrep -P \"$PID\" | xargs -I{} kill -KILL {} 2>/dev/null || true\n    kill -KILL \"$PID\" 2>/dev/null || true\n    exit 0\n  fi\n  if [ $SECONDS -ge $TIMEOUT ]; then\n    echo \"TIMEOUT\"\n    pgrep -P \"$PID\" | xargs -I{} kill -TERM {} 2>/dev/null || true\n    kill -TERM \"$PID\" 2>/dev/null || true\n    sleep 2\n    pgrep -P \"$PID\" | xargs -I{} kill -KILL {} 2>/dev/null || true\n    kill -KILL \"$PID\" 2>/dev/null || true\n    exit 124\n  fi\n  sleep \"$SLEEP\"\ndone\n\nexit 0'",
+        "cwd": "=/"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        1136
+      ],
+      "id": "8ca727e6-ab5a-4b85-8cce-c3e2f1eee3e1",
+      "name": "Execute a command2",
+      "executeOnce": false,
+      "credentials": {
+        "sshPassword": {
+          "id": "E3j7D3Khy2cdeBJJ",
+          "name": "SSH Password account nati"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "=cd \"/Applications/EasySpider_MacOS\" && ./easyspider_executestage \\\n  --ids \"[{{ $json.ids }}]\" \\\n  --user_data 0 \\\n  --server_address \"http://host.docker.internal:8074\" \\\n  --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" \\\n  --headless 0 \\\n  --keyboard 0 \\\n  --read_type local \\\n  --saved_file_name \"{{ $json.time }}\" \\\n  --config_file_name config.json",
+        "cwd": "=/"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        880,
+        304
+      ],
+      "id": "abb37991-56a5-4611-8363-459715aefe7d",
+      "name": "执行任务",
+      "executeOnce": false,
+      "credentials": {
+        "sshPassword": {
+          "id": "E3j7D3Khy2cdeBJJ",
+          "name": "SSH Password account nati"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fileSelector": "=/home/node/Applications/EasySpider_MacOS/Data/Task_{{ $('Edit Fields').item.json.ids }}/{{ $('Edit Fields').item.json.time }}.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        336
+      ],
+      "id": "e091723d-d6a5-4f11-938b-64f373de51ca",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "path": "/Applications/EasySpider_MacOS/Data/Task_29/2025_09_10_09_12_21.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -288
+      ],
+      "id": "fef4d320-72fb-42b7-8fcd-bea78c9210ca",
+      "name": "Upload a file",
+      "credentials": {
+        "sshPassword": {
+          "id": "E3j7D3Khy2cdeBJJ",
+          "name": "SSH Password account nati"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        336
+      ],
+      "id": "0906b97c-f77f-4595-aa4b-265d50c509c8",
+      "name": "Extract from File"
     }
   ],
   "pinData": {},
@@ -165,6 +252,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-09-10T07:52:39.000Z",
-  "versionId": "045597d9-62b7-4622-bfca-08b349318407"
+  "updatedAt": "2025-09-11T03:40:22.000Z",
+  "versionId": "b3a1cb50-954d-4678-a57a-5e3377ca0f7b"
 }
