@@ -3,24 +3,12 @@
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
-        [
-          {
-            "node": "Get row(s) in sheet",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Get row(s) in sheet": {
       "main": [
-        [
-          {
-            "node": "Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Edit Fields1": {
@@ -129,7 +117,35 @@
     },
     "Google Sheets Trigger": {
       "main": [
-        []
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -139,7 +155,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "easyscrape任务执行",
+  "name": "easyscrape任务执行alibaba爬取官网和地址",
   "nodes": [
     {
       "parameters": {},
@@ -199,7 +215,7 @@
             {
               "id": "91c230e3-30d9-4f26-892a-da55d6182307",
               "name": "url",
-              "value": "={{$json.col_1}}",
+              "value": "={{ $json['alibaba url'] }}",
               "type": "string"
             }
           ]
@@ -209,7 +225,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -31280,
+        -30656,
         48
       ],
       "id": "ad3ad3ac-d385-42dd-af90-60bd3fcbae20",
@@ -220,7 +236,7 @@
         "fieldsToAggregate": {
           "fieldToAggregate": [
             {
-              "fieldToAggregate": "col_1"
+              "fieldToAggregate": "alibaba url"
             }
           ]
         },
@@ -229,7 +245,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -31504,
+        -31088,
         48
       ],
       "id": "ee782b3e-49d4-4020-a168-1359b9fbed1c",
@@ -258,7 +274,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -31056,
+        -30432,
         48
       ],
       "name": "HTTP Request",
@@ -347,7 +363,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -30832,
+        -30208,
         48
       ],
       "id": "ca060e7a-cbef-44b5-aecc-7b36543139ae",
@@ -355,13 +371,13 @@
     },
     {
       "parameters": {
-        "command": "=cd \"/Applications/EasySpider_MacOS\" && ./easyspider_executestage \\\n  --ids \"[{{ $json.ids }}]\" \\\n  --user_data 0 \\\n  --server_address \"http://localhost:8074\" \\\n  --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" \\\n  --headless 0 \\\n  --keyboard 0 \\\n  --read_type local \\\n  --saved_file_name \"{{ $json.time }}\" \\\n  --config_file_name config.json",
+        "command": "=cd \"/Applications/EasySpider_MacOS\" && ./easyspider_executestage \\\n  --ids \"[{{ $json.ids }}]\" \\\n  --user_data 0 \\\n  --server_address \"http://localhost:8074\" \\\n  --config_folder \"/Users/nati/Library/Application Support/EasySpider/\" \\\n  --headless 1 \\\n  --keyboard 0 \\\n  --read_type local \\\n  --saved_file_name \"{{ $json.time }}\" \\\n  --config_file_name config.json",
         "cwd": "=/"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        -30608,
+        -29984,
         48
       ],
       "id": "1f088be2-d54e-4d08-aa42-f00dfce265ee",
@@ -382,7 +398,7 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        -30384,
+        -29760,
         48
       ],
       "id": "8d145205-22dd-4321-8877-0ab165ecfe2e",
@@ -395,7 +411,7 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -30160,
+        -29536,
         48
       ],
       "id": "9685175f-1f09-40d9-96a2-1d5ca8820907",
@@ -423,7 +439,7 @@
           "value": {
             "公司网址": "={{ $json['﻿公司网址'] }}",
             "公司地址": "={{ $json['公司地址'] }}",
-            "alibaba url": "={{ $json.url }}"
+            "alibaba url": "={{ $json['alibaba url'] }}"
           },
           "matchingColumns": [
             "alibaba url"
@@ -575,7 +591,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -29520,
+        -28688,
         48
       ],
       "id": "8ab4ea80-2130-4a06-bd15-5ad1aee1aedd",
@@ -593,7 +609,7 @@
           "assignments": [
             {
               "id": "762333d3-f5ed-4264-90d2-76cdb8ad3afd",
-              "name": "﻿公司网址",
+              "name": "=﻿公司网址",
               "value": "={{ $json['﻿公司网址'] }}",
               "type": "string"
             },
@@ -604,9 +620,9 @@
               "type": "string"
             },
             {
-              "id": "d517831f-5117-45a4-827b-bdfec9dafa91",
-              "name": "url",
-              "value": "={{ $('Aggregate').item.json.col_1[0] }}",
+              "id": "1bfb1384-bff9-44cc-bad6-e0010c7afe4f",
+              "name": "alibaba url",
+              "value": "={{ $json['alibaba url'] }}",
               "type": "string"
             }
           ]
@@ -616,7 +632,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -29744,
+        -29120,
         48
       ],
       "id": "24fc381d-8dbc-42b4-9aeb-f9e760eea4c3",
@@ -646,20 +662,13 @@
           "cachedResultName": "Sheet1",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU/edit#gid=0"
         },
-        "options": {
-          "dataLocationOnSheet": {
-            "values": {
-              "rangeDefinition": "specifyRangeA1",
-              "range": "D2:D"
-            }
-          }
-        }
+        "options": {}
       },
       "type": "n8n-nodes-base.googleSheetsTrigger",
       "typeVersion": 1,
       "position": [
-        -32144,
-        -128
+        -31904,
+        -112
       ],
       "id": "ab50a4e3-a977-4bd6-a39e-dbf2e8e6258b",
       "name": "Google Sheets Trigger",
@@ -669,6 +678,87 @@
           "name": "Google Sheets Trigger account egingin"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f38ae0f6-efe9-4890-905c-7a8214f9ac6d",
+              "leftValue": "={{ $json[\"alibaba url\"] }}",
+              "rightValue": "=0",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -31504,
+        112
+      ],
+      "id": "171f7a10-39c2-4523-93f5-675ec76cbfea",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -31264,
+        128
+      ],
+      "id": "d27873c8-ae87-4fc6-8451-6276593a3872",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f38ae0f6-efe9-4890-905c-7a8214f9ac6d",
+              "leftValue": "={{ $json[\"alibaba url\"] }}",
+              "rightValue": "=0",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -31648,
+        -48
+      ],
+      "id": "7190d76e-6e67-450d-93b6-d1388ef66711",
+      "name": "Filter"
     }
   ],
   "pinData": {},
@@ -679,12 +769,12 @@
     "node:Google Sheets Trigger": {
       "documentId": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
       "sheetId": 0,
-      "lastRevision": 107,
-      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU&revision=107&exportFormat=xlsx"
+      "lastRevision": 151,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU&revision=151&exportFormat=xlsx"
     }
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-11T14:59:28.000Z",
-  "versionId": "feed8f1f-c4c9-419f-abc4-7da13d2d00e0"
+  "updatedAt": "2025-09-12T06:07:03.000Z",
+  "versionId": "f2a413cc-d7b1-4357-b17d-d27b135d09f6"
 }
