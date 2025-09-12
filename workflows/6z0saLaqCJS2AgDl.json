@@ -95,6 +95,17 @@
           }
         ]
       ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-08T11:24:32.778Z",
@@ -417,6 +428,33 @@
       ],
       "id": "76ce9bd0-c3e8-401e-a80c-29693ea3be81",
       "name": "解析搜索结果"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "Y73BG089WCu3FKkS",
+          "mode": "list",
+          "cachedResultName": "easyscrape任务执行"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2128,
+        32
+      ],
+      "id": "2b736568-7dfe-44cb-aacb-120eb10b2f9a",
+      "name": "Execute Workflow"
     }
   ],
   "pinData": {},
@@ -427,12 +465,12 @@
     "node:Google Sheets Trigger": {
       "documentId": "1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU",
       "sheetId": 0,
-      "lastRevision": 106,
-      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU&revision=106&exportFormat=xlsx"
+      "lastRevision": 151,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1-yktXROkXA37iKHn3kwa-Gh8VMTGoiU_2p_9p8LtoBU&revision=151&exportFormat=xlsx"
     }
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-10T03:09:25.000Z",
-  "versionId": "1509c12b-4b17-4d5e-ba09-f8c5909e21aa"
+  "updatedAt": "2025-09-12T05:58:23.000Z",
+  "versionId": "f672debe-579c-4e6a-a258-d86db39d525a"
 }
