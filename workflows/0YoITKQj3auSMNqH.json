@@ -39,22 +39,11 @@
         []
       ]
     },
-    "筛选只要上个星期的日记": {
-      "main": [
-        [
-          {
-            "node": "obsidian请求节点",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "obsidian请求节点": {
       "main": [
         [
           {
-            "node": "Aggregate",
+            "node": "Code",
             "type": "main",
             "index": 0
           }
@@ -76,7 +65,29 @@
       "main": [
         [
           {
-            "node": "筛选只要上个星期的日记",
+            "node": "obsidian请求节点",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "obsidian请求节点1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obsidian请求节点1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
             "type": "main",
             "index": 0
           }
@@ -202,20 +213,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 目录名\nconst diaryDir = \"日记\";\n\n// 以周一为一周起点，生成上周 7 个日期\nconst now = new Date();\nconst weekdayMon0 = (now.getDay() + 6) % 7;\nconst thisMon = new Date(now);\nthisMon.setDate(now.getDate() - weekdayMon0);\nthisMon.setHours(0,0,0,0);\n\nconst lastMon = new Date(thisMon);\nlastMon.setDate(thisMon.getDate() - 7);\n\n// 生成 YYYY-MM-DD 字符串\nfunction fmt(d){\n  const y=d.getFullYear();\n  const m=String(d.getMonth()+1).padStart(2,'0');\n  const day=String(d.getDate()).padStart(2,'0');\n  return `${y}-${m}-${day}`;\n}\n\nconst out = [];\nfor (let i=0;i<7;i++){\n  const d = new Date(lastMon);\n  d.setDate(lastMon.getDate()+i);\n  const name = `${fmt(d)}.md`;\n  out.push({ json: { path: `${diaryDir}/${name}`, name }});\n}\n\nreturn out;"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        208,
-        0
-      ],
-      "id": "e265870c-5943-42ca-b479-f9d65ffa794e",
-      "name": "筛选只要上个星期的日记"
-    },
-    {
-      "parameters": {
-        "url": "=https://host.docker.internal:27124/vault/{{encodeURIComponent($json.path)}}?format=raw",
+        "url": "=https://host.docker.internal:27124/vault/日记/",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "options": {
@@ -228,8 +226,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        416,
-        -48
+        176,
+        176
       ],
       "id": "f2aaaf26-cfd7-4ffe-a6ba-563cccbc7f3a",
       "name": "obsidian请求节点",
@@ -291,6 +289,46 @@
       ],
       "id": "318ce0e2-472c-435a-9498-81334325208f",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "=https://host.docker.internal:27124/vault/{{ $json.path }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        528,
+        64
+      ],
+      "id": "baa7b3e0-307c-4df7-b297-bfa1dc656e7b",
+      "name": "obsidian请求节点1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "fIOwv6biNqkbQECz",
+          "name": "Bearer Auth account Obsidian"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取上游HTTP节点返回的文件列表\nconst input = $input.first().json;\nlet files = [];\n\n// 处理Obsidian API可能的不同返回格式\nif (Array.isArray(input)) {\n  files = input;\n} else if (input.files) {\n  files = input.files;\n} else if (input.data) {\n  files = input.data;\n} else if (input.children) {\n  files = input.children;\n}\n\nconsole.log('原始文件列表:', files);\n\n// 计算上周的日期范围（周一到周日）\nconst now = new Date();\nconst weekdayMon0 = (now.getDay() + 6) % 7; // 将周一设为0\nconst thisMon = new Date(now);\nthisMon.setDate(now.getDate() - weekdayMon0);\nthisMon.setHours(0, 0, 0, 0);\n\n// 上周一\nconst lastMon = new Date(thisMon);\nlastMon.setDate(thisMon.getDate() - 7);\n\n// 生成上周7天的日期字符串集合\nconst lastWeekDates = new Set();\nfor (let i = 0; i < 7; i++) {\n  const d = new Date(lastMon);\n  d.setDate(lastMon.getDate() + i);\n  const dateStr = d.getFullYear() + '-' + \n    String(d.getMonth() + 1).padStart(2, '0') + '-' + \n    String(d.getDate()).padStart(2, '0');\n  lastWeekDates.add(dateStr);\n}\n\nconsole.log('上周日期范围:', Array.from(lastWeekDates));\n\n// 筛选出上周的日记文件（假设文件名格式为 YYYY-MM-DD.md）\nconst lastWeekDiaries = [];\n\nfiles.forEach(file => {\n  // 处理不同的文件对象格式\n  const fileName = file.name || file.title || file;\n  \n  if (typeof fileName === 'string') {\n    // 匹配日期格式 YYYY-MM-DD.md\n    const match = fileName.match(/^(\\d{4}-\\d{2}-\\d{2})\\.md$/);\n    \n    if (match) {\n      const dateStr = match[1];\n      if (lastWeekDates.has(dateStr)) {\n        lastWeekDiaries.push({\n          json: {\n            fileName: fileName,\n            date: dateStr,\n            path: `日记/${fileName}`,\n            fullPath: `日记/${fileName}`\n          }\n        });\n      }\n    }\n  }\n});\n\nconsole.log(`找到 ${lastWeekDiaries.length} 个上周的日记文件:`, lastWeekDiaries.map(d => d.json.fileName));\n\n// 如果没找到任何文件，返回空数组但不报错\nif (lastWeekDiaries.length === 0) {\n  console.log('上周没有找到任何日记文件');\n  return [{\n    json: {\n      message: '上周没有找到任何日记文件',\n      lastWeekDates: Array.from(lastWeekDates)\n    }\n  }];\n}\n\nreturn lastWeekDiaries;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        208
+      ],
+      "id": "6ae0658c-76b6-427f-9c82-2f2fd8a8069a",
+      "name": "Code"
     }
   ],
   "pinData": {},
@@ -304,6 +342,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-10T03:08:44.000Z",
-  "versionId": "6a28e897-c14e-476e-b0c0-ae94073bebbe"
+  "updatedAt": "2025-09-15T12:12:29.000Z",
+  "versionId": "2b42e738-30e4-4fd9-8223-d8e5f492f7b9"
 }
