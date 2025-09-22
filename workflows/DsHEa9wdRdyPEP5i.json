@@ -1,11 +1,55 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
-    "When clicking ‘Execute workflow’": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
       "main": [
         [
           {
             "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
             "type": "main",
             "index": 0
           }
@@ -16,42 +60,337 @@
   "createdAt": "2025-09-18T15:02:29.666Z",
   "id": "DsHEa9wdRdyPEP5i",
   "isArchived": false,
-  "meta": null,
-  "name": "My workflow",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "alibaba详情页关键词提取",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "d0117c58-cafb-41ee-97df-d2eb8b152cd2",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
       "parameters": {
-        "url": "https://www.alibaba.com/product-detail/Men-s-Long-Lasting-100mL-Wooden_1601053384947.html?spm=a2700.shop_plfe.41413.2.5787168aoDm78j",
-        "options": {}
+        "url": "={{ $json['输入商品链接'] }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        176,
-        0
+        544,
+        -192
       ],
       "id": "3146619c-defa-41f0-9b27-c9d3ab976f22",
       "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "keywords",
+              "cssSelector": "meta[name=\"keywords\"]",
+              "returnValue": "attribute"
+            },
+            {
+              "key": "description",
+              "cssSelector": "meta[name=\"description\"]",
+              "returnValue": "attribute",
+              "attribute": "content"
+            },
+            {
+              "key": "title",
+              "cssSelector": "title"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "86556e9d-636a-4f57-ada8-07a7445c7da1",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1eztViCP3Ep2eF2jnHD3dYPQkXqxXlhOoPOqXJ53Bzx8",
+          "mode": "list",
+          "cachedResultName": "香水aibaba关键词收集",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eztViCP3Ep2eF2jnHD3dYPQkXqxXlhOoPOqXJ53Bzx8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 932465627,
+          "mode": "list",
+          "cachedResultName": "sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eztViCP3Ep2eF2jnHD3dYPQkXqxXlhOoPOqXJ53Bzx8/edit#gid=932465627"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "c0015fef-756f-4930-aa46-0b0d565840be",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "IqFCGqXW6szmafFX",
+          "name": "Google Sheets Trigger account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 5) + 3 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        -16
+      ],
+      "id": "f70f94b5-5f08-4261-aa4e-d714802dd939",
+      "name": "Wait",
+      "webhookId": "e76fb9a2-44a4-44b8-a611-2c0f8f6d43dd"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1eztViCP3Ep2eF2jnHD3dYPQkXqxXlhOoPOqXJ53Bzx8/edit?gid=932465627#gid=932465627",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 932465627,
+          "mode": "list",
+          "cachedResultName": "sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eztViCP3Ep2eF2jnHD3dYPQkXqxXlhOoPOqXJ53Bzx8/edit#gid=932465627"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "关键词数量": "={{ $json['关键词数量'] }}",
+            "关键词1": "={{ $json['关键词1'] }}",
+            "关键词2": "={{ $json['关键词2'] }}",
+            "关键词3": "={{ $json['关键词3'] }}",
+            "关键词4": "={{ $json['关键词4'] }}",
+            "关键词5": "={{ $json['关键词5'] }}",
+            "关键词6": "={{ $json['关键词6'] }}",
+            "关键词7": "={{ $json['关键词7'] }}",
+            "关键词8": "={{ $json['关键词8'] }}",
+            "关键词9": "={{ $json['关键词9'] }}",
+            "关键词10": "={{ $json['关键词10'] }}",
+            "输入商品链接": "={{ $json['输入商品链接'] }}"
+          },
+          "matchingColumns": [
+            "输入商品链接"
+          ],
+          "schema": [
+            {
+              "id": "输入商品链接",
+              "displayName": "输入商品链接",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "关键词数量",
+              "displayName": "关键词数量",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词1",
+              "displayName": "关键词1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词2",
+              "displayName": "关键词2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词3",
+              "displayName": "关键词3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词4",
+              "displayName": "关键词4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词5",
+              "displayName": "关键词5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词6",
+              "displayName": "关键词6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词7",
+              "displayName": "关键词7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词8",
+              "displayName": "关键词8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词9",
+              "displayName": "关键词9",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "关键词10",
+              "displayName": "关键词10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        0
+      ],
+      "id": "7da4b896-9065-4202-b3aa-604cbd335eea",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取HTML Extract的结果\nconst htmlExtractResult = $json;\n\n// 获取原始输入数据\nconst originalInput = $('Wait').first().json;\n\n// 提取关键词的函数\nfunction extractKeywords(text) {\n  if (!text) return [];\n  \n  const buyIndex = text.indexOf('- Buy');\n  if (buyIndex === -1) return [];\n  \n  const afterBuy = text.substring(buyIndex + 6);\n  const productIndex = afterBuy.indexOf('Product on Alibaba.com');\n  if (productIndex === -1) return [];\n  \n  const keywordsText = afterBuy.substring(0, productIndex).trim();\n  return keywordsText\n    .split('\\n')\n    .map(k => k.trim())\n    .filter(k => k.length > 0);\n}\n\n// 从HTML Extract结果中提取关键词（注意数据结构）\nconst metaKeywords = htmlExtractResult.keywords?.content || '';\nconst keywordList = extractKeywords(metaKeywords);\n\n// 构建结果\nconst result = {\n  // === 保留原始URL ===\n  输入商品链接: originalInput['输入商品链接'] || '',\n  \n  // === 关键词信息 ===\n  关键词数量: keywordList.length,\n  关键词1: keywordList[0] || '',\n  关键词2: keywordList[1] || '',\n  关键词3: keywordList[2] || '',\n  关键词4: keywordList[3] || '',\n  关键词5: keywordList[4] || '',\n  关键词6: keywordList[5] || '',\n  关键词7: keywordList[6] || '',\n  关键词8: keywordList[7] || '',\n  关键词9: keywordList[8] || '',\n  关键词10: keywordList[9] || '',\n  \n  // === 额外信息 ===\n  pageTitle: htmlExtractResult.title || '',\n  metaDescription: htmlExtractResult.description || '',\n  原始关键词内容: metaKeywords,\n  所有关键词数组: keywordList,\n  关键词字符串: keywordList.join(' | '),\n  processedAt: new Date().toISOString()\n};\n\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        16
+      ],
+      "id": "971489dd-8c2e-4dd1-8c89-239459545250",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取输入数据中的content字段\nconst content = $input.first().json.keywords.content;\n\n// 如果content是字符串，直接处理；如果不是，转换为字符串\nlet textToProcess = '';\nif (typeof content === 'string') {\n  textToProcess = content;\n} else if (content) {\n  textToProcess = String(content);\n}\n\n// 提取关键词\nfunction extractKeywords(text) {\n  if (!text) {\n    return [];\n  }\n  \n  // 查找\"- Buy\"位置\n  const buyIndex = text.indexOf('- Buy');\n  \n  if (buyIndex === -1) {\n    return [];\n  }\n  \n  // 从\"- Buy\"后开始提取\n  const afterBuy = text.substring(buyIndex + 6);\n  \n  // 查找\"Product on Alibaba.com\"位置\n  const productIndex = afterBuy.indexOf('Product on Alibaba.com');\n  \n  if (productIndex === -1) {\n    return [];\n  }\n  \n  // 提取关键词部分\n  const keywordsText = afterBuy.substring(0, productIndex).trim();\n  \n  // 分割关键词\n  const keywords = keywordsText\n    .split('\\n')\n    .map(k => k.trim())\n    .filter(k => k.length > 0);\n  \n  return keywords;\n}\n\nconst keywordList = extractKeywords(textToProcess);\n\nreturn {\n  关键词数量: keywordList.length,\n  关键词1: keywordList[0] || '',\n  关键词2: keywordList[1] || '',\n  关键词3: keywordList[2] || '',\n  关键词4: keywordList[3] || '',\n  关键词5: keywordList[4] || '',\n  关键词6: keywordList[5] || '',\n  关键词7: keywordList[6] || '',\n  关键词8: keywordList[7] || '',\n  关键词9: keywordList[8] || '',\n  关键词10: keywordList[9] || '',\n  所有关键词: keywordList,\n  关键词字符串: keywordList.join(' | ')\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        1056
+      ],
+      "id": "1f7b365e-ad2c-4db1-98b4-4a0beb0f4108",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取输入数据中的content字段\nconst content = $input.first().json.keywords.content;\n\n// 如果content是字符串，直接处理；如果不是，转换为字符串\nlet textToProcess = '';\nif (typeof content === 'string') {\n  textToProcess = content;\n} else if (content) {\n  textToProcess = String(content);\n}\n\n// 提取关键词\nfunction extractKeywords(text) {\n  if (!text) {\n    return [];\n  }\n  \n  // 查找\"- Buy\"位置\n  const buyIndex = text.indexOf('- Buy');\n  \n  if (buyIndex === -1) {\n    return [];\n  }\n  \n  // 从\"- Buy\"后开始提取\n  const afterBuy = text.substring(buyIndex + 6);\n  \n  // 查找\"Product on Alibaba.com\"位置\n  const productIndex = afterBuy.indexOf('Product on Alibaba.com');\n  \n  if (productIndex === -1) {\n    return [];\n  }\n  \n  // 提取关键词部分\n  const keywordsText = afterBuy.substring(0, productIndex).trim();\n  \n  // 分割关键词\n  const keywords = keywordsText\n    .split('\\n')\n    .map(k => k.trim())\n    .filter(k => k.length > 0);\n  \n  return keywords;\n}\n\nconst keywordList = extractKeywords(textToProcess);\n\nreturn {\n  关键词数量: keywordList.length,\n  关键词1: keywordList[0] || '',\n  关键词2: keywordList[1] || '',\n  关键词3: keywordList[2] || '',\n  关键词4: keywordList[3] || '',\n  关键词5: keywordList[4] || '',\n  关键词6: keywordList[5] || '',\n  关键词7: keywordList[6] || '',\n  关键词8: keywordList[7] || '',\n  关键词9: keywordList[8] || '',\n  关键词10: keywordList[9] || '',\n  所有关键词: keywordList,\n  关键词字符串: keywordList.join(' | ')\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        288
+      ],
+      "id": "e0198503-6df3-4a1f-a666-0dc5db98ae45",
+      "name": "Code2"
     }
   ],
   "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1eztViCP3Ep2eF2jnHD3dYPQkXqxXlhOoPOqXJ53Bzx8",
+      "sheetId": 932465627,
+      "lastRevision": 10,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1eztViCP3Ep2eF2jnHD3dYPQkXqxXlhOoPOqXJ53Bzx8&revision=10&exportFormat=xlsx"
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-09-18T15:02:29.666Z",
-  "versionId": "cf8150e6-fe46-4c12-94d6-c07495a22e07"
+  "triggerCount": 1,
+  "updatedAt": "2025-09-20T15:50:35.000Z",
+  "versionId": "3d56fe25-dfd0-4344-ac75-fca48a7a0e04"
 }
