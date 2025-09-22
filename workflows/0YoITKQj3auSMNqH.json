@@ -226,8 +226,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        176,
-        176
+        224,
+        -16
       ],
       "id": "f2aaaf26-cfd7-4ffe-a6ba-563cccbc7f3a",
       "name": "obsidian请求节点",
@@ -342,6 +342,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-15T12:12:29.000Z",
-  "versionId": "2b42e738-30e4-4fd9-8223-d8e5f492f7b9"
+  "updatedAt": "2025-09-22T03:46:49.000Z",
+  "versionId": "67e39d47-5788-4e5f-9a22-880c887b06b6"
 }
