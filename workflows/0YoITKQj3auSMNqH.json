@@ -276,7 +276,7 @@
               "triggerAtDay": [
                 1
               ],
-              "triggerAtHour": 11
+              "triggerAtHour": 10
             }
           ]
         }
@@ -342,6 +342,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-22T03:46:49.000Z",
-  "versionId": "67e39d47-5788-4e5f-9a22-880c887b06b6"
+  "updatedAt": "2025-09-29T01:49:45.000Z",
+  "versionId": "b27d2fc1-1975-478d-a688-a9a9aaed3010"
 }
