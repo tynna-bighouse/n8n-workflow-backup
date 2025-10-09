@@ -1,0 +1,57 @@
+{
+  "active": false,
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-07T16:32:31.877Z",
+  "id": "4ZFsssXt42fDTDkV",
+  "isArchived": false,
+  "meta": null,
+  "name": "error通知工作流",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "944ba45c-4ac6-4643-9704-64dfa10d17a2",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.day.app/VWBEfiVtPwQsRwk7tXW46C/{{ $json.workflow.name }}/❌运行失败",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "db4f3a39-0405-455c-bf8e-d81e70598735",
+      "name": "HTTP Request2"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-07T16:41:32.000Z",
+  "versionId": "a63c235f-515e-483b-ad04-2b3c963314f7"
+}
