@@ -1,0 +1,514 @@
+{
+  "active": true,
+  "connections": {
+    "Google Sheets - Add Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Read Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Clear Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Update Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Create Sheet": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Delete Sheet": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-07T17:16:21.371Z",
+  "id": "hpPXC1aLmVRKs3d1",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "google sheet mcp",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "bearerAuth",
+        "path": "f0a1fd29-3717-4827-a4d8-ad975f43c401"
+      },
+      "id": "b32904d2-c5b4-48e3-9b79-f9de7266bb13",
+      "name": "MCP Server Trigger",
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "position": [
+        1120,
+        160
+      ],
+      "webhookId": "f0a1fd29-3717-4827-a4d8-ad975f43c401",
+      "typeVersion": 1.1,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "ktJc4K7EPALEdfRU",
+          "name": "Bearer Auth account 2"
+        }
+      },
+      "notes": "🚀 MCP TRIGGER\n\nThis is the entry point for AI interactions with Google Sheets. The MCP (Model Context Protocol) trigger allows AI models to call any of the connected Google Sheets tools based on user requests.\n\nKey Features:\n• Enables natural language spreadsheet commands\n• Routes AI requests to appropriate Sheets operations\n• Provides context-aware data management\n• Supports complex multi-step data workflows\n• Handles dynamic sheet and document selection"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Document_ID', ``, 'string') }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Sheet_Name', ``, 'string') }}"
+        },
+        "options": {}
+      },
+      "id": "0df2cb53-62bd-47c9-999f-5d65cd434e1f",
+      "name": "Google Sheets - Read Data",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        800,
+        480
+      ],
+      "typeVersion": 4.6,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      },
+      "notes": "📊 READ SPREADSHEET DATA\n\nRetrieve and analyze data from Google Sheets. Perfect for AI to read, process, and extract insights from spreadsheet content.\n\nUse Cases:\n• \"Read data from the Sales sheet\"\n• \"Get all entries from A1:E100\"\n• \"Show me the data in the Budget spreadsheet\"\n• \"Extract customer information from the CRM sheet\"\n\nAI Parameters:\n• Document_ID: Target spreadsheet ID\n• Sheet_Name: Specific sheet tab name\n• Range: Cell range to read (optional)"
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Document_ID', ``, 'string') }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Sheet_Name', ``, 'string') }}"
+        }
+      },
+      "id": "ba983159-1775-4bdf-af4d-5fe510dce191",
+      "name": "Google Sheets - Clear Data",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        928,
+        704
+      ],
+      "typeVersion": 4.6,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      },
+      "notes": "🗑️ CLEAR SPREADSHEET DATA\n\nRemove data from specific ranges or entire sheets. Useful for resetting data, clearing temporary calculations, or preparing sheets for new data.\n\nUse Cases:\n• \"Clear all data from the temp sheet\"\n• \"Remove entries from A1:E100\"\n• \"Clean up the old data in column C\"\n• \"Reset the calculation area\"\n\nAI Parameters:\n• Document_ID: Target spreadsheet ID\n• Sheet_Name: Sheet to clear data from\n• Range: Specific range to clear\n\n⚠️ Use with caution - data will be permanently removed!"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Document', ``, 'string') }}",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Sheet', ``, 'string') }}"
+        },
+        "columns": {
+          "0": "=",
+          "1": "{",
+          "2": "{",
+          "3": " ",
+          "4": "/",
+          "5": "*",
+          "6": "n",
+          "7": "8",
+          "8": "n",
+          "9": "-",
+          "10": "a",
+          "11": "u",
+          "12": "t",
+          "13": "o",
+          "14": "-",
+          "15": "g",
+          "16": "e",
+          "17": "n",
+          "18": "e",
+          "19": "r",
+          "20": "a",
+          "21": "t",
+          "22": "e",
+          "23": "d",
+          "24": "-",
+          "25": "f",
+          "26": "r",
+          "27": "o",
+          "28": "m",
+          "29": "A",
+          "30": "I",
+          "31": "-",
+          "32": "o",
+          "33": "v",
+          "34": "e",
+          "35": "r",
+          "36": "r",
+          "37": "i",
+          "38": "d",
+          "39": "e",
+          "40": "*",
+          "41": "/",
+          "42": " ",
+          "43": "$",
+          "44": "f",
+          "45": "r",
+          "46": "o",
+          "47": "m",
+          "48": "A",
+          "49": "I",
+          "50": "(",
+          "51": "'",
+          "52": "D",
+          "53": "a",
+          "54": "t",
+          "55": "a",
+          "56": "_",
+          "57": "T",
+          "58": "o",
+          "59": "_",
+          "60": "A",
+          "61": "d",
+          "62": "d",
+          "63": "'",
+          "64": ",",
+          "65": " ",
+          "66": "`",
+          "67": "`",
+          "68": ",",
+          "69": " ",
+          "70": "'",
+          "71": "o",
+          "72": "b",
+          "73": "j",
+          "74": "e",
+          "75": "c",
+          "76": "t",
+          "77": "'",
+          "78": ")",
+          "79": " ",
+          "80": "}",
+          "81": "}",
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "75726e18-9524-48c4-87cb-7b5cb36c3943",
+      "name": "Google Sheets - Add Data",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        1360,
+        672
+      ],
+      "typeVersion": 4.6,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      },
+      "notes": "➕ ADD NEW DATA\n\nAppend new rows of data to existing sheets. Perfect for adding records, logging events, or inserting new entries without affecting existing data.\n\nUse Cases:\n• \"Add a new customer to the CRM sheet\"\n• \"Log today's sales data\"\n• \"Insert a new project entry\"\n• \"Record the meeting notes\"\n\nAI Parameters:\n• Document_ID: Target spreadsheet ID\n• Sheet_Name: Sheet to add data to\n• Data_To_Add: Array/object of new data\n\nFeatures:\n• Automatically finds next empty row\n• Preserves existing data\n• Supports multiple columns"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Document_ID', ``, 'string') }}"
+        },
+        "options": {}
+      },
+      "id": "f98ded14-c79b-4076-b386-7882e90904a3",
+      "name": "Google Sheets - Create Sheet",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        1680,
+        704
+      ],
+      "typeVersion": 4.6,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      },
+      "notes": "📋 CREATE NEW SHEET\n\nCreate new worksheet tabs within existing spreadsheets. Great for organizing data into categories or creating project-specific sheets.\n\nUse Cases:\n• \"Create a new sheet called 'Q4 Sales'\"\n• \"Add a Project Timeline sheet\"\n• \"Make a new Budget 2024 tab\"\n• \"Create a sheet for customer feedback\"\n\nAI Parameters:\n• Document_ID: Target spreadsheet ID\n• New_Sheet_Name: Name for the new sheet\n• Header_Row: Optional column headers\n\nBest Practices:\n• Use descriptive sheet names\n• Include header rows for data structure\n• Consider sheet organization strategy"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Document_ID', ``, 'string') }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Sheet_Name', ``, 'string') }}"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "57989131-14cd-44db-a947-e204f61748c9",
+      "name": "Google Sheets - Update Data",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        1824,
+        480
+      ],
+      "typeVersion": 4.6,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      },
+      "notes": "✏️ UPDATE EXISTING DATA\n\nModify specific cells or ranges with new values. Perfect for updating records, correcting data, or maintaining current information.\n\nUse Cases:\n• \"Update the status in cell C5 to 'Complete'\"\n• \"Change the price in the product list\"\n• \"Modify the project deadline\"\n• \"Update customer contact information\"\n\nAI Parameters:\n• Document_ID: Target spreadsheet ID\n• Sheet_Name: Sheet containing data to update\n• Range: Specific cells to update (e.g., A1:B2)\n• New_Values: Array of new values\n\nTip: Use precise ranges to avoid overwriting unintended data"
+    },
+    {
+      "parameters": {
+        "content": "## 🎯 WORKFLOW OVERVIEW\n\n**Google Sheets MCP - AI-Powered Spreadsheet Management**\n\nThis workflow provides a complete toolkit for intelligent spreadsheet management through AI interactions using the Model Context Protocol (MCP).\n\n**Core Capabilities:**\n• 📊 Read and analyze spreadsheet data\n• ➕ Add new records and entries\n• ✏️ Update existing information\n• 🗑️ Clear data and reset ranges\n• 📋 Create new worksheet tabs\n• 🤖 Natural language commands\n\n**Getting Started:**\n1. Ensure Google Sheets OAuth2 is configured\n2. Test each tool individually\n3. Use natural language with your AI\n4. Monitor workflow execution logs\n5. Start with simple read operations",
+        "height": 544,
+        "width": 420,
+        "color": 4
+      },
+      "id": "161c4c2f-80ab-414d-948f-11ae4459ce66",
+      "name": "Sticky Note - Overview",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -128
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 🚀 Google Sheets MCP - AI-Powered Spreadsheet Management\n**What it does:**\nThis is the entry point for AI interactions with Google Sheets. The MCP trigger enables natural language spreadsheet commands.\n\n**Key Features:**\n• Enables conversational data management\n• Routes AI requests to appropriate operations\n• Supports dynamic sheet selection\n• Handles complex multi-step workflows\n• Provides context-aware responses\n\n**Example Commands:**\n\"Read data from the Sales sheet\"\n\"Add a new customer record\"\n\"Update the project status\"\n\"Create a new budget sheet\"",
+        "height": 452,
+        "width": 600,
+        "color": 7
+      },
+      "id": "995f94e3-b407-4836-9519-67b7e6e85681",
+      "name": "Sticky Note - MCP Trigger",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -16
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 📊 READ DATA\n\n**Purpose:**\nRetrieve and analyze data from Google Sheets for AI processing and insights.\n\n**Use Cases:**\n• \"Show me all customer data\"\n• \"Read the sales figures from Q3\"\n• \"Get project status from column D\"\n• \"Extract budget information\"\n\n**AI Parameters:**\n• **Document_ID:** Spreadsheet identifier\n• **Sheet_Name:** Target worksheet tab\n• **Range:** Cell range (optional)\n\n**Returns:** Raw data for AI analysis",
+        "height": 264,
+        "width": 300
+      },
+      "id": "10b3782b-b283-4686-a4cf-5e325f9a435d",
+      "name": "Sticky Note - Read Data",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        496,
+        432
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 🗑️ CLEAR DATA\n\n**Purpose:**\nRemove data from specific ranges or entire sheets safely and efficiently.\n\n**Use Cases:**\n• \"Clear the temporary calculations\"\n• \"Remove old data from column C\"\n• \"Reset the input area\"\n• \"Clean up test entries\"\n\n**AI Parameters:**\n• **Document_ID:** Target spreadsheet\n• **Sheet_Name:** Sheet to clear\n• **Range:** Specific area to clear\n\n**⚠️ Warning:** Data removal is permanent",
+        "height": 264,
+        "width": 300,
+        "color": 3
+      },
+      "id": "87f4cabe-e867-4f24-911d-953a9b15175e",
+      "name": "Sticky Note - Clear Data",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        848,
+        816
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## ➕ ADD DATA\n\n**Purpose:**\nAppend new records to existing sheets without affecting current data.\n\n**Use Cases:**\n• \"Add new customer: John Doe, email@example.com\"\n• \"Log today's sales: $1,500\"\n• \"Insert project milestone\"\n• \"Record meeting attendance\"\n\n**AI Parameters:**\n• **Document_ID:** Target spreadsheet\n• **Sheet_Name:** Destination sheet\n• **Data_To_Add:** New row data\n\n**Feature:** Auto-finds next empty row",
+        "height": 264,
+        "width": 300,
+        "color": 7
+      },
+      "id": "62063c17-50f0-49a0-933b-01f25f03f77f",
+      "name": "Sticky Note - Add Data",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        800
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 📋 CREATE SHEET\n\n**Purpose:**\nCreate new worksheet tabs for better data organization and project management.\n\n**Use Cases:**\n• \"Create 'Q4 Budget' sheet\"\n• \"Add new project tracking tab\"\n• \"Make customer feedback sheet\"\n• \"Create monthly report tab\"\n\n**AI Parameters:**\n• **Document_ID:** Target spreadsheet\n• **New_Sheet_Name:** Tab name\n• **Header_Row:** Column headers\n\n**Tip:** Use descriptive names",
+        "height": 264,
+        "width": 300,
+        "color": 5
+      },
+      "id": "75c52997-6935-455b-bf17-48b283f11398",
+      "name": "Sticky Note - Create Sheet",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1776,
+        752
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## ✏️ UPDATE DATA\n\n**Purpose:**\nModify specific cells with new values while preserving surrounding data.\n\n**Use Cases:**\n• \"Update status in C5 to 'Complete'\"\n• \"Change price in product list\"\n• \"Modify project deadline\"\n• \"Update contact information\"\n\n**AI Parameters:**\n• **Document_ID:** Target spreadsheet\n• **Sheet_Name:** Source sheet\n• **Range:** Cells to update (e.g., A1:B2)\n• **New_Values:** Replacement data\n\n**Tip:** Use precise cell references",
+        "height": 264,
+        "width": 300,
+        "color": 3
+      },
+      "id": "3dec44a1-3ca3-41b4-91a3-18b37ad8ff22",
+      "name": "Sticky Note - Update Data",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1936,
+        432
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Document_ID', ``, 'string') }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Sheet', ``, 'string') }}",
+          "mode": "id"
+        }
+      },
+      "id": "f841f4bc-00a1-4069-8188-6d40e221dd18",
+      "name": "Google Sheets - Delete Sheet",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        1760,
+        16
+      ],
+      "typeVersion": 4.6,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      },
+      "notes": "🗑️ DELETE SHEET\n\nRemove entire worksheet tabs when they're no longer needed. Use with caution as this permanently removes all data in the sheet.\n\nUse Cases:\n• \"Delete the old temp sheet\"\n• \"Remove the expired project tab\"\n• \"Clean up test worksheets\"\n• \"Delete duplicate sheets\"\n\nAI Parameters:\n• Document_ID: Target spreadsheet ID\n• Sheet_Name: Sheet tab to delete\n\n⚠️ PERMANENT ACTION - Cannot be undone!\nAlways backup important data first."
+    },
+    {
+      "parameters": {
+        "content": "## 🗑️ DELETE SHEET\n\n**Purpose:**\nPermanently remove entire worksheet tabs and all their contained data.\n\n**Use Cases:**\n• \"Delete the old testing sheet\"\n• \"Remove expired project tabs\"\n• \"Clean up temporary worksheets\"\n• \"Delete duplicate or unused sheets\"\n\n**AI Parameters:**\n• **Document_ID:** Target spreadsheet\n• **Sheet_Name:** Tab to remove\n\n**⚠️ CRITICAL WARNING:**\nThis permanently deletes ALL data in the sheet.\nOperation cannot be undone!\nAlways backup important data first.",
+        "height": 284,
+        "width": 300,
+        "color": 4
+      },
+      "id": "d87a4eb5-4749-4bc3-93cc-c39c619843a3",
+      "name": "Sticky Note - Delete Sheet",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1824,
+        80
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-08T16:07:55.000Z",
+  "versionId": "749f7a9e-433e-48a5-a521-1aac439f473c"
+}
