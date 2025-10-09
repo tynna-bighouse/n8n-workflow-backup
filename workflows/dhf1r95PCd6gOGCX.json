@@ -237,7 +237,8 @@
   "id": "dhf1r95PCd6gOGCX",
   "isArchived": false,
   "meta": {
-    "templateId": "3605"
+    "templateId": "3605",
+    "templateCredsSetupCompleted": true
   },
   "name": "Gmail MCP Server – Your All‑in‑One AI Email Toolkit",
   "nodes": [
@@ -843,6 +844,7 @@
     },
     {
       "parameters": {
+        "authentication": "bearerAuth",
         "path": "gmail-enhanced"
       },
       "id": "5beba186-3cf1-4d96-aa1a-69c3e0b729e5",
@@ -853,7 +855,13 @@
         288
       ],
       "webhookId": "a794310b-bca0-4272-99be-a2872c1cadb0",
-      "typeVersion": 1
+      "typeVersion": 1,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "ktJc4K7EPALEdfRU",
+          "name": "Bearer Auth account 2"
+        }
+      }
     },
     {
       "parameters": {
@@ -877,6 +885,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-30T16:21:37.000Z",
-  "versionId": "1a4cf9c3-3e6f-4b08-887b-65297ed9a513"
+  "updatedAt": "2025-10-08T15:27:21.000Z",
+  "versionId": "b7d75808-fb9a-4b57-89d0-1e796c442157"
 }
