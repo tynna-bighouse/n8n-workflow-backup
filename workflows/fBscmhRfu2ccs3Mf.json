@@ -1,0 +1,266 @@
+{
+  "active": true,
+  "connections": {
+    "获取今日新增笔记": {
+      "main": [
+        [
+          {
+            "node": "解析和聚合笔记",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "解析和聚合笔记": {
+      "main": [
+        [
+          {
+            "node": "检查是否有新笔记",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "检查是否有新笔记": {
+      "main": [
+        [
+          {
+            "node": "AI总结",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "没有新笔记",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI总结": {
+      "main": [
+        [
+          {
+            "node": "格式化为Obsidian格式",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "格式化为Obsidian格式": {
+      "main": [
+        [
+          {
+            "node": "追加到今日日记",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "获取今日新增笔记",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI总结",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-08T02:42:28.336Z",
+  "id": "fBscmhRfu2ccs3Mf",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "obsidian每日工作自动总结",
+  "nodes": [
+    {
+      "parameters": {
+        "command": "find '/Users/nati/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记' -path '/Users/nati/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/日记' -prune -o -type f -name '*.md' -newermt \"$(date +%Y-%m-%d)\" ! -name \"$(date +%Y-%m-%d).md\" -print 2>/dev/null | while read file; do\n  echo \"=== FILE: $(basename \"$file\" .md) ===\"\n  head -c 1500 \"$file\"\n  echo \"\"\n  echo \"\"\ndone"
+      },
+      "id": "ae83ee79-dce7-4302-a815-3ecdf95ef1d8",
+      "name": "获取今日新增笔记",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -1408,
+        960
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "fElgkEcT50cw5S4J",
+          "name": "SSH Password account-vps-nati"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $input.first().json.stdout;\n\nif (!output || output.trim() === '') {\n  return [{ json: { noNotes: true } }];\n}\n\n// 按分隔符分割每个文件\nconst sections = output.split('=== FILE: ');\nconst notes = [];\n\nfor (const section of sections) {\n  if (!section.trim()) continue;\n  \n  const lines = section.split('\\n');\n  const filename = lines[0].replace(' ===', '').trim();\n  const content = lines.slice(1).join('\\n').trim();\n  \n  if (filename && content) {\n    notes.push({\n      filename: filename,\n      content: content\n    });\n  }\n}\n\nif (notes.length === 0) {\n  return [{ json: { noNotes: true } }];\n}\n\n// 聚合所有笔记\nlet allNotes = '以下是今天新增的所有笔记：\\n\\n';\n\nfor (const note of notes) {\n  allNotes += `### 笔记：${note.filename}\\n`;\n  allNotes += note.content + '\\n\\n---\\n\\n';\n}\n\nreturn [{\n  json: {\n    allNotes: allNotes,\n    noteCount: notes.length\n  }\n}];"
+      },
+      "id": "cfbd157b-f0b3-4683-86a4-fd6bccf3c0c6",
+      "name": "解析和聚合笔记",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1184,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.noNotes }}",
+              "value2": true,
+              "operation": "notEqual"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "aeffab76-b477-4806-b814-3191caab4d90",
+      "name": "检查是否有新笔记",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=请为以下笔记生成简洁的总结。将每个笔记转换为一件「已完成的事」，用简洁的动词短语描述（15-25字）。\n\n输出格式（严格按照）：\n笔记标题: 完成的事情描述\n\n示例：\nPython学习笔记: 学习了装饰器的使用方法和应用场景\n项目进度: 完成了用户认证模块的开发和测试\n\n不要添加任何其他内容。\n\n{{ $json.allNotes }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -736,
+        704
+      ],
+      "id": "1e3bdc20-d8cb-465e-8f7d-bd750cd62dbe",
+      "name": "AI总结"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取AI输出，兼容不同的输出格式\nconst aiData = $('AI总结').item.json;\nconst aiOutput = aiData.output || aiData.text || aiData.message?.content || '';\n\nconst noteCount = $('解析和聚合笔记').item.json.noteCount;\nconst now = new Date();\nconst dateStr = now.toISOString().split('T')[0];\nconst timeStr = now.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});\n\n// 转换为任务列表格式\nlet formattedSummary = aiOutput\n  .split('\\n')\n  .filter(line => line.trim())\n  .map(line => {\n    const match = line.match(/^(.+?)[:：]\\s*(.+)$/);\n    if (match) {\n      const title = match[1].trim();\n      const summary = match[2].trim();\n      return `- [x] ${summary} [[${title}]]`;\n    }\n    return line;\n  })\n  .join('\\n');\n\nconst dailyNote = `\\n${formattedSummary}\\n`;\n\nreturn [{\n  json: {\n    dailyNote: dailyNote,\n    dateStr: dateStr\n  }\n}];"
+      },
+      "id": "487006eb-f9a8-4118-a44d-8b42f192e142",
+      "name": "格式化为Obsidian格式",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -384,
+        816
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=DIARY_FILE='/Users/nati/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/日记/{{ $json.dateStr }}.md'\n\n# 检查文件是否存在\nif [ ! -f \"$DIARY_FILE\" ]; then\n  echo \"日记文件不存在: $DIARY_FILE\"\n  exit 1\nfi\n\n# 创建临时文件存储要插入的内容\nTEMP_CONTENT=$(mktemp)\ncat > \"$TEMP_CONTENT\" << 'EOFMARKER'\n{{ $json.dailyNote }}\nEOFMARKER\n\n# 在New Job下方插入内容\nif grep -q \"New Job\" \"$DIARY_FILE\"; then\n  # 使用awk在New Job行后插入内容\n  awk '/New Job/ {print; system(\"cat '\"$TEMP_CONTENT\"'\"); next} 1' \"$DIARY_FILE\" > \"${DIARY_FILE}.tmp\" && mv \"${DIARY_FILE}.tmp\" \"$DIARY_FILE\"\n  echo \"已添加到New Job部分\"\nelse\n  # 如果没有New Job标题，追加到文件末尾\n  cat \"$TEMP_CONTENT\" >> \"$DIARY_FILE\"\n  echo \"已追加到文件末尾（未找到New Job）\"\nfi\n\n# 清理临时文件\nrm -f \"$TEMP_CONTENT\""
+      },
+      "id": "b88ac98a-c8e4-4512-80ac-98d60bb26522",
+      "name": "追加到今日日记",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        816
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "fElgkEcT50cw5S4J",
+          "name": "SSH Password account-vps-nati"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ { \"message\": \"今天没有新增笔记\" } }}",
+        "options": {}
+      },
+      "id": "ef8b8851-014b-4e8b-9e34-f486645cfc24",
+      "name": "没有新笔记",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -672,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 21
+            }
+          ]
+        }
+      },
+      "id": "087628d9-21cd-4d41-a48e-82c51fef947c",
+      "name": "Schedule Trigger1",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1632,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        928
+      ],
+      "id": "c4d05269-2d31-4096-8d68-aa656da01891",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bXt3B2tQFHbAwxOD",
+          "name": "Google Gemini(PaLM) Api account egingin"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger1": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-08T15:20:44.000Z",
+  "versionId": "ed75af0a-b97f-4b66-b197-5235f557fed4"
+}
