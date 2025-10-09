@@ -31,6 +31,11 @@
             "node": "Loop Over Items",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "bark 通知",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -189,11 +194,27 @@
       ],
       "typeVersion": 1.2,
       "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.day.app/VWBEfiVtPwQsRwk7tXW46C/{{ $workflow.name }}/✅运行成功",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1456,
+        400
+      ],
+      "id": "299a7f13-6a1b-4def-b577-997577c90bca",
+      "name": "bark 通知"
     }
   ],
   "pinData": {},
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "4ZFsssXt42fDTDkV"
   },
   "staticData": {
     "node:Schedule Trigger": {
@@ -202,6 +223,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-11T03:43:02.000Z",
-  "versionId": "43a7c8d7-4a68-4afb-9055-62283d64ae99"
+  "updatedAt": "2025-10-07T16:52:15.000Z",
+  "versionId": "b944011f-4257-4f3e-9e4d-359644c1261b"
 }
