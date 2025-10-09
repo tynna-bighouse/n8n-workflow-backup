@@ -93,6 +93,28 @@
           }
         ]
       ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "bark 通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-08T11:24:23.511Z",
@@ -125,8 +147,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1552,
-        -96
+        1680,
+        -16
       ],
       "id": "9240cba0-cf38-40eb-91d3-5768d3368d21",
       "name": "HTTP Request",
@@ -146,8 +168,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        704,
-        160
+        1200,
+        272
       ],
       "id": "a4a8c7f3-42c3-4140-a319-bcfa4c3a0143",
       "name": "Google Gemini Chat Model",
@@ -167,8 +189,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        912,
-        -64
+        1120,
+        48
       ],
       "id": "5c0682da-022b-4450-9bd1-65d6bf81acd0",
       "name": "AI Agent"
@@ -187,8 +209,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        624,
-        -48
+        896,
+        48
       ],
       "id": "36569248-a1f1-41c4-9195-842b1bb2d97f",
       "name": "Aggregate"
@@ -205,7 +227,7 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        1328,
+        0,
         -288
       ],
       "id": "114e569c-ea07-409d-8e6f-fe8e587bcbe8",
@@ -213,7 +235,7 @@
     },
     {
       "parameters": {
-        "url": "=http://172.17.0.1:27123/vault/日记/",
+        "url": "=http://172.17.0.1:27124/vault/日记/",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "options": {
@@ -227,7 +249,7 @@
       "typeVersion": 4.2,
       "position": [
         224,
-        -16
+        48
       ],
       "id": "f2aaaf26-cfd7-4ffe-a6ba-563cccbc7f3a",
       "name": "obsidian请求节点",
@@ -261,8 +283,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1264,
-        -64
+        1472,
+        48
       ],
       "id": "7dae958c-39fc-4bde-8303-b9ba6434ca74",
       "name": "改文件名"
@@ -285,7 +307,7 @@
       "typeVersion": 1.2,
       "position": [
         0,
-        0
+        48
       ],
       "id": "318ce0e2-472c-435a-9498-81334325208f",
       "name": "Schedule Trigger"
@@ -305,8 +327,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        528,
-        64
+        672,
+        48
       ],
       "id": "baa7b3e0-307c-4df7-b297-bfa1dc656e7b",
       "name": "obsidian请求节点1",
@@ -324,16 +346,87 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        320,
-        208
+        448,
+        48
       ],
       "id": "6ae0658c-76b6-427f-9c82-2f2fd8a8069a",
       "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## 这个工作流实现了自动化的日记周报功能：\n每周一自动运行\n获取上周的所有日记文件\n逐个读取日记内容\n可以用于生成周报、统计或其他后续处理\n工作流的核心是时间计算和文件筛选，确保只处理上周的日记文件。",
+        "height": 448,
+        "width": 848
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -32,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "c5b1a0e5-883c-42f6-bd0b-fd5c919e5fd8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 传输回obsidian\n外加bark通知",
+        "height": 544,
+        "width": 528
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1472,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "81ff6680-4b35-48c9-aa66-58550b507379",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        464,
+        544
+      ],
+      "id": "7cc8aaeb-2fda-42f0-b16f-84df5bb13edd",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.day.app/VWBEfiVtPwQsRwk7tXW46C/{{ $workflow.name }}/❌运行失败",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        784,
+        544
+      ],
+      "id": "af4f71c4-5a0a-46f2-977b-a9eb0fc8aa1e",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.day.app/VWBEfiVtPwQsRwk7tXW46C/{{ $workflow.name }}/✅运行成功",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1696,
+        176
+      ],
+      "id": "a8c9cbc2-7174-40f6-9fef-0539dc3b6cd0",
+      "name": "bark 通知"
     }
   ],
   "pinData": {},
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "4ZFsssXt42fDTDkV"
   },
   "staticData": {
     "node:Schedule Trigger": {
@@ -342,6 +435,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-07T11:15:31.000Z",
-  "versionId": "b27ced64-f1d5-4620-aa98-59c24aa54e86"
+  "updatedAt": "2025-10-07T16:51:30.000Z",
+  "versionId": "d8fc551a-e9a1-4136-a5e3-adc2ce499103"
 }
