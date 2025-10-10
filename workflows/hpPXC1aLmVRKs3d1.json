@@ -287,6 +287,7 @@
           "mode": "list",
           "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Document_ID', ``, 'string') }}"
         },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
         "options": {}
       },
       "id": "f98ded14-c79b-4076-b386-7882e90904a3",
@@ -509,6 +510,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-08T16:07:55.000Z",
-  "versionId": "749f7a9e-433e-48a5-a521-1aac439f473c"
+  "updatedAt": "2025-10-09T03:16:42.000Z",
+  "versionId": "1c792b4f-f691-42c4-b080-5323cee2e7ae"
 }
