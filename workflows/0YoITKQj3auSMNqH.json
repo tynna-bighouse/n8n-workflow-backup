@@ -235,7 +235,7 @@
     },
     {
       "parameters": {
-        "url": "=http://172.17.0.1:27124/vault/日记/",
+        "url": "=http://172.17.0.1:27123/vault/日记/",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBearerAuth",
         "options": {
@@ -435,6 +435,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-07T16:51:30.000Z",
-  "versionId": "d8fc551a-e9a1-4136-a5e3-adc2ce499103"
+  "updatedAt": "2025-10-10T12:38:25.000Z",
+  "versionId": "752cfc66-8b6e-4255-bbc7-0cac7c3c45b6"
 }
