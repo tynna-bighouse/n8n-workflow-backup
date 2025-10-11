@@ -250,9 +250,29 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Schedule Trigger1": [
+      {
+        "json": {
+          "timestamp": "2025-10-10T21:00:00.060+08:00",
+          "Readable date": "October 10th 2025, 9:00:00 pm",
+          "Readable time": "9:00:00 pm",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "October",
+          "Day of month": "10",
+          "Hour": "21",
+          "Minute": "00",
+          "Second": "00",
+          "Timezone": "Asia/Shanghai (UTC+08:00)"
+        }
+      }
+    ]
+  },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "4ZFsssXt42fDTDkV"
   },
   "staticData": {
     "node:Schedule Trigger1": {
@@ -261,6 +281,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-08T15:20:44.000Z",
-  "versionId": "ed75af0a-b97f-4b66-b197-5235f557fed4"
+  "updatedAt": "2025-10-10T15:22:33.000Z",
+  "versionId": "14ee7342-c8e8-4740-a780-9a0f9458c834"
 }
