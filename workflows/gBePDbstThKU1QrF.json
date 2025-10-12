@@ -14,7 +14,13 @@
     },
     "Loop Over Items": {
       "main": [
-        [],
+        [
+          {
+            "node": "bark 通知",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Execute Workflow",
@@ -29,11 +35,6 @@
         [
           {
             "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "bark 通知",
             "type": "main",
             "index": 0
           }
@@ -189,8 +190,8 @@
       "name": "Execute Workflow",
       "type": "n8n-nodes-base.executeWorkflow",
       "position": [
-        1120,
-        352
+        1136,
+        432
       ],
       "typeVersion": 1.2,
       "alwaysOutputData": true
@@ -203,8 +204,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1456,
-        400
+        1376,
+        336
       ],
       "id": "299a7f13-6a1b-4def-b577-997577c90bca",
       "name": "bark 通知"
@@ -223,6 +224,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-07T16:52:15.000Z",
-  "versionId": "b944011f-4257-4f3e-9e4d-359644c1261b"
+  "updatedAt": "2025-10-11T15:43:12.000Z",
+  "versionId": "26d1ae5d-f144-44e9-aefe-f8aaf9e0e67f"
 }
