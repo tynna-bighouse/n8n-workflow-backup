@@ -115,6 +115,17 @@
           }
         ]
       ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "obsidian请求节点",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-08T11:24:23.511Z",
@@ -420,6 +431,21 @@
       ],
       "id": "a8c9cbc2-7174-40f6-9fef-0539dc3b6cd0",
       "name": "bark 通知"
+    },
+    {
+      "parameters": {
+        "path": "7ab3826b-24b9-4280-a1b5-53f5307aaf16",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        256
+      ],
+      "id": "aa6e54f8-d81c-40ae-8820-ca7a1e7e8690",
+      "name": "Webhook",
+      "webhookId": "7ab3826b-24b9-4280-a1b5-53f5307aaf16"
     }
   ],
   "pinData": {},
@@ -434,7 +460,7 @@
     }
   },
   "tags": [],
-  "triggerCount": 1,
-  "updatedAt": "2025-10-10T12:38:25.000Z",
-  "versionId": "752cfc66-8b6e-4255-bbc7-0cac7c3c45b6"
+  "triggerCount": 2,
+  "updatedAt": "2025-10-14T13:43:46.000Z",
+  "versionId": "95c2aa40-9848-4011-a32c-4053ce082fe9"
 }
