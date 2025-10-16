@@ -1,19 +1,416 @@
 {
-  "active": false,
-  "connections": {},
+  "active": true,
+  "connections": {
+    "TikTok用户名提取器": {
+      "main": [
+        [
+          {
+            "node": "同步表格",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "读取邮件",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "读取邮件": {
+      "main": [
+        [
+          {
+            "node": "TikTok用户名提取器",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "发到飞书的邮件已读",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "标记有合作意向",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "同步表格": {
+      "main": [
+        [
+          {
+            "node": "通过飞书发走",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "替换我",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "替换我": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "createdAt": "2025-09-08T11:23:58.787Z",
   "id": "dxVkvW0UAMjHJA1n",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "红人邮件用户名自动提取",
-  "nodes": [],
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// TikTok 用户名提取逻辑 - 排除大写字母版\nconst items = $input.all();\nconst extractedData = [];\n\n// 通用称呼列表（需要排除的）\nconst GENERIC_GREETINGS = [\n  'dear', 'hi', 'hello', 'sir', 'madam', 'team', 'all', 'everyone', \n  'folks', 'guys', 'ladies', 'gentlemen', 'friend', 'friends',\n  'colleague', 'colleagues', 'there', 'support', 'admin', 'manager'\n];\n\n// 特别排除的用户名\nconst EXCLUDED_USERNAMES = ['hani', 'hani@inspiremarks.com'];\n\n// 格式化邮件内容 - 去除 Markdown 和 HTML，保留纯文本\nfunction formatEmailContent(content) {\n  if (!content) return '';\n  \n  let formatted = content;\n  \n  // 1. 去除 HTML 标签\n  formatted = formatted.replace(/<[^>]*>/gi, '');\n  \n  // 2. 去除 Markdown 格式\n  // 移除粗体 **text** 和 __text__\n  formatted = formatted.replace(/\\*\\*(.*?)\\*\\*/g, '$1');\n  formatted = formatted.replace(/__(.*?)__/g, '$1');\n  \n  // 移除斜体 *text* 和 _text_\n  formatted = formatted.replace(/\\*(.*?)\\*/g, '$1');\n  formatted = formatted.replace(/_(.*?)_/g, '$1');\n  \n  // 移除代码块 ```code```\n  formatted = formatted.replace(/```[\\s\\S]*?```/g, '');\n  \n  // 移除行内代码 `code`\n  formatted = formatted.replace(/`([^`]*)`/g, '$1');\n  \n  // 移除链接 [text](url)\n  formatted = formatted.replace(/\\[([^\\]]+)\\]\\([^\\)]+\\)/g, '$1');\n  \n  // 移除图片 ![alt](url)\n  formatted = formatted.replace(/!\\[([^\\]]*)\\]\\([^\\)]+\\)/g, '$1');\n  \n  // 移除标题标记 # ## ###\n  formatted = formatted.replace(/^#{1,6}\\s+/gm, '');\n  \n  // 移除列表标记 - * +\n  formatted = formatted.replace(/^[\\s]*[-\\*\\+]\\s+/gm, '');\n  \n  // 移除数字列表 1. 2. 3.\n  formatted = formatted.replace(/^[\\s]*\\d+\\.\\s+/gm, '');\n  \n  // 移除引用 >\n  formatted = formatted.replace(/^>\\s*/gm, '');\n  \n  // 移除水平线 --- *** ___\n  formatted = formatted.replace(/^[-\\*_]{3,}$/gm, '');\n  \n  // 3. 清理多余的空白字符\n  // 将多个连续空格替换为单个空格\n  formatted = formatted.replace(/\\s+/g, ' ');\n  \n  // 将多个连续换行替换为单个换行\n  formatted = formatted.replace(/\\n\\s*\\n/g, '\\n');\n  \n  // 去除首尾空白\n  formatted = formatted.trim();\n  \n  return formatted;\n}\n\n// 计算两个用户名的相似度（Jaccard相似度）\nfunction calculateSimilarity(str1, str2) {\n  const set1 = new Set(str1.toLowerCase());\n  const set2 = new Set(str2.toLowerCase());\n  const intersection = new Set([...set1].filter(x => set2.has(x)));\n  const union = new Set([...set1, ...set2]);\n  return intersection.size / union.size;\n}\n\n// 检查用户名是否相似（重复率高的）\nfunction isSimilarUsername(username1, username2) {\n  // 如果两个用户名长度差异很大，不太可能是同一个\n  if (Math.abs(username1.length - username2.length) > 8) {\n    return false;\n  }\n  \n  // 计算相似度\n  const similarity = calculateSimilarity(username1, username2);\n  \n  // 如果相似度超过70%，认为是相似用户名\n  if (similarity > 0.7) {\n    // 检查是否包含关系（如 morgan 和 morganvg12）\n    if (username1.includes(username2) || username2.includes(username1)) {\n      return true;\n    }\n    // 检查前缀匹配（如 morgan 和 morganvg12）\n    const shorter = username1.length < username2.length ? username1 : username2;\n    const longer = username1.length < username2.length ? username2 : username1;\n    if (longer.startsWith(shorter) && longer.length - shorter.length <= 5) {\n      return true;\n    }\n  }\n  \n  return false;\n}\n\n// 检查用户名是否包含数字或特殊字符\nfunction hasSpecialChars(username) {\n  // 检查是否包含数字、下划线、点号等特殊字符\n  return /[0-9._\\-]/.test(username);\n}\n\n// 检查用户名是否包含大写字母\nfunction hasUppercase(username) {\n  return /[A-Z]/.test(username);\n}\n\n// 用户名优先级排序函数\nfunction compareUsernames(user1, user2) {\n  const username1 = user1.username;\n  const username2 = user2.username;\n  \n  const hasSpecial1 = hasSpecialChars(username1);\n  const hasSpecial2 = hasSpecialChars(username2);\n  \n  // 第一优先级：包含数字或特殊字符的用户名优先\n  if (hasSpecial1 && !hasSpecial2) {\n    return -1; // user1 优先\n  }\n  if (!hasSpecial1 && hasSpecial2) {\n    return 1;  // user2 优先\n  }\n  \n  // 第二优先级：如果都包含或都不包含特殊字符，选择较长的\n  if (username1.length !== username2.length) {\n    return username2.length - username1.length; // 较长的优先\n  }\n  \n  // 如果长度也相同，保持原有顺序\n  return 0;\n}\n\nfor (const item of items) {\n  const email = item.json;\n  let emailContent = '';\n  \n  // 获取邮件内容 - 优先从 text 字段获取\n  if (email.text) {\n    emailContent = email.text;\n  } else if (email.textPlain) {\n    emailContent = email.textPlain;\n  } else if (email.textHtml) {\n    // 简单的HTML标签清理\n    emailContent = email.textHtml.replace(/<[^>]*>/g, ' ');\n  } else if (email.snippet) {\n    emailContent = email.snippet;\n  } else if (email['内容']) {\n    emailContent = email['内容'];\n  }\n  \n  // 格式化邮件内容\n  const formattedContent = formatEmailContent(emailContent);\n  \n  // 调试信息\n  console.log('处理邮件:', email.subject);\n  console.log('原始内容长度:', emailContent.length);\n  console.log('格式化后内容长度:', formattedContent.length);\n  console.log('格式化后内容前300字符:', formattedContent.substring(0, 300));\n  \n  // 提取 \"Hi xxx\" 模式的用户名\n  const hiPattern = /hi\\s+([a-zA-Z0-9_.-]+)[\\s,!]/gi;\n  const matches = formattedContent.matchAll(hiPattern);\n  \n  const extractedUsernames = [];\n  \n  for (const match of matches) {\n    const username = match[1].toLowerCase().trim();\n    const originalUsername = match[1]; // 保持原始大小写用于检查\n    console.log('找到用户名:', username, '(原始:', originalUsername, ')');\n    \n    // 检查是否包含大写字母（新增过滤条件）\n    if (hasUppercase(originalUsername)) {\n      console.log('用户名包含大写字母，被过滤:', originalUsername);\n      continue;\n    }\n    \n    // 排除通用称呼和特定用户名\n    if (!GENERIC_GREETINGS.includes(username) && \n        !EXCLUDED_USERNAMES.includes(username) &&\n        username.length > 1 && \n        username.length < 30) {\n      extractedUsernames.push({\n        username: username,\n        original: originalUsername // 保持原始大小写\n      });\n      console.log('用户名有效:', username);\n    } else {\n      console.log('用户名被过滤:', username);\n    }\n  }\n  \n  // 智能去重：使用优先级规则\n  const uniqueUsernames = [];\n  \n  for (const userInfo of extractedUsernames) {\n    const username = userInfo.username;\n    let shouldAdd = true;\n    let replaceIndex = -1;\n    \n    // 检查是否与已处理的用户名相似\n    for (let i = 0; i < uniqueUsernames.length; i++) {\n      const existingUser = uniqueUsernames[i];\n      if (isSimilarUsername(username, existingUser.username)) {\n        console.log('发现相似用户名:', username, '与', existingUser.username);\n        \n        // 比较优先级\n        const comparison = compareUsernames(userInfo, existingUser);\n        if (comparison < 0) {\n          // 新用户名优先级更高，替换旧的\n          console.log('新用户名优先级更高:', username, '替换', existingUser.username);\n          replaceIndex = i;\n          shouldAdd = true;\n        } else {\n          // 旧用户名优先级更高或相等，不添加新的\n          console.log('保留现有用户名:', existingUser.username, '过滤掉:', username);\n          shouldAdd = false;\n        }\n        break;\n      }\n    }\n    \n    if (shouldAdd) {\n      if (replaceIndex >= 0) {\n        // 替换现有用户名\n        uniqueUsernames[replaceIndex] = userInfo;\n        console.log('替换用户名:', userInfo.username);\n      } else {\n        // 添加新用户名\n        uniqueUsernames.push(userInfo);\n        console.log('添加唯一用户名:', username);\n      }\n    }\n  }\n  \n  // 为每个去重后的用户名创建记录\n  for (const userInfo of uniqueUsernames) {\n    extractedData.push({\n      json: {\n        emailSubject: email.subject || '邮件主题',\n        emailFrom: email.from?.value?.[0]?.address || email['From'] || '未知发件人',\n        emailDate: email.date || email['时间'] || new Date().toISOString(),\n        extractedUsername: userInfo.original, // 使用原始大小写\n        tiktokUrl: `https://www.tiktok.com/@${userInfo.original}`,\n        extractedAt: new Date().toISOString(),\n        emailSnippet: formattedContent.substring(0, 200) + (formattedContent.length > 200 ? '...' : ''), // 格式化后的内容摘要\n        formattedContent: formattedContent, // 完整的格式化内容\n        originalEmail: email\n      }\n    });\n  }\n}\n\n// 如果没有提取到用户名，记录这个情况\nif (extractedData.length === 0) {\n  return [{\n    json: {\n      error: '未找到TikTok用户名',\n      emailCount: items.length,\n      extractedAt: new Date().toISOString(),\n      debugInfo: '请检查邮件内容是否包含 Hi xxx 格式（不包含大写字母）'\n    }\n  }];\n}\n\n// 确保返回正确的格式\nreturn extractedData;"
+      },
+      "id": "d117778f-a321-4632-9dc8-298bae74a17b",
+      "name": "TikTok用户名提取器",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        32
+      ],
+      "id": "da42c94e-8fa8-4ea3-93ce-19f30957c641",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        144
+      ],
+      "id": "ade0e494-0e96-4dfa-9f82-580e8cceadf3",
+      "name": "发到飞书的邮件已读",
+      "webhookId": "5098aa38-8b77-4d70-8fa7-14666ee140ea",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yL8NJX4UZql1p6u9",
+          "name": "Gmail account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "simple": false,
+        "filters": {
+          "includeSpamTrash": true,
+          "q": "cc:eqingindd@gmail.com OR from:beauty08100@icloud.com OR from:hani@inspiremarks.com ",
+          "readStatus": "unread"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -272,
+        16
+      ],
+      "id": "4b0331f6-601c-44d8-82b7-affa758ae57a",
+      "name": "读取邮件",
+      "webhookId": "ebf0057b-49fb-4e37-b0f7-bbee85b352fe",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yL8NJX4UZql1p6u9",
+          "name": "Gmail account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1-oiwsLZ8YnwFi6B3GZnPN8tAMUrLnLMoyWheB-KybgA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "红人首次合作",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-oiwsLZ8YnwFi6B3GZnPN8tAMUrLnLMoyWheB-KybgA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "emailSubject": "={{ $json.emailSubject }}",
+            "extractedUsername": "={{ $json.extractedUsername }}",
+            "tiktokUrl": "={{ $json.tiktokUrl }}",
+            "formattedContent": "={{ $json.formattedContent }}",
+            "date": "={{ $json.originalEmail.headers.date }}",
+            "name": "={{ $json.originalEmail.to.value[0].name }}",
+            "address": "={{ $json.originalEmail.to.value[0].address }}"
+          },
+          "matchingColumns": [
+            "date"
+          ],
+          "schema": [
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailSubject",
+              "displayName": "emailSubject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "extractedUsername",
+              "displayName": "extractedUsername",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tiktokUrl",
+              "displayName": "tiktokUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "formattedContent",
+              "displayName": "formattedContent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        0
+      ],
+      "id": "7b90f6e7-5fd3-4ad6-a1d1-b61f0877e1f6",
+      "name": "同步表格",
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "message:send",
+        "receive_id_type": "chat_id",
+        "receive_id": "oc_465b7e18c31886ee95c09b93505fdbec",
+        "content": "={\"text\":\"🎯 新的TikTok账户已提取\\n\\n📧 邮件主题: {{ $json.emailSubject }}\\n👤 TikTok用户名: {{ $json.extractedUsername }}\\n🔗 TikTok链接: {{ $json.tiktokUrl }}\\n⏰ 提取时间: {{ $json.date }}\"}"
+      },
+      "type": "n8n-nodes-feishu-lite.feishuNode",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "id": "0c06f1bf-6554-4502-8f9e-1a06078b3e53",
+      "name": "通过飞书发走",
+      "credentials": {
+        "feishuCredentialsApi": {
+          "id": "MSv8YeRPTKjM5vyE",
+          "name": "Feishu Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $json.threadId }}",
+        "labelIds": [
+          "Label_1"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        320
+      ],
+      "id": "e5cb88e3-8a0a-491f-9430-c9b817a58505",
+      "name": "标记有合作意向",
+      "webhookId": "978826de-d535-40ab-a07f-94e1a90a7796",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yL8NJX4UZql1p6u9",
+          "name": "Gmail account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://open.feishu.cn/open-apis/bot/v2/hook/22fbb762-15f3-4134-aee8-a728bfe98cde",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"msg_type\": \"text\",\n  \"content\": {\n    \"text\": \"🎯 新的TikTok账户已提取\\n\\n📧 邮件主题: {{ $json.emailSubject }}\\n👤 TikTok用户名: {{ $json.extractedUsername }}\\n🔗 TikTok链接: {{ $json.tiktokUrl }}\\n⏰ 提取时间: {{ $json.date }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        224
+      ],
+      "id": "46c2e19b-6532-44cd-8a4c-13ce0cfc8f9b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "batchSize": 5,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        352,
+        176
+      ],
+      "id": "81ad67bb-0c83-4cbe-9140-a72520893b1f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "替换我",
+      "typeVersion": 1,
+      "position": [
+        512,
+        336
+      ],
+      "id": "b71c3999-dbe3-4e86-8f5d-9fbf1b24fa76"
+    }
+  ],
   "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-09-08T11:23:58.787Z",
-  "versionId": "67cd129a-72f2-4040-a4de-b9f1035a3688"
+  "triggerCount": 1,
+  "updatedAt": "2025-10-15T12:07:44.000Z",
+  "versionId": "6f583af7-865c-4c32-a050-2e8edf8fc92d"
 }
