@@ -48,36 +48,7 @@
       "main": [
         [
           {
-            "node": "通过飞书发走",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Items": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "替换我",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "替换我": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
+            "node": "通过飞书通知",
             "type": "main",
             "index": 0
           }
@@ -295,29 +266,6 @@
     },
     {
       "parameters": {
-        "resource": "message",
-        "operation": "message:send",
-        "receive_id_type": "chat_id",
-        "receive_id": "oc_465b7e18c31886ee95c09b93505fdbec",
-        "content": "={\"text\":\"🎯 新的TikTok账户已提取\\n\\n📧 邮件主题: {{ $json.emailSubject }}\\n👤 TikTok用户名: {{ $json.extractedUsername }}\\n🔗 TikTok链接: {{ $json.tiktokUrl }}\\n⏰ 提取时间: {{ $json.date }}\"}"
-      },
-      "type": "n8n-nodes-feishu-lite.feishuNode",
-      "typeVersion": 1,
-      "position": [
-        480,
-        0
-      ],
-      "id": "0c06f1bf-6554-4502-8f9e-1a06078b3e53",
-      "name": "通过飞书发走",
-      "credentials": {
-        "feishuCredentialsApi": {
-          "id": "MSv8YeRPTKjM5vyE",
-          "name": "Feishu Credentials account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "resource": "thread",
         "operation": "addLabels",
         "threadId": "={{ $json.threadId }}",
@@ -343,61 +291,26 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://open.feishu.cn/open-apis/bot/v2/hook/22fbb762-15f3-4134-aee8-a728bfe98cde",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {}
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"msg_type\": \"text\",\n  \"content\": {\n    \"text\": \"🎯 新的TikTok账户已提取\\n\\n📧 邮件主题: {{ $json.emailSubject }}\\n👤 TikTok用户名: {{ $json.extractedUsername }}\\n🔗 TikTok链接: {{ $json.tiktokUrl }}\\n⏰ 提取时间: {{ $json.date }}\"\n  }\n}",
-        "options": {}
+        "resource": "message",
+        "operation": "message:send",
+        "receive_id_type": "chat_id",
+        "receive_id": "oc_465b7e18c31886ee95c09b93505fdbec",
+        "content": "={\"text\":\"🎯 新的TikTok账户已提取\\n\\n📧 邮件主题: {{ $json.emailSubject }}\\n👤 TikTok用户名: {{ $json.extractedUsername }}\\n🔗 TikTok链接: {{ $json.tiktokUrl }}\\n⏰ 提取时间: {{ $json.date }}\"}"
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        640,
-        224
-      ],
-      "id": "46c2e19b-6532-44cd-8a4c-13ce0cfc8f9b",
-      "name": "HTTP Request"
-    },
-    {
-      "parameters": {
-        "batchSize": 5,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        352,
-        176
-      ],
-      "id": "81ad67bb-0c83-4cbe-9140-a72520893b1f",
-      "name": "Loop Over Items"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "name": "替换我",
+      "type": "n8n-nodes-feishu-lite.feishuNode",
       "typeVersion": 1,
       "position": [
-        512,
-        336
+        480,
+        0
       ],
-      "id": "b71c3999-dbe3-4e86-8f5d-9fbf1b24fa76"
+      "id": "0c06f1bf-6554-4502-8f9e-1a06078b3e53",
+      "name": "通过飞书通知",
+      "credentials": {
+        "feishuCredentialsApi": {
+          "id": "MSv8YeRPTKjM5vyE",
+          "name": "Feishu Credentials account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -411,6 +324,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-15T12:07:44.000Z",
-  "versionId": "6f583af7-865c-4c32-a050-2e8edf8fc92d"
+  "updatedAt": "2025-10-16T07:18:41.000Z",
+  "versionId": "7745defb-01cf-4526-99f5-a2f9fc85d872"
 }
