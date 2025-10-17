@@ -1,0 +1,268 @@
+{
+  "active": false,
+  "connections": {
+    "定时触发-每天一次": {
+      "main": [
+        [
+          {
+            "node": "执行监控脚本",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "执行监控脚本": {
+      "main": [
+        [
+          {
+            "node": "解析报告",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "解析报告": {
+      "main": [
+        [
+          {
+            "node": "检查是否有变化",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "加载通知配置",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "检查是否有变化": {
+      "main": [
+        [
+          {
+            "node": "构建飞书卡片",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "加载通知配置": {
+      "main": [
+        [
+          {
+            "node": "发送Bark完成通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "构建飞书卡片": {
+      "main": [
+        [
+          {
+            "node": "发送飞书详细通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-16T15:01:17.571Z",
+  "id": "nbVDnm3SkmnXHFxN",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "name": "定时触发-每天一次",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        96
+      ],
+      "id": "1adf6407-be8c-4822-9329-96e1f3886460"
+    },
+    {
+      "parameters": {
+        "command": "cd /Users/nati/n8n-compose && python3 tiktok_monitor.py"
+      },
+      "name": "执行监控脚本",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        96
+      ],
+      "id": "d1e9863f-d221-478f-9026-f4a24479bf50"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 解析监控脚本输出\nconst output = $input.first().json.stdout;\n\n// 提取JSON报告\nconst jsonStart = output.indexOf('JSON_REPORT_START');\nconst jsonEnd = output.indexOf('JSON_REPORT_END');\n\nif (jsonStart === -1 || jsonEnd === -1) {\n  throw new Error('无法找到JSON报告');\n}\n\nconst jsonText = output.substring(\n  jsonStart + 'JSON_REPORT_START'.length,\n  jsonEnd\n).trim();\n\nconst report = JSON.parse(jsonText);\n\nreturn { json: report };"
+      },
+      "name": "解析报告",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        96
+      ],
+      "id": "63a0216e-1357-4446-92c5-0e817c5f1ee2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.total_changes }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "name": "检查是否有变化",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        64,
+        192
+      ],
+      "id": "4ce36793-8355-40b6-a0f0-a6ca8784cf76"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.notification_config.feishu_webhook }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "msg_type",
+              "value": "interactive"
+            },
+            {
+              "name": "card",
+              "value": "={{ $json.feishu_card }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "发送飞书详细通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        512,
+        192
+      ],
+      "id": "c0c4b609-8dce-490c-a631-04ac2ca5b405"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 构建飞书卡片\nconst report = $input.first().json;\nconst checkTime = new Date(report.check_time).toLocaleString('zh-CN');\n\n// 标题颜色\nlet titleColor = 'grey';\nlet titleEmoji = 'ℹ️';\n\nif (report.total_changes > 0) {\n  if (report.new_videos > 0) {\n    titleColor = 'red';\n    titleEmoji = '🆕';\n  } else {\n    titleColor = 'blue';\n    titleEmoji = '📈';\n  }\n}\n\n// 构建元素\nconst elements = [];\n\n// 概览\nelements.push({\n  tag: 'div',\n  text: {\n    tag: 'lark_md',\n    content: `**监控时间**: ${checkTime}\\n**总变化数**: ${report.total_changes}\\n**新视频**: ${report.new_videos} | **数据变化**: ${report.data_changes}`\n  }\n});\n\nelements.push({ tag: 'hr' });\n\n// 详细变化\nif (report.total_changes > 0) {\n  // 按账号分组\n  const changesByAccount = {};\n  \n  for (const change of report.changes) {\n    const username = change.username;\n    if (!changesByAccount[username]) {\n      changesByAccount[username] = { new_videos: [], data_changes: [] };\n    }\n    \n    if (change.type === 'new_video') {\n      changesByAccount[username].new_videos.push(change);\n    } else {\n      changesByAccount[username].data_changes.push(change);\n    }\n  }\n  \n  // 为每个账号生成通知\n  for (const [username, changes] of Object.entries(changesByAccount)) {\n    elements.push({\n      tag: 'div',\n      text: {\n        tag: 'lark_md',\n        content: `**👤 账号**: @${username}`\n      }\n    });\n    \n    // 新视频\n    if (changes.new_videos.length > 0) {\n      for (let i = 0; i < Math.min(5, changes.new_videos.length); i++) {\n        const video = changes.new_videos[i];\n        const title = video.title.length > 80 ? video.title.substring(0, 80) + '...' : video.title;\n        elements.push({\n          tag: 'div',\n          text: {\n            tag: 'lark_md',\n            content: `🆕 **新视频**: ${title}\\n🔗 [查看视频](${video.video_url})`\n          }\n        });\n      }\n      \n      if (changes.new_videos.length > 5) {\n        elements.push({\n          tag: 'div',\n          text: {\n            tag: 'lark_md',\n            content: `_...还有 ${changes.new_videos.length - 5} 个新视频_`\n          }\n        });\n      }\n    }\n    \n    // 数据变化\n    if (changes.data_changes.length > 0) {\n      for (let i = 0; i < Math.min(5, changes.data_changes.length); i++) {\n        const video = changes.data_changes[i];\n        const title = video.title.length > 80 ? video.title.substring(0, 80) + '...' : video.title;\n        const changeText = video.changes.join('\\n  • ');\n        elements.push({\n          tag: 'div',\n          text: {\n            tag: 'lark_md',\n            content: `📈 **数据变化**: ${title}\\n  • ${changeText}\\n🔗 [查看视频](${video.video_url})`\n          }\n        });\n      }\n      \n      if (changes.data_changes.length > 5) {\n        elements.push({\n          tag: 'div',\n          text: {\n            tag: 'lark_md',\n            content: `_...还有 ${changes.data_changes.length - 5} 个视频有数据变化_`\n          }\n        });\n      }\n    }\n    \n    elements.push({ tag: 'hr' });\n  }\n} else {\n  elements.push({\n    tag: 'div',\n    text: {\n      tag: 'lark_md',\n      content: '✅ 所有监控账号暂无变化'\n    }\n  });\n}\n\n// 构建完整卡片\nconst card = {\n  header: {\n    title: {\n      tag: 'plain_text',\n      content: `${titleEmoji} TikTok 账号监控报告`\n    },\n    template: titleColor\n  },\n  elements: elements\n};\n\nreturn {\n  json: {\n    ...report,\n    feishu_card: card\n  }\n};"
+      },
+      "name": "构建飞书卡片",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        192
+      ],
+      "id": "1554388f-9a1e-4969-b6d2-d106d79c702d"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.bark_url }}/TikTok监控完成/总变化: {{ $json.total_changes }} | 新视频: {{ $json.new_videos }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "group",
+              "value": "TikTok监控"
+            },
+            {
+              "name": "sound",
+              "value": "={{ $json.total_changes > 0 ? 'bell' : 'minuet' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "发送Bark完成通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        288,
+        0
+      ],
+      "id": "24c98adc-d6cf-4707-abfe-d1fdc157e923"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.bark_url }}/TikTok监控失败/工作流执行失败",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "group",
+              "value": "TikTok监控"
+            },
+            {
+              "name": "sound",
+              "value": "alarm"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "发送Bark错误通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -608,
+        416
+      ],
+      "id": "b3c763c0-63f6-43b2-b255-7b7264ececd1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 读取配置文件\nconst fs = require('fs');\nconst configPath = '/Users/nati/n8n-compose/tiktok_accounts.json';\nconst config = JSON.parse(fs.readFileSync(configPath, 'utf8'));\n\nconst report = $input.first().json;\n\nreturn {\n  json: {\n    ...report,\n    notification_config: config.config.notification,\n    feishu_webhook: config.config.notification.feishu_webhook,\n    bark_url: config.config.notification.bark_url\n  }\n};"
+      },
+      "name": "加载通知配置",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        0
+      ],
+      "id": "782b77c9-d9a9-4dab-8c2f-c3915418a7da"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-16T15:01:17.571Z",
+  "versionId": "4063b814-e200-40e2-abfa-df3674dea620"
+}
