@@ -254,6 +254,20 @@
         0
       ],
       "id": "782b77c9-d9a9-4dab-8c2f-c3915418a7da"
+    },
+    {
+      "parameters": {
+        "url": "https://news.ycombinator.com/rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        368
+      ],
+      "id": "70419b2f-147f-40d6-ab84-413a79079bbb",
+      "name": "RSS Read"
     }
   ],
   "pinData": {},
@@ -263,6 +277,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-16T15:01:17.571Z",
-  "versionId": "4063b814-e200-40e2-abfa-df3674dea620"
+  "updatedAt": "2025-10-17T13:16:02.000Z",
+  "versionId": "d89e7f35-1a65-4849-8a50-e12d56683af4"
 }
