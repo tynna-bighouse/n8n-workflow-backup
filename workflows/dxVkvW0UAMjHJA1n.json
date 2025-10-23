@@ -81,10 +81,7 @@
       "parameters": {
         "rule": {
           "interval": [
-            {
-              "field": "minutes",
-              "minutesInterval": 10
-            }
+            {}
           ]
         }
       },
@@ -324,6 +321,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-16T07:18:41.000Z",
-  "versionId": "7745defb-01cf-4526-99f5-a2f9fc85d872"
+  "updatedAt": "2025-10-22T07:23:24.000Z",
+  "versionId": "2d83821e-41b3-4290-ac84-a70dc3e3f4f3"
 }
