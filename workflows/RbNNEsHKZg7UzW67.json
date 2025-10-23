@@ -1,0 +1,71 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-22T09:58:56.284Z",
+  "id": "RbNNEsHKZg7UzW67",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "43c4254b-c16e-4fc8-80b4-fc86e33e7f6a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "http://rsshub:1200/picuki/profile/jingsourcing",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9a39dd39-a2db-4c69-b2ae-c322f7f24db7",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "url": "http://172.17.0.3:1200/xiaohongshu/user/593032945e87e77791e03696/notes\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        128
+      ],
+      "id": "a8fb21f5-8558-46c4-9c53-2fcf7a51500e",
+      "name": "RSS Read1"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-22T15:32:04.000Z",
+  "versionId": "5b844c66-4fa8-4fba-a6bd-125d1df7b913"
+}
