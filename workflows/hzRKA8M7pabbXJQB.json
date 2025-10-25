@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Delay 3S": {
       "main": [
@@ -41,11 +41,6 @@
             "node": "Delay 3S",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Message:send message",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -71,13 +66,65 @@
           }
         ]
       ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set TikTok URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set TikTok URL": {
+      "main": [
+        [
+          {
+            "node": "Download TikTok Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download TikTok Video": {
+      "main": [
+        [
+          {
+            "node": "Check Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [
+          {
+            "node": "Extract Video Info",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-22T08:36:21.534Z",
   "id": "hzRKA8M7pabbXJQB",
   "isArchived": false,
   "meta": {
-    "templateId": "7184"
+    "templateId": "7184",
+    "templateCredsSetupCompleted": true
   },
   "name": "Automated TikTok Video Downloader Bot (No Watermark) Using n8n and Telegram",
   "nodes": [
@@ -96,7 +143,13 @@
         304
       ],
       "webhookId": "a8cd8cc1-ce39-4adb-a389-cbca39849471",
-      "typeVersion": 1.2
+      "typeVersion": 1.2,
+      "credentials": {
+        "telegramApi": {
+          "id": "JFsSdoeWrrhKlW23",
+          "name": "Telegram account"
+        }
+      }
     },
     {
       "parameters": {
@@ -251,7 +304,13 @@
         544
       ],
       "webhookId": "ee4a87d1-b5b4-4015-a548-ae05ccbcf816",
-      "typeVersion": 1.2
+      "typeVersion": 1.2,
+      "credentials": {
+        "telegramApi": {
+          "id": "JFsSdoeWrrhKlW23",
+          "name": "Telegram account"
+        }
+      }
     },
     {
       "parameters": {
@@ -387,24 +446,104 @@
       "typeVersion": 4.2
     },
     {
-      "parameters": {
-        "resource": "message",
-        "operation": "message:send"
-      },
-      "type": "n8n-nodes-feishu-lite.feishuNode",
+      "parameters": {},
+      "id": "a00732c8-9349-44e5-978a-c31f28f48e4c",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        1744,
-        400
-      ],
-      "id": "6b42a229-fa1d-45cd-89b0-d06250773dab",
-      "name": "Message:send message",
-      "credentials": {
-        "feishuCredentialsApi": {
-          "id": "MSv8YeRPTKjM5vyE",
-          "name": "Feishu Credentials account"
+        1088,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 设置要下载的 TikTok 视频 URL\nconst tiktokUrl = \"https://www.tiktok.com/@hangrybynature/video/7240847874660093186\";\n\nreturn [{\n  json: {\n    tiktok_url: tiktokUrl,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "68745e0a-036b-4773-93fc-e54fda7da485",
+      "name": "Set TikTok URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1296,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://216.167.35.150:5555/tiktok/link",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.tiktok_url }}"
+            },
+            {
+              "name": "save",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
         }
-      }
+      },
+      "id": "9c793c34-7ead-4885-ad3d-cf30da2581c1",
+      "name": "Download TikTok Video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1488,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.aweme_id }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "c6e1f168-5849-42d1-8226-bd8125768075",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 提取视频信息\nconst response = $input.first().json;\n\nreturn [{\n  json: {\n    success: true,\n    video_id: response.aweme_id,\n    author: response.author.nickname,\n    author_username: response.author.unique_id,\n    description: response.desc,\n    \n    // 视频 URL\n    video_url: response.video.play_addr.url_list[0],\n    cover_url: response.video.cover.url_list[0],\n    \n    // 视频信息\n    duration: response.video.duration,\n    width: response.video.width,\n    height: response.video.height,\n    \n    // 统计数据\n    views: response.statistics.play_count,\n    likes: response.statistics.digg_count,\n    comments: response.statistics.comment_count,\n    shares: response.statistics.share_count,\n    \n    // 时间\n    created_at: new Date(response.create_time * 1000).toISOString(),\n    downloaded_at: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "5a178114-5b2b-4311-ae95-526bee6d9385",
+      "name": "Extract Video Info",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1904,
+        928
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 处理错误\nconst response = $input.first().json;\n\nreturn [{\n  json: {\n    success: false,\n    error: response.message || \"下载失败\",\n    url: $('Set TikTok URL').item.json.tiktok_url,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "6457f12a-2b37-462f-8be1-358dcbd82af6",
+      "name": "Handle Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1904,
+        1136
+      ]
     }
   ],
   "pinData": {},
@@ -413,7 +552,7 @@
   },
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-10-22T09:55:47.000Z",
-  "versionId": "f1af4ca5-56a4-410d-9786-69f1aa96b921"
+  "triggerCount": 1,
+  "updatedAt": "2025-10-24T06:27:30.000Z",
+  "versionId": "52875cbc-72b5-4bf6-b54d-fc064a53226c"
 }
