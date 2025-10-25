@@ -1,0 +1,172 @@
+{
+  "active": false,
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set TikTok URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set TikTok URL": {
+      "main": [
+        [
+          {
+            "node": "Download TikTok Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download TikTok Video": {
+      "main": [
+        [
+          {
+            "node": "Check Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [
+          {
+            "node": "Extract Video Info",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-24T06:27:45.841Z",
+  "id": "DpNbsn2bCmFQcfJu",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "9da6afc8-ac9e-451e-b637-2d0111b54491",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 设置要下载的 TikTok 视频 URL\nconst tiktokUrl = \"https://www.tiktok.com/@hangrybynature/video/7240847874660093186\";\n\nreturn [{\n  json: {\n    tiktok_url: tiktokUrl,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "146f0513-4a29-43cc-a3c5-01e3168f9944",
+      "name": "Set TikTok URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://216.167.35.150:5555/tiktok/link",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.tiktok_url }}"
+            },
+            {
+              "name": "save",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "fe882bfa-20a3-43dd-8266-a3ff4df8b347",
+      "name": "Download TikTok Video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -416,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.aweme_id }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "4c372aa6-1cdd-4534-be89-b700065a84e6",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 提取视频信息\nconst response = $input.first().json;\n\nreturn [{\n  json: {\n    success: true,\n    video_id: response.aweme_id,\n    author: response.author.nickname,\n    author_username: response.author.unique_id,\n    description: response.desc,\n    \n    // 视频 URL\n    video_url: response.video.play_addr.url_list[0],\n    cover_url: response.video.cover.url_list[0],\n    \n    // 视频信息\n    duration: response.video.duration,\n    width: response.video.width,\n    height: response.video.height,\n    \n    // 统计数据\n    views: response.statistics.play_count,\n    likes: response.statistics.digg_count,\n    comments: response.statistics.comment_count,\n    shares: response.statistics.share_count,\n    \n    // 时间\n    created_at: new Date(response.create_time * 1000).toISOString(),\n    downloaded_at: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "8ed68b12-d3ee-408c-9a1e-19da4ada8c00",
+      "name": "Extract Video Info",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 处理错误\nconst response = $input.first().json;\n\nreturn [{\n  json: {\n    success: false,\n    error: response.message || \"下载失败\",\n    url: $('Set TikTok URL').item.json.tiktok_url,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "0011bf6c-6cf1-403c-9b5b-f0407d300a25",
+      "name": "Handle Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        208
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-24T06:27:45.841Z",
+  "versionId": "5b7c78de-6703-4c4b-805a-83afa8909aa8"
+}
