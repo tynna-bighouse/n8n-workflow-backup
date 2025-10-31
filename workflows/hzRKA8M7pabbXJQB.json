@@ -126,7 +126,7 @@
     "templateId": "7184",
     "templateCredsSetupCompleted": true
   },
-  "name": "Automated TikTok Video Downloader Bot (No Watermark) Using n8n and Telegram",
+  "name": "TikTok视频无水印下载器",
   "nodes": [
     {
       "parameters": {
@@ -553,6 +553,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-24T06:27:30.000Z",
-  "versionId": "52875cbc-72b5-4bf6-b54d-fc064a53226c"
+  "updatedAt": "2025-10-30T02:08:32.000Z",
+  "versionId": "715e1e65-3985-45d0-b212-cab912cc537e"
 }
