@@ -1,0 +1,57 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Playwright",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-30T09:23:30.317Z",
+  "id": "zH17zXhHEzs9mTv6",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2e6bfa5d-7d74-4697-969d-66e977724540",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://www.woshipm.com/share/6104938.html",
+        "browserOptions": {}
+      },
+      "type": "n8n-nodes-playwright-mcp.playwright",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "477ceccb-670a-4095-8129-cb4644710515",
+      "name": "Playwright"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-30T09:26:26.000Z",
+  "versionId": "6e61b198-6924-42f1-bfeb-84d0f1cce7a3"
+}
