@@ -22,7 +22,7 @@
   "id": "RbNNEsHKZg7UzW67",
   "isArchived": false,
   "meta": null,
-  "name": "My workflow 2",
+  "name": "rss源订阅",
   "nodes": [
     {
       "parameters": {},
@@ -71,6 +71,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-24T06:22:50.000Z",
-  "versionId": "67dd7e9f-12c9-4282-8913-77f5fbabb4ea"
+  "updatedAt": "2025-10-30T02:08:57.000Z",
+  "versionId": "33606b00-1653-4f0d-a285-4efb05cd50bb"
 }
