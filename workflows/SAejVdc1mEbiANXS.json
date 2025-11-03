@@ -1,0 +1,119 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "请求生成视频",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "请求生成视频": {
+      "main": [
+        [
+          {
+            "node": "查看生成视频",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-02T07:08:06.970Z",
+  "id": "SAejVdc1mEbiANXS",
+  "isArchived": false,
+  "meta": null,
+  "name": "Sora2视频生成",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "fe36062f-2d6a-4351-b21c-29e44ac2e94f",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.wuyinkeji.com/api/sora2/submit",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "149J4KnAZxBNnsUbiWU29YPPfd"
+            },
+            {
+              "name": "prompt",
+              "value": "@egingin.comfyluxem Scene 1: In a modern home interior (0:00 - 0:07)  Action: A woman is shown from the waist up, displaying a grey hoodie. She pulls the hood up and down. The hoodie features prominent, clear logos  which are fully visible.  Setting: The background is a clean, well-lit living room with minimalist decor, large windows, and a comfortable sofa.  On-screen Text: The text cycles through \"24% OFF SUNNITIC,\" \"RIVER ISLAND WOMEN'S 2 PIECE,\" \"SET 4.7 STARS,\" and \"546 SOLD!\"  Scene 2: In a modern home interior (0:08 - 0:11)  Action: The same woman is now shown in a full-body shot, walking across the room. She walks away from the camera, turns, and then walks away again, showing the outfit from different angles. The pants also clearly display  logos, fully intact and legible.  Setting: A different area of the same home, perhaps a hallway or open-plan kitchen, with contemporary finishes and natural light.  On-screen Text: The text cycles through \"FREE SHIPPING!,\" \"GET THIS STYLISH,\" and \"FOR WINTER SET.\""
+            },
+            {
+              "name": "url",
+              "value": "https://i.postimg.cc/k4FLgZtQ/image.png"
+            },
+            {
+              "name": "aspectRatio"
+            },
+            {
+              "name": "duration",
+              "value": "15"
+            },
+            {
+              "name": "size",
+              "value": "large"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        112,
+        0
+      ],
+      "id": "afa4ff21-2a5d-442b-89e0-020ac9c4d515",
+      "name": "请求生成视频"
+    },
+    {
+      "parameters": {
+        "url": "https://api.wuyinkeji.com/api/sora2/detail",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        -96
+      ],
+      "id": "33be6289-a60c-4254-9d3d-a121e885c9a8",
+      "name": "查看生成视频"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-02T07:09:00.000Z",
+  "versionId": "c3f22537-8d92-4293-be4a-77bba3da42dc"
+}
