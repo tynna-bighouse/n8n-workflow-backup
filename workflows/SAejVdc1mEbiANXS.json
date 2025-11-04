@@ -16,7 +16,120 @@
       "main": [
         [
           {
-            "node": "查看生成视频",
+            "node": "请求生成视频1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "请求生成视频1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "准备查询参数": {
+      "main": [
+        [
+          {
+            "node": "查询状态",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "查询状态": {
+      "main": [
+        [
+          {
+            "node": "判断状态",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "判断状态": {
+      "main": [
+        [
+          {
+            "node": "等待5分钟",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "报错处理",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "提取地址",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "等待5分钟": {
+      "main": [
+        [
+          {
+            "node": "准备重新查询",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "准备重新查询": {
+      "main": [
+        [
+          {
+            "node": "查询状态",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "提取地址": {
+      "main": [
+        [
+          {
+            "node": "输出结果",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "请求生成视频2": {
+      "main": [
+        [
+          {
+            "node": "请求生成视频3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "请求生成视频3": {
+      "main": [
+        [
+          {
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -49,19 +162,15 @@
         "queryParameters": {
           "parameters": [
             {
-              "name": "key",
-              "value": "149J4KnAZxBNnsUbiWU29YPPfd"
-            },
-            {
               "name": "prompt",
-              "value": "@egingin.comfyluxem Scene 1: In a modern home interior (0:00 - 0:07)  Action: A woman is shown from the waist up, displaying a grey hoodie. She pulls the hood up and down. The hoodie features prominent, clear logos  which are fully visible.  Setting: The background is a clean, well-lit living room with minimalist decor, large windows, and a comfortable sofa.  On-screen Text: The text cycles through \"24% OFF SUNNITIC,\" \"RIVER ISLAND WOMEN'S 2 PIECE,\" \"SET 4.7 STARS,\" and \"546 SOLD!\"  Scene 2: In a modern home interior (0:08 - 0:11)  Action: The same woman is now shown in a full-body shot, walking across the room. She walks away from the camera, turns, and then walks away again, showing the outfit from different angles. The pants also clearly display  logos, fully intact and legible.  Setting: A different area of the same home, perhaps a hallway or open-plan kitchen, with contemporary finishes and natural light.  On-screen Text: The text cycles through \"FREE SHIPPING!,\" \"GET THIS STYLISH,\" and \"FOR WINTER SET.\""
+              "value": "@egingin A vertical 9:16 video, medium shot of a young East Asian woman speaking directly to the camera. The background is a bright, modern, multi-level shopping mall interior.\n\n(0:01-0:03 - The Hook): An eye-catching graphic overlay of a red map of China with yellow stars instantly appears above her head. Bold yellow text animates on screen, timed with her speech: 'CHINA IS HUGE DON'T JUST COME BLINDLY.' The woman raises her index finger.\n\n(0:04-0:06): The map graphic remains as the text changes to 'WATCH THIS VIDEO BEFORE YOU START IMPORTING.' After this line, the map graphic vanishes.\n\n(0:07-0:12): The scene remains the mall. As she asks, 'ARE YOU LOOKING FOR BEAUTY PRODUCTS OR COSMETICS?', animated icons of purple skincare bottles and a pink makeup bag pop up. She immediately continues, 'TO GUANGZHOU.' As she says 'GUANGZHOU', a colorful map graphic of China appears, and a red location pin animates to land on 'Guangzhou', timed precisely with the text 'TO GUANGZHOU.'\n\n(0:13-0:15): After the 'Guangzhou' map graphic sequence is complete, a sudden hard cut changes the background to a bustling outdoor street scene: the 'Huaqiang Electronics World' building. The woman remains centered. As she begins to say, 'ARE YOU LOOKING FOR DIGITAL PRODUCTS AND ELECTRONICS?', graphics of a smartphone, earbuds, a smartwatch, and a power bank appear around her. The text overlays her speech."
             },
             {
-              "name": "url",
-              "value": "https://i.postimg.cc/k4FLgZtQ/image.png"
+              "name": "url"
             },
             {
-              "name": "aspectRatio"
+              "name": "aspectRatio",
+              "value": "9:16"
             },
             {
               "name": "duration",
@@ -70,6 +179,19 @@
             {
               "name": "size",
               "value": "large"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "149J4KnAZxBNnsUbiWU29YPPfd"
+            },
+            {
+              "name": "Content-Type\t",
+              "value": "application/x-www-form-urlencoded;charset:utf-8;"
             }
           ]
         },
@@ -91,7 +213,21 @@
         "queryParameters": {
           "parameters": [
             {
-              "name": "key"
+              "name": "id",
+              "value": "={{ $json.data.id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "149J4KnAZxBNnsUbiWU29YPPfd"
+            },
+            {
+              "name": "Content-Type\t",
+              "value": "application/x-www-form-urlencoded;charset:utf-8;"
             }
           ]
         },
@@ -100,11 +236,333 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        448,
-        -96
+        400,
+        32
       ],
-      "id": "33be6289-a60c-4254-9d3d-a121e885c9a8",
-      "name": "查看生成视频"
+      "id": "2db9defe-0f43-4036-9c4c-fc4e52b9b8d0",
+      "name": "请求生成视频1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9443162-4237-4cd2-b6a7-cb3eb092e05a",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        32
+      ],
+      "id": "d2e34de0-bc5b-433d-b777-34c19bd138ed",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "准备查询参数",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        -240,
+        544
+      ],
+      "id": "d6ea407e-be4a-496a-aac7-2508a0e44e6b"
+    },
+    {
+      "parameters": {
+        "url": "你的查询API地址",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "name": "查询状态",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        0,
+        432
+      ],
+      "id": "31ed507b-36d6-41f9-9c16-d08f3f5703c4"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {},
+            {},
+            {}
+          ]
+        },
+        "options": {
+          "fallbackOutput": 1
+        }
+      },
+      "name": "判断状态",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        176,
+        544
+      ],
+      "id": "570f78c9-ccc4-473e-a295-ddf57c9cdb64"
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "minutes"
+      },
+      "name": "等待5分钟",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        368,
+        432
+      ],
+      "id": "973398dc-5ba0-4610-a200-697500280da4",
+      "webhookId": "59f9ef69-929c-4c19-9262-cca87a237c18"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 重新查询时保留taskId\nconst taskId = $input.first().json.data?.taskId || $input.first().json.taskId || '';\nreturn {\n  taskId: taskId,\n  retry: true\n};"
+      },
+      "name": "准备重新查询",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        432
+      ],
+      "id": "1d51c133-da99-4abb-9147-e8ea12820dd3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 报错处理\nconst status = $input.first().json.data?.status || 2;\nconst msg = $input.first().json.msg || '查询失败';\n\nthrow new Error(`状态码为 ${status}，错误信息: ${msg}`);"
+      },
+      "name": "报错处理",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        640
+      ],
+      "id": "e9f694d5-de9d-4b63-a4f4-d1d3f1fb4566"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 提取地址（当status=3时）\nconst data = $input.first().json.data || {};\nconst status = data.status || 3;\n\n// 根据实际API返回结构提取地址\n// 假设地址在 data.url 或 data.address 字段中\nconst address = data.url || data.address || data.fileUrl || data.resultUrl || '';\n\nreturn {\n  status: status,\n  address: address,\n  fullData: data\n};"
+      },
+      "name": "提取地址",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        816
+      ],
+      "id": "9de0b948-03a3-4337-9dcb-b2f71a651ceb"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "输出结果",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        576,
+        736
+      ],
+      "id": "6fd56da5-9269-4eaa-80c7-f417df73d69f"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://six-ai.apifox.cn/360002822e0/v1/video/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "@egingin.comfyluxem |A vertical video shot in a cozy living room. An energetic person models a large, plush grey wearable blanket with a thick white sherpa lining and a hood. The video opens with them dramatically unfurling the blanket like wings, smiling broadly at the camera.The scene cuts to the person sitting and enthusiastically presenting a white, wired digital controller. They point to its screen and buttons, demonstrating the 10 adjustable heat settings and the 1-12 hour auto-off timer.The person then stands up again, lifting their foot to show off the practical wearable foot holes at the bottom of the blanket, allowing for mobility.A brief, low-angle pan shot reveals a pile of identical blankets on the floor in various new colors, including purple, tan, and pink. The video concludes with the person, back in the grey blanket, smiling and pointing energetically at the camera, conveying a strong sense of warmth and comfort. The overall tone is an upbeat product review."
+            },
+            {
+              "name": "images",
+              "value": "https://i.postimg.cc/mgpr37sd/image.png"
+            },
+            {
+              "name": "orientation",
+              "value": "portrait"
+            },
+            {
+              "name": "duration",
+              "value": "15"
+            },
+            {
+              "name": "size",
+              "value": "large"
+            },
+            {
+              "name": "model",
+              "value": "sora-2-hd"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        192
+      ],
+      "id": "79ff7042-46f0-494e-8026-82c46b72dc06",
+      "name": "请求生成视频2"
+    },
+    {
+      "parameters": {
+        "url": "https://api.wuyinkeji.com/api/sora2/detail",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $json.data.id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "149J4KnAZxBNnsUbiWU29YPPfd"
+            },
+            {
+              "name": "Content-Type\t",
+              "value": "application/x-www-form-urlencoded;charset:utf-8;"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        224
+      ],
+      "id": "03f31db5-ddb3-4d5c-965e-2763b40c42a3",
+      "name": "请求生成视频3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9443162-4237-4cd2-b6a7-cb3eb092e05a",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        224
+      ],
+      "id": "eed288a8-caba-4dc5-830e-a76565a01264",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.6ai.chat/v1/video/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"images\": [\"https://i.postimg.cc/mgpr37sd/image.png\"],\n  \"model\": \"sora-2-hd\",\n  \"orientation\": \"portrait\",\n  \"prompt\": \"@egingin.comfyluxem |A vertical video shot in a cozy living room. An energetic person models a large, plush grey wearable blanket with a thick white sherpa lining and a hood. The video opens with them dramatically unfurling the blanket like wings, smiling broadly at the camera.The scene cuts to the person sitting and enthusiastically presenting a white, wired digital controller. They point to its screen and buttons, demonstrating the 10 adjustable heat settings and the 1-12 hour auto-off timer.The person then stands up again, lifting their foot to show off the practical wearable foot holes at the bottom of the blanket, allowing for mobility.A brief, low-angle pan shot reveals a pile of identical blankets on the floor in various new colors, including purple, tan, and pink. The video concludes with the person, back in the grey blanket, smiling and pointing energetically at the camera, conveying a strong sense of warmth and comfort. The overall tone is an upbeat product review.\",\n  \"size\": \"large\",\n  \"duration\": 15\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -320,
+        240
+      ],
+      "id": "889c13b6-bc36-4477-8039-d48f0272348d",
+      "name": "请求生成视频4"
     }
   ],
   "pinData": {},
@@ -114,6 +572,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-02T07:09:00.000Z",
-  "versionId": "c3f22537-8d92-4293-be4a-77bba3da42dc"
+  "updatedAt": "2025-11-03T13:47:14.000Z",
+  "versionId": "361d3a88-aa15-43fe-a167-4ffd3bc59607"
 }
