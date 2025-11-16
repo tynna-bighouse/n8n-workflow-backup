@@ -14,13 +14,7 @@
     },
     "Loop Over Items": {
       "main": [
-        [
-          {
-            "node": "bark 通知",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "Execute Workflow",
@@ -190,32 +184,16 @@
       "name": "Execute Workflow",
       "type": "n8n-nodes-base.executeWorkflow",
       "position": [
-        1136,
-        432
+        1120,
+        352
       ],
       "typeVersion": 1.2,
       "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "url": "=https://api.day.app/VWBEfiVtPwQsRwk7tXW46C/{{ $workflow.name }}/✅运行成功",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1392,
-        256
-      ],
-      "id": "299a7f13-6a1b-4def-b577-997577c90bca",
-      "name": "bark 通知"
     }
   ],
   "pinData": {},
   "settings": {
-    "executionOrder": "v1",
-    "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "4ZFsssXt42fDTDkV"
+    "executionOrder": "v1"
   },
   "staticData": {
     "node:Schedule Trigger": {
@@ -224,6 +202,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-23T11:29:11.000Z",
-  "versionId": "5b87d2a4-e055-44da-aa1e-571bdcf7156f"
+  "updatedAt": "2025-09-11T03:43:02.000Z",
+  "versionId": "43a7c8d7-4a68-4afb-9055-62283d64ae99"
 }
