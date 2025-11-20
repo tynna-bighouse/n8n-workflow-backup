@@ -1,0 +1,642 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "6 AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "请求生成视频": {
+      "main": [
+        [
+          {
+            "node": "请求生成视频1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "请求生成视频1": {
+      "main": [
+        [
+          {
+            "node": "判断状态1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "等待5分钟1": {
+      "main": [
+        [
+          {
+            "node": "请求生成视频1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "判断状态1": {
+      "main": [
+        [
+          {
+            "node": "等待5分钟1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "判断状态2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "等待5分钟2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "等待5分钟2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6 AI": {
+      "main": [
+        [
+          {
+            "node": "获取视频",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "获取视频": {
+      "main": [
+        [
+          {
+            "node": "判断状态2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "获取视频",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-18T01:23:52.003Z",
+  "id": "pg1zUbojQeHJ0N6T",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        128,
+        464
+      ],
+      "id": "07928352-c731-4cf6-9a4e-2b2368cbf97c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.wuyinkeji.com/api/sora2/submit",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "@egingin A vertical 9:16 video, medium shot of a young East Asian woman speaking directly to the camera. The background is a bright, modern, multi-level shopping mall interior.\n\n(0:01-0:03 - The Hook): An eye-catching graphic overlay of a red map of China with yellow stars instantly appears above her head. Bold yellow text animates on screen, timed with her speech: 'CHINA IS HUGE DON'T JUST COME BLINDLY.' The woman raises her index finger.\n\n(0:04-0:06): The map graphic remains as the text changes to 'WATCH THIS VIDEO BEFORE YOU START IMPORTING.' After this line, the map graphic vanishes.\n\n(0:07-0:12): The scene remains the mall. As she asks, 'ARE YOU LOOKING FOR BEAUTY PRODUCTS OR COSMETICS?', animated icons of purple skincare bottles and a pink makeup bag pop up. She immediately continues, 'TO GUANGZHOU.' As she says 'GUANGZHOU', a colorful map graphic of China appears, and a red location pin animates to land on 'Guangzhou', timed precisely with the text 'TO GUANGZHOU.'\n\n(0:13-0:15): After the 'Guangzhou' map graphic sequence is complete, a sudden hard cut changes the background to a bustling outdoor street scene: the 'Huaqiang Electronics World' building. The woman remains centered. As she begins to say, 'ARE YOU LOOKING FOR DIGITAL PRODUCTS AND ELECTRONICS?', graphics of a smartphone, earbuds, a smartwatch, and a power bank appear around her. The text overlays her speech."
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "aspectRatio",
+              "value": "9:16"
+            },
+            {
+              "name": "duration",
+              "value": "15"
+            },
+            {
+              "name": "size",
+              "value": "large"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "149J4KnAZxBNnsUbiWU29YPPfd"
+            },
+            {
+              "name": "Content-Type\t",
+              "value": "application/x-www-form-urlencoded;charset:utf-8;"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        160
+      ],
+      "id": "e897934b-640e-4061-9ad2-d926f5f0208b",
+      "name": "请求生成视频"
+    },
+    {
+      "parameters": {
+        "url": "https://api.wuyinkeji.com/api/sora2/detail",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $json.data.id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "149J4KnAZxBNnsUbiWU29YPPfd"
+            },
+            {
+              "name": "Content-Type\t",
+              "value": "application/x-www-form-urlencoded;charset:utf-8;"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        832,
+        192
+      ],
+      "id": "aadb4fda-cf80-4293-8686-31145e756a8b",
+      "name": "请求生成视频1"
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "minutes"
+      },
+      "name": "等待5分钟1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        -96
+      ],
+      "id": "d5e6dd15-98f6-45a6-b726-fb0ca8ba9b15",
+      "webhookId": "59f9ef69-929c-4c19-9262-cca87a237c18"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "58d7a4b4-7e1f-4292-9cb2-eaf4eb316257",
+                    "leftValue": "={{ $json.data.status }}",
+                    "rightValue": "0",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8d5f9a1c-22ee-4313-84a8-0998348356e8",
+                    "leftValue": "={{ $json.data.status }}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "3ffb28d5-11a5-4b22-b058-6229f53e2971",
+                    "leftValue": "={{ $json.data.status }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "判断状态1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        128
+      ],
+      "id": "ca24f68b-36c7-40bf-825f-352eb006abf9"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.6ai.chat/v1/video/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-fWu4HlyIpLFOK7EhX2fNKsZ3mOAeh8ivPoa2SezZZw85wqgw"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "@egingin.comfyluxem |A vertical video shot in a cozy living room. An energetic person models a large, plush grey wearable blanket with a thick white sherpa lining and a hood. The video opens with them dramatically unfurling the blanket like wings, smiling broadly at the camera.The scene cuts to the person sitting and enthusiastically presenting a white, wired digital controller. They point to its screen and buttons, demonstrating the 10 adjustable heat settings and the 1-12 hour auto-off timer.The person then stands up again, lifting their foot to show off the practical wearable foot holes at the bottom of the blanket, allowing for mobility.A brief, low-angle pan shot reveals a pile of identical blankets on the floor in various new colors, including purple, tan, and pink. The video concludes with the person, back in the grey blanket, smiling and pointing energetically at the camera, conveying a strong sense of warmth and comfort. The overall tone is an upbeat product review."
+            },
+            {
+              "name": "orientation",
+              "value": "portrait"
+            },
+            {
+              "name": "duration",
+              "value": "15"
+            },
+            {
+              "name": "size",
+              "value": "large"
+            },
+            {
+              "name": "model",
+              "value": "sora-2-hd"
+            },
+            {
+              "name": "watermark",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1664,
+        304
+      ],
+      "id": "6d0af4cb-7ec0-4b50-907c-b0087a53481f",
+      "name": "请求生成视频5"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "58d7a4b4-7e1f-4292-9cb2-eaf4eb316257",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "completed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8d5f9a1c-22ee-4313-84a8-0998348356e8",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "queued",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "3ffb28d5-11a5-4b22-b058-6229f53e2971",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "判断状态2",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        960,
+        368
+      ],
+      "id": "a2c1663a-8fdd-4284-aaf0-9ac030400884"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.video_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1312,
+        384
+      ],
+      "id": "4529459e-f146-49b7-9b99-aff770a55654",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "unit": "seconds"
+      },
+      "name": "等待5分钟2",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        656
+      ],
+      "id": "9b8ea4de-c989-40e5-a809-24d11200d8da",
+      "webhookId": "59f9ef69-929c-4c19-9262-cca87a237c18"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.6ai.chat/v1/video/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-fWu4HlyIpLFOK7EhX2fNKsZ3mOAeh8ivPoa2SezZZw85wqgw"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"images\": [\n        \"https://i.postimg.cc/mgpr37sd/image.png\"\n    ],\n    \"model\": \"sora-2\",\n    \"orientation\": \"portrait\",\n    \"prompt\": \"@egingin.comfyluxem |A vertical video shot in a cozy living room. An energetic person models a large, plush grey wearable blanket with a thick white sherpa lining and a hood. The video opens with them dramatically unfurling the blanket like wings, smiling broadly at the camera.The scene cuts to the person sitting and enthusiastically presenting a white, wired digital controller. They point to its screen and buttons, demonstrating the 10 adjustable heat settings and the 1-12 hour auto-off timer.The person then stands up again, lifting their foot to show off the practical wearable foot holes at the bottom of the blanket, allowing for mobility.A brief, low-angle pan shot reveals a pile of identical blankets on the floor in various new colors, including purple, tan, and pink. The video concludes with the person, back in the grey blanket, smiling and pointing energetically at the camera, conveying a strong sense of warmth and comfort. The overall tone is an upbeat product review.\",\n    \"size\": \"large\",\n    \"duration\":15,\n    \"watermark\":false\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        592
+      ],
+      "id": "652940cc-0c2d-4f3e-a2f2-98700f8fff04",
+      "name": "6 AI"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        432
+      ],
+      "id": "5f40250a-d228-4ff2-8465-5c52b4ef78d5",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "url": "https://api.6ai.chat/v1/video/query",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-fWu4HlyIpLFOK7EhX2fNKsZ3mOAeh8ivPoa2SezZZw85wqgw"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        416
+      ],
+      "id": "ded8cd28-3160-4915-8d34-545ab9162e1d",
+      "name": "获取视频"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a087a75-de66-49f9-91af-f2a0187314c5",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        544
+      ],
+      "id": "ac9036a7-e03d-4492-9510-e776beee049d",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-18T06:32:16.000Z",
+  "versionId": "bc330543-862a-47a7-a991-ed09f69b6421"
+}
