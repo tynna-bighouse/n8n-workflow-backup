@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "6 AI",
+            "node": "Get row(s) in sheet",
             "type": "main",
             "index": 0
           }
@@ -63,6 +63,11 @@
             "node": "HTTP Request",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
           }
         ],
         [
@@ -78,7 +83,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Edit Fields3",
             "type": "main",
             "index": 0
           }
@@ -89,7 +94,7 @@
       "main": [
         [
           {
-            "node": "获取视频",
+            "node": "更新视频id",
             "type": "main",
             "index": 0
           }
@@ -120,9 +125,123 @@
     },
     "Edit Fields": {
       "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "6 AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "6 AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet1": {
+      "main": [
+        []
+      ]
+    },
+    "Limit": {
+      "main": [
         [
           {
             "node": "获取视频",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "获取视频id": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "更新视频id": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
             "type": "main",
             "index": 0
           }
@@ -133,16 +252,18 @@
   "createdAt": "2025-11-18T01:23:52.003Z",
   "id": "pg1zUbojQeHJ0N6T",
   "isArchived": false,
-  "meta": null,
-  "name": "My workflow 2",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "sora视频生成",
   "nodes": [
     {
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        128,
-        464
+        -224,
+        -176
       ],
       "id": "07928352-c731-4cf6-9a4e-2b2368cbf97c",
       "name": "When clicking ‘Execute workflow’"
@@ -193,8 +314,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        544,
-        160
+        528,
+        -144
       ],
       "id": "e897934b-640e-4061-9ad2-d926f5f0208b",
       "name": "请求生成视频"
@@ -229,8 +350,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        832,
-        192
+        816,
+        -112
       ],
       "id": "aadb4fda-cf80-4293-8686-31145e756a8b",
       "name": "请求生成视频1"
@@ -244,8 +365,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        1408,
-        -96
+        1392,
+        -400
       ],
       "id": "d5e6dd15-98f6-45a6-b726-fb0ca8ba9b15",
       "webhookId": "59f9ef69-929c-4c19-9262-cca87a237c18"
@@ -331,8 +452,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
       "position": [
-        1040,
-        128
+        1024,
+        -176
       ],
       "id": "ca24f68b-36c7-40bf-825f-352eb006abf9"
     },
@@ -391,8 +512,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1664,
-        304
+        1568,
+        -224
       ],
       "id": "6d0af4cb-7ec0-4b50-907c-b0087a53481f",
       "name": "请求生成视频5"
@@ -478,8 +599,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
       "position": [
-        960,
-        368
+        2960,
+        704
       ],
       "id": "a2c1663a-8fdd-4284-aaf0-9ac030400884"
     },
@@ -497,22 +618,23 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1312,
-        384
+        3312,
+        720
       ],
       "id": "4529459e-f146-49b7-9b99-aff770a55654",
       "name": "HTTP Request"
     },
     {
       "parameters": {
+        "amount": 5,
         "unit": "seconds"
       },
       "name": "等待5分钟2",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        1328,
-        656
+        3360,
+        912
       ],
       "id": "9b8ea4de-c989-40e5-a809-24d11200d8da",
       "webhookId": "59f9ef69-929c-4c19-9262-cca87a237c18"
@@ -540,14 +662,14 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "{\n    \"images\": [\n        \"https://i.postimg.cc/mgpr37sd/image.png\"\n    ],\n    \"model\": \"sora-2\",\n    \"orientation\": \"portrait\",\n    \"prompt\": \"@egingin.comfyluxem |A vertical video shot in a cozy living room. An energetic person models a large, plush grey wearable blanket with a thick white sherpa lining and a hood. The video opens with them dramatically unfurling the blanket like wings, smiling broadly at the camera.The scene cuts to the person sitting and enthusiastically presenting a white, wired digital controller. They point to its screen and buttons, demonstrating the 10 adjustable heat settings and the 1-12 hour auto-off timer.The person then stands up again, lifting their foot to show off the practical wearable foot holes at the bottom of the blanket, allowing for mobility.A brief, low-angle pan shot reveals a pile of identical blankets on the floor in various new colors, including purple, tan, and pink. The video concludes with the person, back in the grey blanket, smiling and pointing energetically at the camera, conveying a strong sense of warmth and comfort. The overall tone is an upbeat product review.\",\n    \"size\": \"large\",\n    \"duration\":15,\n    \"watermark\":false\n}\n",
+        "jsonBody": "={{$json}}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        400,
-        592
+        1104,
+        416
       ],
       "id": "652940cc-0c2d-4f3e-a2f2-98700f8fff04",
       "name": "6 AI"
@@ -555,13 +677,14 @@
     {
       "parameters": {
         "operation": "write",
+        "fileName": "=/videos/{{$now.format('YYYY-MM-DD_HH-mm-ss')}}.mp4",
         "options": {}
       },
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        1504,
-        432
+        3920,
+        768
       ],
       "id": "5f40250a-d228-4ff2-8465-5c52b4ef78d5",
       "name": "Read/Write Files from Disk"
@@ -600,8 +723,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        704,
-        416
+        2704,
+        752
       ],
       "id": "ded8cd28-3160-4915-8d34-545ab9162e1d",
       "name": "获取视频"
@@ -623,11 +746,564 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        768,
-        544
+        1200,
+        1328
       ],
       "id": "ac9036a7-e03d-4492-9510-e776beee049d",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f8b020cf-ac2c-4b55-9a3c-f5805eb99013",
+              "name": "prompt",
+              "value": "@egingin.comfyluxem |A vertical video shot in a cozy living room. An energetic person models a large, plush grey wearable blanket with a thick white sherpa lining and a hood. The video opens with them dramatically unfurling the blanket like wings, smiling broadly at the camera.The scene cuts to the person sitting and enthusiastically presenting a white, wired digital controller. They point to its screen and buttons, demonstrating the 10 adjustable heat settings and the 1-12 hour auto-off timer.The person then stands up again, lifting their foot to show off the practical wearable foot holes at the bottom of the blanket, allowing for mobility.A brief, low-angle pan shot reveals a pile of identical blankets on the floor in various new colors, including purple, tan, and pink. The video concludes with the person, back in the grey blanket, smiling and pointing energetically at the camera, conveying a strong sense of warmth and comfort. The overall tone is an upbeat product review.",
+              "type": "string"
+            },
+            {
+              "id": "cebe661d-3201-4c11-9f99-19e6742ad862",
+              "name": "images",
+              "value": "https://i.postimg.cc/mgpr37sd/image.png",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        512
+      ],
+      "id": "483c2e0e-eace-48d6-86ef-4032530f7103",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "formTitle": "Sora 视频生成",
+        "formDescription": "输入您的创意提示词,AI 将为您生成视频\n",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "prompt",
+              "placeholder": "例如: 一只金色的拉布拉多在太空站漂浮...",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "images",
+              "placeholder": "链接"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        336
+      ],
+      "id": "448f2115-9e3d-4234-a942-3cd3949ff589",
+      "name": "On form submission",
+      "webhookId": "191d5b36-f6b8-4478-a1a1-607295a6a281"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.6ai.chat/v1/video/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-fWu4HlyIpLFOK7EhX2fNKsZ3mOAeh8ivPoa2SezZZw85wqgw"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1344,
+        -80
+      ],
+      "id": "0d2e0456-6e3a-4e85-b54a-35747b29902a",
+      "name": "6 AI1 sora2-pro"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.6ai.chat/v1/video/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-fWu4HlyIpLFOK7EhX2fNKsZ3mOAeh8ivPoa2SezZZw85wqgw"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"images\": [\n        \"{{ $json.images }}\"\n    ],\n    \"model\": \"sora-2\",\n    \"orientation\": \"portrait\",\n    \"prompt\": \"{{ $json.prompt }}\",\n    \"size\": \"large\",\n    \"duration\":15,\n    \"watermark\":false\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1616,
+        -64
+      ],
+      "id": "fbe5eaf4-7708-4b2c-aff7-6998b77312b3",
+      "name": "6 AI1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        784
+      ],
+      "id": "a438881e-e177-44d1-994b-f52b1abd43b8",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6c8ab0bf-850c-43b6-8c60-cce001598d9c",
+              "name": "prompt",
+              "value": "={{ $json.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "37195931-d125-47e6-a367-3fc4fb27e11b",
+              "name": "images",
+              "value": "={{ $json.images }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        784
+      ],
+      "id": "fda0b24f-7c63-4750-8514-bdf8af3dd5fc",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取所有输入的数据\nconst items = $input.all();\n\nreturn items.map(item => {\n  \n  // 1. 先把图片提取出来，过滤掉空的\n  // 请将 item.json.images2 换成你实际的第二列列名\n  const rawImages = [item.json.images, item.json.images2];\n  // 这一步会把 undefined, null, 或空字符串 \"\" 踢掉\n  const validImages = rawImages.filter(img => img && img.trim() !== \"\");\n\n  return {\n    json: {\n      prompt: item.json.prompt,\n      \n      // 2. 使用处理好的图片数组\n      images: validImages, \n      \n      orientation: \"portrait\",\n      duration: 15,\n      size: \"large\",\n      model: \"sora-2\",\n      watermark: false\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        624
+      ],
+      "id": "a88dfdc0-47ec-4435-91fd-6a1d8ee1f73a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e62cb9f6-9280-4b83-9674-8e8a349dc2cb",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2000,
+        768
+      ],
+      "id": "3ae51fb2-c637-4900-9b8d-6f0eb0e128fd",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "",
+            "video": "={{ $json.video_url }}",
+            "row_number": 2
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "images",
+              "displayName": "images",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "images preview",
+              "displayName": "images preview",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "video",
+              "displayName": "video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3456,
+        512
+      ],
+      "id": "87f24df9-1670-4db7-87fa-d5d7268e5351",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        2384,
+        832
+      ],
+      "id": "b893bbb8-de16-43da-888f-24ad3816ee38",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1616,
+        896
+      ],
+      "id": "ac7965f1-791c-4c39-be5a-41b3a7bea6df",
+      "name": "获取视频id",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "aIT4eQqmUX3aMWps",
+          "mode": "list",
+          "cachedResultName": "Sora 视频 子节点"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2112,
+        432
+      ],
+      "id": "ae157c48-baf8-4306-b152-9c5a4171b4df",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xrC_EhKQ8MCRpU1Xlxe0XG7aXc-0VNSoO1LxnIMtYs8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "images",
+              "displayName": "images",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "images preview",
+              "displayName": "images preview",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "video",
+              "displayName": "video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1312,
+        416
+      ],
+      "id": "1503c53d-77a5-49f4-8f03-74d56c8b9c9d",
+      "name": "更新视频id",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1991b626-0384-44ae-be4e-379fa9592f82",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        784
+      ],
+      "id": "606af901-e9dc-458e-8d57-b5ad0910042f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1696,
+        464
+      ],
+      "id": "4410d75f-c4bf-486f-9601-a6f7a48be38b",
+      "name": "Wait",
+      "webhookId": "ff0ad515-0e53-4cd0-b199-1b07d482b097"
     }
   ],
   "pinData": {},
@@ -637,6 +1313,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-18T06:32:16.000Z",
-  "versionId": "bc330543-862a-47a7-a991-ed09f69b6421"
+  "updatedAt": "2025-11-21T13:23:24.000Z",
+  "versionId": "3aa6065c-b4de-4fa6-bbb9-8a506b3928b7"
 }
