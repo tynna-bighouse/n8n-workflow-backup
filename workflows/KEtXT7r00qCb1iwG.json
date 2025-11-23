@@ -1,0 +1,1055 @@
+{
+  "active": true,
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Voice File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Angie, AI Assistant 👩🏻‍🏫",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Email": {
+      "ai_tool": [
+        [
+          {
+            "node": "Angie, AI Assistant 👩🏻‍🏫",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voice or Text": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Voice File": {
+      "main": [
+        [
+          {
+            "node": "Speech to Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Speech to Text": {
+      "main": [
+        [
+          {
+            "node": "Angie, AI Assistant 👩🏻‍🏫",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Angie, AI Assistant 👩🏻‍🏫",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Angie, AI Assistant 👩🏻‍🏫",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listen for incoming events": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angie, AI Assistant 👩🏻‍🏫": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get photo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get photo": {
+      "main": [
+        [
+          {
+            "node": "Passport Photo Validator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Passport Photo Validator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Passport Photo Validator": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Img to ImgBB for URL": {
+      "main": [
+        [
+          {
+            "node": "prompt url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "prompt url": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-11-22T05:59:23.091Z",
+  "id": "KEtXT7r00qCb1iwG",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Listen for incoming events').first().json.message.from.id }}"
+      },
+      "id": "55a645ac-6060-479a-9e3c-ef27c2cdf594",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        3392,
+        432
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "labelIds": [
+            "INBOX",
+            "UNREAD"
+          ],
+          "readStatus": "unread",
+          "receivedAfter": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+        }
+      },
+      "id": "30111f7f-14e3-4e99-a4aa-26c3362b3dc4",
+      "name": "Get Email",
+      "type": "n8n-nodes-base.gmailTool",
+      "position": [
+        3504,
+        432
+      ],
+      "webhookId": "abf7e707-2eb8-4063-a920-b8ed975b0d70",
+      "typeVersion": 2.1,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yL8NJX4UZql1p6u9",
+          "name": "Gmail account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "96dcafc2-b81c-4881-a888-1919dad20722",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        3264,
+        432
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "LYnsuOpJIO1LGA8o",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "bdc3b744-bdea-45cd-9019-3ae0162e2cc6",
+      "name": "Listen for incoming events",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        2464,
+        112
+      ],
+      "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "rnFxiy1gD8slWv1G",
+          "name": "Telegram account 客需助手"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "d718eb40-1003-452a-9e14-5d0acc2a8864",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        3904,
+        112
+      ],
+      "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+      "typeVersion": 1.1,
+      "credentials": {
+        "telegramApi": {
+          "id": "rnFxiy1gD8slWv1G",
+          "name": "Telegram account 客需助手"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "a0bf9719-4272-46f6-ab3b-eda6f7b44fd8",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3e7e336f-6701-44de-9164-d1ade775b327",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2832,
+        112
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "a6ce53f9-23cc-4962-a47e-c0706af33713",
+      "name": "Speech to Text",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        3248,
+        112
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "openAiApi": {
+          "id": "LYnsuOpJIO1LGA8o",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "text",
+              "stringValue": "={{ $json?.message?.text || \"\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4b08b42d-9433-4c58-8fba-32d80c0b1e39",
+      "name": "Voice or Text",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2656,
+        128
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Listen for incoming events').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "id": "16bc10f7-a724-48b4-acdc-7b1c744c5bd7",
+      "name": "Get Voice File",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        3008,
+        16
+      ],
+      "webhookId": "24273e7e-6133-415e-8627-a9d6dc0f107c",
+      "typeVersion": 1.1,
+      "credentials": {
+        "telegramApi": {
+          "id": "rnFxiy1gD8slWv1G",
+          "name": "Telegram account 客需助手"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant.\n\nToday's date is {{ $now }}.\n\nGuidelines:\n- When fetching emails, filter out any promotional emails. \n- When summarizing emails, include Sender, Message date, subject, and brief summary of email.\n- if the user did not specify a date in the request assume they are asking for today\n- Use baserow tool to answer questions about tasks\n- When answering questions about calendar events, filter out events that don't apply to the question.  For example, the question is about events for today, only reply with events for today. Don't mention future events if it's more than 1 week away"
+        }
+      },
+      "id": "682dbb86-da83-4271-b24e-af14e5ad49cf",
+      "name": "Angie, AI Assistant 👩🏻‍🏫",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        3408,
+        112
+      ],
+      "typeVersion": 1.6
+    },
+    {
+      "parameters": {
+        "content": "## Process Telegram Request\n",
+        "height": 278.75,
+        "width": 496.25,
+        "color": 5
+      },
+      "id": "c5e34c7c-39f1-41ed-acb2-b5b6461e0526",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2640,
+        16
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## [Video Tutorial](https://youtu.be/pXjowPc6V2s)\n@[youtube](pXjowPc6V2s)\n\n\n## Overview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\n**To get started:**\n\n1. **Connect all credentials** (Telegram, OpenAI, Gmail, etc.)\n2. **Activate the workflow** and message your Telegram bot:\n   • \"What emails do I have today?\"\n   • \"Show me my calendar for tomorrow\"\n   • \"Craete new to-do item\"\n   • 🎤 Send voice messages for hands-free interaction\n\n## Questions or Need Help?\n\nFor setup assistance, customization, or workflow support, join my Skool community!\n\n## [AI Automation Engineering Community](https://www.skool.com/ai-automation-engineering-3014)\n\nHappy learning! -- Derek Cheung",
+        "height": 960,
+        "width": 720,
+        "color": 5
+      },
+      "id": "4a0be4ba-d7ab-4ee4-81a4-d378a3b0896d",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        -160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.reply_to_message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "9418706d-1fee-4a33-85bd-b9a632cd200c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "abf3a950-f871-4e51-afb7-93e2309f40a7",
+                    "leftValue": "={{ $json.message.photo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d470bf1a-579a-41d3-bc58-51dd45f04f5f",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2512,
+        368
+      ],
+      "id": "993d83dc-ba95-44ff-b689-6aa1692bc2d0",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[3].file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2384,
+        576
+      ],
+      "id": "f30da4f8-d7d0-4304-b99c-bd1001995085",
+      "name": "Get photo",
+      "webhookId": "b005cfcb-9ea3-4ac7-8126-1da99b348bf0",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rnFxiy1gD8slWv1G",
+          "name": "Telegram account 客需助手"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2848,
+        896
+      ],
+      "id": "bf18844d-c495-4c3b-baed-e8e7f3e391b7",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "p1ZNB9S0Yqvi2zxo",
+          "name": "柏拉图api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "你将看到一张报价单或产品信息图片，请从图片中识别出每个产品的信息，并按下面的 JSON 格式输出。\n\n字段要求：\n- item_description：产品的详细描述，尽量贴近图片原文，可以是多句，包含品牌、功能、适用场景等。\n- product_name：\n  - 先读取图片中的原始产品名称（可能是中文或其他语言），\n  - 再将这个原始名称翻译成简短的英文产品名，\n  - 允许适当缩减和概括，但必须保留产品核心含义。\n  - 例如：原文“真皮座椅护理抛光蜡” → \"Leather seat care polish\".\n- unit_price_usd：单价（rmb），只保留数字，例如 12.5。一定要是出现的价格里最高的那个，比如券前价格和批发价最高的那个！！！\n- quantity_moq：最小起订量（MOQ），只保留数字，例如 100。\n- product_name不要有中文，仅保留英文\n\n如果图片中有多款产品，请按顺序全部输出在 items 数组中。\n\n一定不用识别和翻译店铺的名字！！\n\n必须只返回合法 JSON，不要任何解释文字，也不要使用 ``` 包裹，格式如下：\n\n{\n  \"items\": [\n    {\n      \"item_description\": \"……\",\n      \"product_name\": \"……\", \n      \"unit_price_usd\": ,\n      \"quantity_moq\": \n    }\n  ]\n}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "messageType": "imageBinary"
+            }
+          ]
+        }
+      },
+      "id": "1a4e1219-db5d-49a9-bc8e-ae4d046bf8b4",
+      "name": "Passport Photo Validator",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        2880,
+        608
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2704,
+        1040
+      ],
+      "id": "7b6af7b6-1f5c-4059-8576-f8b7b4d84adb",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bXt3B2tQFHbAwxOD",
+          "name": "Google Gemini(PaLM) Api account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-reasoner",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        3328,
+        928
+      ],
+      "id": "d2bdf32c-cc97-448e-bb67-92809b763f52",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "7j73lEfoaYYmdxra",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $json.text ?? \"\";\n\n// 去掉可能的 ``` 包裹（以防万一）\nraw = raw.trim();\nraw = raw.replace(/^```json/i, \"\");\nraw = raw.replace(/^```/, \"\");\nraw = raw.replace(/```$/, \"\");\nraw = raw.trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(raw);\n} catch (e) {\n  return [{ json: { raw_text: raw, parse_error: e.message } }];\n}\n\n// 期望结构：{ items: [ {...}, {...} ] }\nif (!parsed.items || !Array.isArray(parsed.items)) {\n  // 如果模型没按要求返回，就把整个对象放进一条记录\n  return [{ json: parsed }];\n}\n\n// 把每个 item 变成 n8n 的一行\nreturn parsed.items.map(item => ({\n  json: {\n    item_description: item.item_description ?? \"\",\n    product_name: item.product_name ?? \"\",\n    unit_price_usd: item.unit_price_usd ?? null,\n    quantity_moq: item.quantity_moq ?? null,\n  },\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3248,
+        624
+      ],
+      "id": "36c2726a-cd40-4ecf-a8e4-ab35e61ba89a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1nXyUJ2wtq5DCfhFifed_1dborAycDUkRBTGQD3sWUWM/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nXyUJ2wtq5DCfhFifed_1dborAycDUkRBTGQD3sWUWM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Product Name": "={{ $json.product_name }}",
+            "Quantity（MOQ）": "={{ $json.quantity_moq }}",
+            "原价": "={{ $json.unit_price_usd }}",
+            "中文描述": "={{ $json.item_description }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Item & Description",
+              "displayName": "Item & Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Unit Price (USD)",
+              "displayName": "Unit Price (USD)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Quantity（MOQ）",
+              "displayName": "Quantity（MOQ）",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total (USD)",
+              "displayName": "Total (USD)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "原价",
+              "displayName": "原价",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "中文描述",
+              "displayName": "中文描述",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "图片",
+              "displayName": "图片",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3456,
+        624
+      ],
+      "id": "c2c63495-e5bc-488e-bf05-3c6c879bcf6d",
+      "name": "Append row in sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.siliconflow.cn/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Authorization",
+              "value": "Bearer sk-egzjajmpfukjpkxhekrfjbhskeoekhauvwcgutnfnaonpngk"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"gemini-1.5-pro-latest\",\n  \"stream\": false,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"这张图片是什么\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"https://github.com/dianping/cat/raw/master/cat-home/src/main/webapp/images/logo/cat_logo03.png\"\n          }\n        }\n      ]\n    }\n  ],\n  \"temperature\": 0.9,\n  \"max_tokens\": 400\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2608,
+        864
+      ],
+      "id": "7cfee400-9b26-486b-be97-719bf1e47874",
+      "name": "6ai ds-ocr"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://telegra.ph/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2432,
+        1504
+      ],
+      "id": "11e068ea-a6ce-467b-8537-4d8417190333",
+      "name": "图床"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.imgbb.com/1/upload",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiration",
+              "value": "600"
+            },
+            {
+              "name": "key",
+              "value": "7d199247a9db69f57187f7d10a7c3a37"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "5c4cc49b-7b0d-44ee-a2ee-17ba577126f2",
+      "name": "Upload Img to ImgBB for URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1936,
+        1104
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "=http://api.resmush.it/ws.php?img={{ $json.data.url }}",
+        "options": {}
+      },
+      "id": "2c4ab54a-ab11-4669-9532-7a34ceb1145a",
+      "name": "ReSmush.it Image Optimisation",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2736,
+        1520
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c48f8b8e-aac0-4cf2-b99c-dbdb212fbf6a",
+              "name": "data.url",
+              "value": "={{ $json.data.url }}",
+              "type": "string"
+            },
+            {
+              "id": "32cfdc48-6d48-41e5-9bc0-d796eef3f9e3",
+              "name": "prompt",
+              "value": "你将看到一张报价单或产品信息图片，请从图片中识别出每个产品的信息，并按下面的 JSON 格式输出。  字段要求： - item_description：产品的详细描述，尽量贴近图片原文，可以是多句，包含品牌、功能、适用场景等。 - product_name：   - 先读取图片中的原始产品名称（可能是中文或其他语言），   - 再将这个原始名称翻译成简短的英文产品名，   - 允许适当缩减和概括，但必须保留产品核心含义。   - 例如：原文“真皮座椅护理抛光蜡” → \"Leather seat care polish\". - unit_price_usd：单价（rmb），只保留数字，例如 12.5。 - quantity_moq：最小起订量（MOQ），只保留数字，例如 100。  如果图片中有多款产品，请按顺序全部输出在 items 数组中。  必须只返回合法 JSON，不要任何解释文字，也不要使用 ``` 包裹，格式如下：  {   \"items\": [     {       \"item_description\": \"……\",       \"product_name\": \"……\",        \"unit_price_usd\": ,       \"quantity_moq\":      }   ] }",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2288,
+        912
+      ],
+      "id": "b2ce6c63-9b37-4017-bcc9-0149a453712d",
+      "name": "prompt url"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.bltcy.ai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Authorization",
+              "value": "Bearer sk-x7bmMkcCbC9aaR6l6POqYjp79ZkNGwySCzFWoSU3uw6rDw5r"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o\",\n  \"stream\": false,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"你将看到一张报价单或产品信息图片，请从图片中识别出每个产品的信息，并按下面的 JSON 格式输出。\\n\\n字段要求：\\n- item_description：产品的详细描述，尽量贴近图片原文，可以是多句，包含品牌、功能、适用场景等。\\n- product_name：先读取图片中的原始产品名称（可能是中文或其他语言），再将这个原始名称翻译成简短的英文产品名，允许适当缩减和概括，但必须保留产品核心含义。例如：原文“真皮座椅护理抛光蜡” → \\\"Leather seat care polish\\\"。\\n- unit_price_usd：单价（rmb），只保留数字，例如 12.5。\\n- quantity_moq：最小起订量（MOQ），只保留数字，例如 100。\\n\\n如果图片中有多款产品，请按顺序全部输出在 items 数组中。\\n\\n必须只返回合法 JSON，不要任何解释文字，也不要使用 ``` 包裹，格式如下：\\n{\\n  \\\"items\\\": [\\n    {\\n      \\\"item_description\\\": \\\"……\\\",\\n      \\\"product_name\\\": \\\"……\\\",\\n      \\\"unit_price_usd\\\": 0,\\n      \\\"quantity_moq\\\": 0\\n    }\\n  ]\\n}\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"[https://i.ibb.co/8DmDjHTp/file-12.jpg](https://i.ibb.co/8DmDjHTp/file-12.jpg)\"\n          }\n        }\n      ]\n    }\n  ],\n  \"max_tokens\": 400\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2592,
+        1248
+      ],
+      "id": "0a58ac52-f122-4fff-bf84-0a6f75274ef8",
+      "name": "6ai ds-ocr1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nreturn items.map(item => {\n  // 1. 从 data.url 里取图片地址\n  const url = item.json?.data?.url;\n\n  // 2. 过滤：如果没有 url，就用空数组\n  const validImages = url && String(url).trim() !== \"\" ? [url] : [];\n\n  // 3. 构造请求 body\n  const body = {\n    model: \"gpt-5.1\",\n    stream: false,\n    messages: [\n      {\n        role: \"user\",\n        content: [\n          {\n            type: \"text\",\n            text: item.json.prompt || \"\",\n          },\n          // 把图片数组转成 image_url 块\n          ...validImages.map(u => ({\n            type: \"image_url\",\n            image_url: { url: u },\n          })),\n        ],\n      },\n    ],\n    max_tokens: 400,\n  };\n\n  return { json: body };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2416,
+        1104
+      ],
+      "id": "872afc07-9248-4d43-9d8b-b90faa26e2de",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.bltcy.ai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Authorization",
+              "value": "Bearer sk-x7bmMkcCbC9aaR6l6POqYjp79ZkNGwySCzFWoSU3uw6rDw5r"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        1376
+      ],
+      "id": "acdc8cf5-738f-465e-b874-96c57e5c8e7a",
+      "name": "6ai ds-ocr2"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-23T15:25:27.000Z",
+  "versionId": "9fa2a303-9864-4ed1-b867-4bc31e655f7d"
+}
