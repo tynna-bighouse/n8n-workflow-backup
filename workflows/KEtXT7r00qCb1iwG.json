@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "If": {
       "main": [
@@ -130,17 +130,6 @@
         ]
       ]
     },
-    "OpenAI Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Passport Photo Validator",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Google Gemini Chat Model": {
       "ai_languageModel": [
         []
@@ -199,6 +188,28 @@
       "main": [
         []
       ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "柏拉图 ai": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Passport Photo Validator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-22T05:59:23.091Z",
@@ -207,7 +218,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "My workflow 2",
+  "name": "报价图助手",
   "nodes": [
     {
       "parameters": {
@@ -218,8 +229,8 @@
       "name": "Window Buffer Memory",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "position": [
-        3392,
-        432
+        2960,
+        776
       ],
       "typeVersion": 1.2
     },
@@ -239,8 +250,8 @@
       "name": "Get Email",
       "type": "n8n-nodes-base.gmailTool",
       "position": [
-        3504,
-        432
+        3088,
+        776
       ],
       "webhookId": "abf7e707-2eb8-4063-a920-b8ed975b0d70",
       "typeVersion": 2.1,
@@ -259,8 +270,8 @@
       "name": "OpenAI Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        3264,
-        432
+        2832,
+        776
       ],
       "typeVersion": 1,
       "credentials": {
@@ -281,8 +292,8 @@
       "name": "Listen for incoming events",
       "type": "n8n-nodes-base.telegramTrigger",
       "position": [
-        2464,
-        112
+        1936,
+        120
       ],
       "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
       "typeVersion": 1,
@@ -306,8 +317,8 @@
       "name": "Telegram",
       "type": "n8n-nodes-base.telegram",
       "position": [
-        3904,
-        112
+        3296,
+        552
       ],
       "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
       "typeVersion": 1.1,
@@ -348,8 +359,8 @@
       "name": "If",
       "type": "n8n-nodes-base.if",
       "position": [
-        2832,
-        112
+        2160,
+        552
       ],
       "typeVersion": 2.2
     },
@@ -363,8 +374,8 @@
       "name": "Speech to Text",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "position": [
-        3248,
-        112
+        2608,
+        480
       ],
       "typeVersion": 1.3,
       "credentials": {
@@ -390,8 +401,8 @@
       "name": "Voice or Text",
       "type": "n8n-nodes-base.set",
       "position": [
-        2656,
-        128
+        1936,
+        552
       ],
       "typeVersion": 3.2
     },
@@ -405,8 +416,8 @@
       "name": "Get Voice File",
       "type": "n8n-nodes-base.telegram",
       "position": [
-        3008,
-        16
+        2384,
+        480
       ],
       "webhookId": "24273e7e-6133-415e-8627-a9d6dc0f107c",
       "typeVersion": 1.1,
@@ -429,42 +440,10 @@
       "name": "Angie, AI Assistant 👩🏻‍🏫",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
-        3408,
-        112
+        2888,
+        552
       ],
       "typeVersion": 1.6
-    },
-    {
-      "parameters": {
-        "content": "## Process Telegram Request\n",
-        "height": 278.75,
-        "width": 496.25,
-        "color": 5
-      },
-      "id": "c5e34c7c-39f1-41ed-acb2-b5b6461e0526",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        2640,
-        16
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "## [Video Tutorial](https://youtu.be/pXjowPc6V2s)\n@[youtube](pXjowPc6V2s)\n\n\n## Overview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\n**To get started:**\n\n1. **Connect all credentials** (Telegram, OpenAI, Gmail, etc.)\n2. **Activate the workflow** and message your Telegram bot:\n   • \"What emails do I have today?\"\n   • \"Show me my calendar for tomorrow\"\n   • \"Craete new to-do item\"\n   • 🎤 Send voice messages for hands-free interaction\n\n## Questions or Need Help?\n\nFor setup assistance, customization, or workflow support, join my Skool community!\n\n## [AI Automation Engineering Community](https://www.skool.com/ai-automation-engineering-3014)\n\nHappy learning! -- Derek Cheung",
-        "height": 960,
-        "width": 720,
-        "color": 5
-      },
-      "id": "4a0be4ba-d7ab-4ee4-81a4-d378a3b0896d",
-      "name": "Sticky Note2",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1632,
-        -160
-      ],
-      "typeVersion": 1
     },
     {
       "parameters": {
@@ -546,8 +525,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2512,
-        368
+        2160,
+        104
       ],
       "id": "993d83dc-ba95-44ff-b689-6aa1692bc2d0",
       "name": "Switch"
@@ -562,7 +541,7 @@
       "typeVersion": 1.2,
       "position": [
         2384,
-        576
+        120
       ],
       "id": "f30da4f8-d7d0-4304-b99c-bd1001995085",
       "name": "Get photo",
@@ -572,31 +551,6 @@
         "telegramApi": {
           "id": "rnFxiy1gD8slWv1G",
           "name": "Telegram account 客需助手"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-5.1",
-          "mode": "list",
-          "cachedResultName": "gpt-5.1"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        2848,
-        896
-      ],
-      "id": "bf18844d-c495-4c3b-baed-e8e7f3e391b7",
-      "name": "OpenAI Chat Model1",
-      "credentials": {
-        "openAiApi": {
-          "id": "p1ZNB9S0Yqvi2zxo",
-          "name": "柏拉图api"
         }
       }
     },
@@ -618,8 +572,8 @@
       "name": "Passport Photo Validator",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
-        2880,
-        608
+        2608,
+        16
       ],
       "typeVersion": 1.4
     },
@@ -631,8 +585,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2704,
-        1040
+        1936,
+        1088
       ],
       "id": "7b6af7b6-1f5c-4059-8576-f8b7b4d84adb",
       "name": "Google Gemini Chat Model",
@@ -651,8 +605,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
       "typeVersion": 1,
       "position": [
-        3328,
-        928
+        1936,
+        880
       ],
       "id": "d2bdf32c-cc97-448e-bb67-92809b763f52",
       "name": "DeepSeek Chat Model",
@@ -670,8 +624,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3248,
-        624
+        2960,
+        120
       ],
       "id": "36c2726a-cd40-4ecf-a8e4-ab35e61ba89a",
       "name": "Code"
@@ -787,8 +741,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3456,
-        624
+        3184,
+        120
       ],
       "id": "c2c63495-e5bc-488e-bf05-3c6c879bcf6d",
       "name": "Append row in sheet",
@@ -829,8 +783,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2608,
-        864
+        1936,
+        1968
       ],
       "id": "7cfee400-9b26-486b-be97-719bf1e47874",
       "name": "6ai ds-ocr"
@@ -864,8 +818,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2432,
-        1504
+        1936,
+        2192
       ],
       "id": "11e068ea-a6ce-467b-8537-4d8417190333",
       "name": "图床"
@@ -909,7 +863,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "position": [
         1936,
-        1104
+        1296
       ],
       "notesInFlow": true,
       "typeVersion": 4.2
@@ -923,8 +877,8 @@
       "name": "ReSmush.it Image Optimisation",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        2736,
-        1520
+        1936,
+        2416
       ],
       "notesInFlow": true,
       "typeVersion": 4.2
@@ -952,8 +906,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2288,
-        912
+        2160,
+        1296
       ],
       "id": "b2ce6c63-9b37-4017-bcc9-0149a453712d",
       "name": "prompt url"
@@ -987,8 +941,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2592,
-        1248
+        1936,
+        1520
       ],
       "id": "0a58ac52-f122-4fff-bf84-0a6f75274ef8",
       "name": "6ai ds-ocr1"
@@ -1000,8 +954,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2416,
-        1104
+        2384,
+        1296
       ],
       "id": "872afc07-9248-4d43-9d8b-b90faa26e2de",
       "name": "Code1"
@@ -1035,11 +989,62 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2320,
-        1376
+        1936,
+        1744
       ],
       "id": "acdc8cf5-738f-465e-b874-96c57e5c8e7a",
       "name": "6ai ds-ocr2"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $('Get photo').item.json.result.file_path }} 已尽识别好啦！",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "62aec940-0645-4ec1-82e4-f110cdb94552",
+      "name": "Send a text message",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        3408,
+        120
+      ],
+      "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+      "typeVersion": 1.1,
+      "credentials": {
+        "telegramApi": {
+          "id": "rnFxiy1gD8slWv1G",
+          "name": "Telegram account 客需助手"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2680,
+        240
+      ],
+      "id": "bf18844d-c495-4c3b-baed-e8e7f3e391b7",
+      "name": "柏拉图 ai",
+      "credentials": {
+        "openAiApi": {
+          "id": "p1ZNB9S0Yqvi2zxo",
+          "name": "柏拉图api"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1050,6 +1055,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-23T15:25:27.000Z",
-  "versionId": "9fa2a303-9864-4ed1-b867-4bc31e655f7d"
+  "updatedAt": "2025-11-24T02:59:35.000Z",
+  "versionId": "250306fa-f853-4822-8b25-11e5a79d16ed"
 }
