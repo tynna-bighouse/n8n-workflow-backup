@@ -1,0 +1,512 @@
+{
+  "active": true,
+  "connections": {
+    "Listen for incoming events": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Passport Photo Validator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get photo": {
+      "main": [
+        []
+      ]
+    },
+    "Passport Photo Validator": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "柏拉图 ai": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Passport Photo Validator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Passport Photo Validator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-24T02:19:32.407Z",
+  "id": "mn4yOMIej6IM5ClW",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "客需助手",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "23a84769-b70d-41c8-9f43-39526d712fb4",
+      "name": "Listen for incoming events",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        -896,
+        64
+      ],
+      "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+      "typeVersion": 1,
+      "executeOnce": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "JcNnWq1cA44nSgzQ",
+          "name": "客需整理小助手"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.reply_to_message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "9418706d-1fee-4a33-85bd-b9a632cd200c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "abf3a950-f871-4e51-afb7-93e2309f40a7",
+                    "leftValue": "={{ $json.message.photo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d470bf1a-579a-41d3-bc58-51dd45f04f5f",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -576,
+        96
+      ],
+      "id": "c954ae1f-b57f-4ff0-8e78-183e52df8575",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[0].file_id }}",
+        "download": false
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -800,
+        368
+      ],
+      "id": "0c5d86c0-df3c-429e-9327-609bd88d9f2a",
+      "name": "Get photo",
+      "webhookId": "b005cfcb-9ea3-4ac7-8126-1da99b348bf0",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "rnFxiy1gD8slWv1G",
+          "name": "Telegram account 报价助手"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=你是一个信息整理助手。  \n我会给你一张图片或一段文字，内容可能是聊天截图、表格截图、邮件等。  \n请从中提取和整理客户需求信息，生成**JSON 数组**，每一行对应一条需求记录。  \n\n字段和要求如下（字段名全部用英文）：  \n\n- `demand`：需求内容（如“文具”“布料”“水泵”等），用原文,并且加上你的中文翻译，不要用原文的中文翻译。  \n- `customer`：客户姓名或称呼（如 “Shah”）。  \n- `status`：目前状态，没有特别提示默认尚未开始。  \n- `quantity`：数量，用数字；如果没有明确数量，填 `null`。  \n- `country`：客户所在国家，必须用英文国家名（例如：中国→`China`，巴基斯坦→`Pakistan`，印度→`India`，孟加拉国→`Bangladesh`，沙特→`Saudi Arabia`，阿联酋→`United Arab Emirates`）。  \n- `channel`：获客或沟通渠道，统一成下面几类之一（若无法判断则用 `\"other\"`）：  \n  - `\"微信号\"`（包括「微信号」）  \n  - `\"WhatsApp\"`（页面是手机号为客户的title则是WhatsApp）  \n  - `\"TikTok\"`  （页面是有一个红色的关注按钮）  \n  - `\"视频号\"`（页面出现，“关注我的” 这几个字则是视频号或者是，回复的地方有一个圆形头像则是视频号）  \n  - `\"other\"`  \n- `priority`：优先级，按以下规则填写：  \n  1. 如果对话或图片中客户“需求非常明确”（例如清楚说自己想要什么具体产品），并且客户还发送了相关产品图片，同时客户的国家不是 Pakistan、India、Bangladesh，则视为高需求，`priority` 设为 `\"High\"`。  \n  2. 如果原始表格/内容里已经有优先级，就按原文填写。  \n  3. 其他情况默认填 `\"normal\"`。  \n- `note`：备注、额外说明或关键信息，自由文本（如“想要二手电子元件”“找电压表、电表”等），note 输出中文。Whatsapp来的客户要在note记录电话号码，视频号来发了微信号也要记录微信号\n\n请遵守以下规则：  \n\n1. 只输出 JSON，不要包含任何解释文字。  \n2. 如果图片/文字中有多条需求或多位客户，输出 JSON 数组，每个对象一条记录。  \n3. 尽量结合所有上下文信息来判断：  \n   - 从对话中推断客户来自哪个国家（例如“我来自巴基斯坦”→`country: \"Pakistan\"`）。  \n   - 从文字或图片中的标签、下拉选项判断 `channel`。  \n   - 根据客户是否明确描述自己想要的具体产品，以及是否发送了相关产品图片，来判断是否属于“高需求”。  \n4. 如果某个字段在内容中完全没有出现，按上面的约定使用 `null` 或 `\"unknown\"` / `\"normal\"` 占位。  \n\n输出格式示例（注意只是一种结构示例）：  \n\n[\n  {\n    \"demand\": \"second hand electronics material\",\n    \"customer\": \"Tahir Alvi\",\n    \"status\": \"进行中\",\n    \"quantity\": 1000,\n    \"country\": \"Pakistan\",\n    \"channel\": \"WeChat\",\n    \"priority\": \"High\",\n    \"note\": \"Looking for some meters and volt meters\"\n  }\n]\n\n你只需要根据我接下来发的图片或文字，按以上字段和规则生成对应的 JSON 即可。",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "messageType": "imageBinary"
+            }
+          ]
+        }
+      },
+      "id": "79e82ed1-aafa-4cdb-b1d3-a242959065ae",
+      "name": "Passport Photo Validator",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        304,
+        48
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $json.text ?? \"\";\n\n// 去掉可能的 ``` 包裹（以防万一）\nraw = raw.trim();\nraw = raw.replace(/^```json/i, \"\");\nraw = raw.replace(/^```/, \"\");\nraw = raw.replace(/```$/, \"\");\nraw = raw.trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(raw);\n} catch (e) {\n  // 解析失败，直接返回原始文本和错误信息，方便排查\n  return [\n    {\n      json: {\n        raw_text: raw,\n        parse_error: e.message,\n      },\n    },\n  ];\n}\n\n// 期望结构：一个数组，每个元素是一条需求记录\n// [ { demand, customer, status, quantity, country, channel, priority, note }, ... ]\nif (!Array.isArray(parsed)) {\n  // 如果模型没按要求返回，就把整个对象放进一条记录\n  return [\n    {\n      json: parsed,\n    },\n  ];\n}\n\n// 把每条记录变成 n8n 的一行\nreturn parsed.map((item) => ({\n  json: {\n    // 这里的字段名可以对应你在表格里的实际列名\n    demand: item.demand ?? \"\",\n    customer: item.customer ?? \"\",\n    status: item.status ?? \"\",\n    quantity: item.quantity ?? null,\n    country: item.country ?? \"\",\n    channel: item.channel ?? \"\",\n    priority: item.priority ?? \"normal\",\n    note: item.note ?? \"\",\n  },\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        160
+      ],
+      "id": "59594829-b8be-43c9-b5a9-9ccdace5f96e",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $json[\"备注\"] }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "b883cbd5-21ad-4681-946a-2d11b913357b",
+      "name": "Send a text message",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1520,
+        160
+      ],
+      "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+      "typeVersion": 1.1,
+      "credentials": {
+        "telegramApi": {
+          "id": "JcNnWq1cA44nSgzQ",
+          "name": "客需整理小助手"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        304
+      ],
+      "id": "5e19375a-0257-4b46-8f81-af5b7b2b50ee",
+      "name": "柏拉图 ai",
+      "credentials": {
+        "openAiApi": {
+          "id": "p1ZNB9S0Yqvi2zxo",
+          "name": "柏拉图api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[3].file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        224
+      ],
+      "id": "5ec179bd-a452-48f5-bcea-5d68d7e39b23",
+      "name": "Get a file",
+      "webhookId": "c223a10d-e69b-4b60-a058-a901fc1877d3",
+      "credentials": {
+        "telegramApi": {
+          "id": "JcNnWq1cA44nSgzQ",
+          "name": "客需整理小助手"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1FnXvKsBqYg41BgZcOaedAUOFFrLxyhL1wvDymmTOCGE/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FnXvKsBqYg41BgZcOaedAUOFFrLxyhL1wvDymmTOCGE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "需求": "={{ $json.demand }}",
+            "客户": "={{ $json.customer }}",
+            "状态": "={{ $json.status }}",
+            "国家": "={{ $json.country }}",
+            "数量": "={{ $json.quantity }}",
+            "渠道来自": "={{ $json.channel }}",
+            "优先级别": "={{ $json.priority }}",
+            "备注": "={{ $json.note }}"
+          },
+          "matchingColumns": [
+            "客户"
+          ],
+          "schema": [
+            {
+              "id": "需求",
+              "displayName": "需求",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "客户",
+              "displayName": "客户",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "状态",
+              "displayName": "状态",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "数量",
+              "displayName": "数量",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "国家",
+              "displayName": "国家",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "渠道来自",
+              "displayName": "渠道来自",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "优先级别",
+              "displayName": "优先级别",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "备注",
+              "displayName": "备注",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1296,
+        160
+      ],
+      "id": "7e2a5c32-cb92-4442-b5dc-6e7e51aee745",
+      "name": "Append or update row in sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bMEaGWJjtLitlv61",
+          "name": "Google Sheets account egingin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 8) + 1 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        992,
+        128
+      ],
+      "id": "8d865bb1-b9ff-476b-bfbf-dd6dffc917c3",
+      "name": "Wait",
+      "webhookId": "c4033274-753f-445f-8ce1-43ab44df26c7"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-25T01:52:35.000Z",
+  "versionId": "3be4be4e-bfb8-4365-a976-1350af0750a3"
+}
