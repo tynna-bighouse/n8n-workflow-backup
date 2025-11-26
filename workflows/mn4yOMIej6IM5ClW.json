@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
@@ -14,20 +14,15 @@
     },
     "Switch": {
       "main": [
-        [
-          {
-            "node": "Passport Photo Validator",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "Get a file",
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        []
       ]
     },
     "Get photo": {
@@ -35,22 +30,11 @@
         []
       ]
     },
-    "Passport Photo Validator": {
-      "main": [
-        [
-          {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code": {
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "Append or update row in sheet",
             "type": "main",
             "index": 0
           }
@@ -61,7 +45,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "Passport Photo Validator",
+            "node": "AI Agent",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -70,9 +54,19 @@
     },
     "Get a file": {
       "main": [
+        []
+      ]
+    },
+    "Create a row": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
         [
           {
-            "node": "Passport Photo Validator",
+            "node": "Code",
             "type": "main",
             "index": 0
           }
@@ -84,17 +78,6 @@
         [
           {
             "node": "Send a text message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait": {
-      "main": [
-        [
-          {
-            "node": "Append or update row in sheet",
             "type": "main",
             "index": 0
           }
@@ -115,7 +98,10 @@
         "updates": [
           "message"
         ],
-        "additionalFields": {}
+        "additionalFields": {
+          "download": true,
+          "imageSize": "large"
+        }
       },
       "id": "23a84769-b70d-41c8-9f43-39526d712fb4",
       "name": "Listen for incoming events",
@@ -195,8 +181,8 @@
                 "conditions": [
                   {
                     "id": "d470bf1a-579a-41d3-bc58-51dd45f04f5f",
-                    "leftValue": "",
-                    "rightValue": "",
+                    "leftValue": "={{ $json.message.reply_to_message.text }}",
+                    "rightValue": "整理",
                     "operator": {
                       "type": "string",
                       "operation": "equals",
@@ -214,8 +200,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -576,
-        96
+        -528,
+        784
       ],
       "id": "c954ae1f-b57f-4ff0-8e78-183e52df8575",
       "name": "Switch"
@@ -245,30 +231,7 @@
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "=你是一个信息整理助手。  \n我会给你一张图片或一段文字，内容可能是聊天截图、表格截图、邮件等。  \n请从中提取和整理客户需求信息，生成**JSON 数组**，每一行对应一条需求记录。  \n\n字段和要求如下（字段名全部用英文）：  \n\n- `demand`：需求内容（如“文具”“布料”“水泵”等），用原文,并且加上你的中文翻译，不要用原文的中文翻译。  \n- `customer`：客户姓名或称呼（如 “Shah”）。  \n- `status`：目前状态，没有特别提示默认尚未开始。  \n- `quantity`：数量，用数字；如果没有明确数量，填 `null`。  \n- `country`：客户所在国家，必须用英文国家名（例如：中国→`China`，巴基斯坦→`Pakistan`，印度→`India`，孟加拉国→`Bangladesh`，沙特→`Saudi Arabia`，阿联酋→`United Arab Emirates`）。  \n- `channel`：获客或沟通渠道，统一成下面几类之一（若无法判断则用 `\"other\"`）：  \n  - `\"微信号\"`（包括「微信号」）  \n  - `\"WhatsApp\"`（页面是手机号为客户的title则是WhatsApp）  \n  - `\"TikTok\"`  （页面是有一个红色的关注按钮）  \n  - `\"视频号\"`（页面出现，“关注我的” 这几个字则是视频号或者是，回复的地方有一个圆形头像则是视频号）  \n  - `\"other\"`  \n- `priority`：优先级，按以下规则填写：  \n  1. 如果对话或图片中客户“需求非常明确”（例如清楚说自己想要什么具体产品），并且客户还发送了相关产品图片，同时客户的国家不是 Pakistan、India、Bangladesh，则视为高需求，`priority` 设为 `\"High\"`。  \n  2. 如果原始表格/内容里已经有优先级，就按原文填写。  \n  3. 其他情况默认填 `\"normal\"`。  \n- `note`：备注、额外说明或关键信息，自由文本（如“想要二手电子元件”“找电压表、电表”等），note 输出中文。Whatsapp来的客户要在note记录电话号码，视频号来发了微信号也要记录微信号\n\n请遵守以下规则：  \n\n1. 只输出 JSON，不要包含任何解释文字。  \n2. 如果图片/文字中有多条需求或多位客户，输出 JSON 数组，每个对象一条记录。  \n3. 尽量结合所有上下文信息来判断：  \n   - 从对话中推断客户来自哪个国家（例如“我来自巴基斯坦”→`country: \"Pakistan\"`）。  \n   - 从文字或图片中的标签、下拉选项判断 `channel`。  \n   - 根据客户是否明确描述自己想要的具体产品，以及是否发送了相关产品图片，来判断是否属于“高需求”。  \n4. 如果某个字段在内容中完全没有出现，按上面的约定使用 `null` 或 `\"unknown\"` / `\"normal\"` 占位。  \n\n输出格式示例（注意只是一种结构示例）：  \n\n[\n  {\n    \"demand\": \"second hand electronics material\",\n    \"customer\": \"Tahir Alvi\",\n    \"status\": \"进行中\",\n    \"quantity\": 1000,\n    \"country\": \"Pakistan\",\n    \"channel\": \"WeChat\",\n    \"priority\": \"High\",\n    \"note\": \"Looking for some meters and volt meters\"\n  }\n]\n\n你只需要根据我接下来发的图片或文字，按以上字段和规则生成对应的 JSON 即可。",
-        "hasOutputParser": true,
-        "messages": {
-          "messageValues": [
-            {
-              "type": "HumanMessagePromptTemplate",
-              "messageType": "imageBinary"
-            }
-          ]
-        }
-      },
-      "id": "79e82ed1-aafa-4cdb-b1d3-a242959065ae",
-      "name": "Passport Photo Validator",
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "position": [
-        304,
-        48
-      ],
-      "typeVersion": 1.4
-    },
-    {
-      "parameters": {
-        "jsCode": "let raw = $json.text ?? \"\";\n\n// 去掉可能的 ``` 包裹（以防万一）\nraw = raw.trim();\nraw = raw.replace(/^```json/i, \"\");\nraw = raw.replace(/^```/, \"\");\nraw = raw.replace(/```$/, \"\");\nraw = raw.trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(raw);\n} catch (e) {\n  // 解析失败，直接返回原始文本和错误信息，方便排查\n  return [\n    {\n      json: {\n        raw_text: raw,\n        parse_error: e.message,\n      },\n    },\n  ];\n}\n\n// 期望结构：一个数组，每个元素是一条需求记录\n// [ { demand, customer, status, quantity, country, channel, priority, note }, ... ]\nif (!Array.isArray(parsed)) {\n  // 如果模型没按要求返回，就把整个对象放进一条记录\n  return [\n    {\n      json: parsed,\n    },\n  ];\n}\n\n// 把每条记录变成 n8n 的一行\nreturn parsed.map((item) => ({\n  json: {\n    // 这里的字段名可以对应你在表格里的实际列名\n    demand: item.demand ?? \"\",\n    customer: item.customer ?? \"\",\n    status: item.status ?? \"\",\n    quantity: item.quantity ?? null,\n    country: item.country ?? \"\",\n    channel: item.channel ?? \"\",\n    priority: item.priority ?? \"normal\",\n    note: item.note ?? \"\",\n  },\n}));"
+        "jsCode": "// 1. 获取输入内容（优先取 output，如果没有则取 text）\n// 这里的 $json.output 对应你截图中 AI Agent 的输出字段\nlet raw = $json.output || $json.text || \"\"; \n\n// 2. 如果拿到的已经是对象（有时候 n8n 会自动解析），直接转回字符串方便后面统一处理\nif (typeof raw === 'object') {\n  raw = JSON.stringify(raw);\n}\n\n// 3. 去掉可能的 markdown 代码块标记 (```json ... ```)\nraw = raw.trim();\nraw = raw.replace(/^```json/i, \"\");\nraw = raw.replace(/^```/, \"\");\nraw = raw.replace(/```$/, \"\");\nraw = raw.trim();\n\nlet parsed;\ntry {\n  // 尝试解析 JSON\n  parsed = JSON.parse(raw);\n} catch (e) {\n  // 解析失败，返回错误信息，方便调试\n  return [\n    {\n      json: {\n        error_type: \"JSON解析失败\",\n        error_message: e.message,\n        original_input: raw, // 把原始内容打印出来，看看 AI 到底回了什么鬼\n      },\n    },\n  ];\n}\n\n// 4. 数据格式化\n// 期望结构：一个数组 [ { demand... }, { demand... } ]\n// 如果 AI 只返回了一个对象 { demand... }，把它包成数组\nif (!Array.isArray(parsed)) {\n  parsed = [parsed];\n}\n\n// 5. 映射字段并返回\nreturn parsed.map((item) => ({\n  json: {\n    demand: item.demand ?? \"\",\n    customer: item.customer ?? \"\",\n    // 如果 status 是空的，给个默认值 \"待处理\"\n    status: item.status ?? \"待处理\", \n    quantity: item.quantity ?? null,\n    country: item.country ?? \"Unknown\",\n    channel: item.channel ?? \"\",\n    priority: item.priority ?? \"normal\",\n    note: item.note ?? \"\",\n  },\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -282,7 +245,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
-        "text": "={{ $json[\"备注\"] }}",
+        "text": "={{ $json['备注'] }}",
         "additionalFields": {
           "appendAttribution": false,
           "parse_mode": "Markdown"
@@ -292,8 +255,8 @@
       "name": "Send a text message",
       "type": "n8n-nodes-base.telegram",
       "position": [
-        1520,
-        160
+        1184,
+        -16
       ],
       "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
       "typeVersion": 1.1,
@@ -318,8 +281,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        208,
-        304
+        -16,
+        608
       ],
       "id": "5e19375a-0257-4b46-8f81-af5b7b2b50ee",
       "name": "柏拉图 ai",
@@ -339,8 +302,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -288,
-        224
+        -272,
+        480
       ],
       "id": "5ec179bd-a452-48f5-bcea-5d68d7e39b23",
       "name": "Get a file",
@@ -351,6 +314,129 @@
           "name": "客需整理小助手"
         }
       }
+    },
+    {
+      "parameters": {
+        "tableId": "customer request",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "product",
+              "fieldValue": "={{ $json.demand }}"
+            },
+            {
+              "fieldId": "client_name",
+              "fieldValue": "={{ $json.customer }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.status }}"
+            },
+            {
+              "fieldId": "quantity",
+              "fieldValue": "={{ $json.quantity }}"
+            },
+            {
+              "fieldId": "country",
+              "fieldValue": "={{ $json.country }}"
+            },
+            {
+              "fieldId": "priority",
+              "fieldValue": "={{ $json.priority }}"
+            },
+            {
+              "fieldId": "notes",
+              "fieldValue": "={{ $json.note }}"
+            },
+            {
+              "fieldId": "channel",
+              "fieldValue": "={{ $json.channel }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        512
+      ],
+      "id": "a7b8d036-e5d5-4eda-8e05-b45692172920",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "38yCqqcjz0e26Sfj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "customer request",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "product",
+              "condition": "is"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -96
+      ],
+      "id": "87cb900f-f854-4e07-8e23-99e231170df6",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "38yCqqcjz0e26Sfj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "你是一个信息整理助手。  \n我会给你一张图片或一段文字，内容可能是聊天截图、表格截图、邮件等。  \n请从中提取和整理客户需求信息，生成**JSON 数组**，每一行对应一条需求记录。  \n\n字段和要求如下（字段名全部用英文）：  \n\n- `demand`：需求内容（如“文具”“布料”“水泵”等），用原文,并且加上你的中文翻译，不要用原文的中文翻译。  \n- `customer`：客户姓名或称呼（如 “Shah”）或者是+开头的电话号码。  \n- `status`：目前状态，没有特别提示默认尚未开始。  \n- `quantity`：数量，用数字；如果没有明确数量，填 `null`。  \n- `country`：客户所在国家，必须用英文国家名（例如：中国→`China`，巴基斯坦→`Pakistan`，印度→`India`，孟加拉国→`Bangladesh`，沙特→`Saudi Arabia`，阿联酋→`United Arab Emirates`）。有电话号码的可以用电话判断国家  \n- `channel`：获客或沟通渠道，统一成下面几类之一（若无法判断则用 `\"other\"`）：  \n  - `\"微信号\"`（包括「微信号」）  \n  - `\"WhatsApp\"`（页面是手机号为客户的title则是WhatsApp）  \n  - `\"TikTok\"`  （页面是有一个红色的关注按钮,或者回复的框框是蓝色的）  \n  - `\"视频号\"`（页面出现，“关注我的” 这几个字则是视频号或者是，回复的地方有一个圆形头像则是视频号）  \n  - `\"other\"`  \n- `priority`：优先级，按以下规则填写：  \n  1. 如果对话或图片中客户“需求非常明确”（例如清楚说自己想要什么具体产品），并且客户还发送了相关产品图片，同时客户的国家不是 Pakistan、India、Bangladesh，则视为高需求，`priority` 设为 `\"High\"`。  \n  2. 如果原始表格/内容里已经有优先级，就按原文填写。  \n  3. 其他情况默认填 `\"normal\"`。  \n- `note`：备注、额外说明或关键信息，自由文本（如“想要二手电子元件”“找电压表、电表”等），note 输出中文。Whatsapp来的客户要在note记录电话号码，视频号来发了微信号也要记录微信号\n\n请遵守以下规则：  \n\n1. 只输出 JSON，不要包含任何解释文字。  \n2. 如果图片/文字中有多条需求或多位客户，输出 JSON 数组，每个对象一条记录。  \n3. 尽量结合所有上下文信息来判断：  \n   - 从对话中推断客户来自哪个国家（例如“我来自巴基斯坦”→`country: \"Pakistan\"`）。  \n   - 从文字或图片中的标签、下拉选项判断 `channel`。  \n   - 根据客户是否明确描述自己想要的具体产品，以及是否发送了相关产品图片，来判断是否属于“高需求”。  \n4. 如果某个字段在内容中完全没有出现，按上面的约定使用 `null` 或 `\"unknown\"` / `\"normal\"` 占位。  \n\n输出格式示例,严格按照该格式输出：  \n\n[\n  {\n    \"demand\": \"second hand electronics material\",\n    \"customer\": \"Tahir Alvi\",\n    \"status\": \"进行中\",\n    \"quantity\": 1000,\n    \"country\": \"Pakistan\",\n    \"channel\": \"WeChat\",\n    \"priority\": \"High\",\n    \"note\": \"Looking for some meters and volt meters\"\n  }\n]\n\n你只需要根据我接下来发的图片或文字，按以上字段和规则生成对应的 JSON 即可。",
+        "options": {
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        320
+      ],
+      "id": "0a760b79-2614-48a7-833d-408d01448a35",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=你是一个信息整理助手。  \n我会给你一张图片或一段文字，内容可能是聊天截图、表格截图、邮件等。  \n请从中提取和整理客户需求信息，生成**JSON 数组**，每一行对应一条需求记录。  \n\n字段和要求如下（字段名全部用英文）：  \n\n- `demand`：需求内容（如“文具”“布料”“水泵”等），用原文,并且加上你的中文翻译，不要用原文的中文翻译。  \n- `customer`：客户姓名或称呼（如 “Shah”）或者是+开头的电话号码。  \n- `status`：目前状态，没有特别提示默认尚未开始。  \n- `quantity`：数量，用数字；如果没有明确数量，填 `null`。  \n- `country`：客户所在国家，必须用英文国家名（例如：中国→`China`，巴基斯坦→`Pakistan`，印度→`India`，孟加拉国→`Bangladesh`，沙特→`Saudi Arabia`，阿联酋→`United Arab Emirates`）。有电话号码的可以用电话判断国家  \n- `channel`：获客或沟通渠道，统一成下面几类之一（若无法判断则用 `\"other\"`）：  \n  - `\"微信号\"`（包括「微信号」）  \n  - `\"WhatsApp\"`（页面是手机号为客户的title则是WhatsApp）  \n  - `\"TikTok\"`  （页面是有一个红色的关注按钮,或者回复的框框是蓝色的）  \n  - `\"视频号\"`（页面出现，“关注我的” 这几个字则是视频号或者是，回复的地方有一个圆形头像则是视频号）  \n  - `\"other\"`  \n- `priority`：优先级，按以下规则填写：  \n  1. 如果对话或图片中客户“需求非常明确”（例如清楚说自己想要什么具体产品），并且客户还发送了相关产品图片，同时客户的国家不是 Pakistan、India、Bangladesh，则视为高需求，`priority` 设为 `\"High\"`。  \n  2. 如果原始表格/内容里已经有优先级，就按原文填写。  \n  3. 其他情况默认填 `\"normal\"`。  \n- `note`：备注、额外说明或关键信息，自由文本（如“想要二手电子元件”“找电压表、电表”等），note 输出中文。Whatsapp来的客户要在note记录电话号码，视频号来发了微信号也要记录微信号\n\n请遵守以下规则：  \n\n1. 只输出 JSON，不要包含任何解释文字。  \n2. 如果图片/文字中有多条需求或多位客户，输出 JSON 数组，每个对象一条记录。  \n3. 尽量结合所有上下文信息来判断：  \n   - 从对话中推断客户来自哪个国家（例如“我来自巴基斯坦”→`country: \"Pakistan\"`）。  \n   - 从文字或图片中的标签、下拉选项判断 `channel`。  \n   - 根据客户是否明确描述自己想要的具体产品，以及是否发送了相关产品图片，来判断是否属于“高需求”。  \n4. 如果某个字段在内容中完全没有出现，按上面的约定使用 `null` 或 `\"unknown\"` / `\"normal\"` 占位。  \n\n输出格式示例,严格按照该格式输出：  \n\n[\n  {\n    \"demand\": \"second hand electronics material\",\n    \"customer\": \"Tahir Alvi\",\n    \"status\": \"进行中\",\n    \"quantity\": 1000,\n    \"country\": \"Pakistan\",\n    \"channel\": \"WeChat\",\n    \"priority\": \"High\",\n    \"note\": \"Looking for some meters and volt meters\"\n  }\n]\n\n你只需要根据我接下来发的图片或文字，按以上字段和规则生成对应的 JSON 即可。",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "messageType": "imageBinary"
+            }
+          ]
+        }
+      },
+      "id": "79e82ed1-aafa-4cdb-b1d3-a242959065ae",
+      "name": "Passport Photo Validator",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        464,
+        832
+      ],
+      "typeVersion": 1.4
     },
     {
       "parameters": {
@@ -472,32 +558,18 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1296,
-        160
+        912,
+        64
       ],
-      "id": "7e2a5c32-cb92-4442-b5dc-6e7e51aee745",
+      "id": "971fed2a-9731-45f5-8422-5b79e0d46521",
       "name": "Append or update row in sheet",
-      "retryOnFail": true,
+      "retryOnFail": false,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "bMEaGWJjtLitlv61",
           "name": "Google Sheets account egingin"
         }
       }
-    },
-    {
-      "parameters": {
-        "amount": "={{ Math.floor(Math.random() * 8) + 1 }}"
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        992,
-        128
-      ],
-      "id": "8d865bb1-b9ff-476b-bfbf-dd6dffc917c3",
-      "name": "Wait",
-      "webhookId": "c4033274-753f-445f-8ce1-43ab44df26c7"
     }
   ],
   "pinData": {},
@@ -507,6 +579,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-25T01:52:35.000Z",
-  "versionId": "3be4be4e-bfb8-4365-a976-1350af0750a3"
+  "updatedAt": "2025-11-26T02:50:20.000Z",
+  "versionId": "050008cf-fd2b-4f96-995d-ca9d5b094190"
 }
