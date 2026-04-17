@@ -92,13 +92,7 @@
     },
     "6 AI": {
       "main": [
-        [
-          {
-            "node": "更新视频id",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "HTTP Request": {
@@ -170,7 +164,7 @@
       "main": [
         [
           {
-            "node": "6 AI",
+            "node": "柏拉图",
             "type": "main",
             "index": 0
           }
@@ -242,6 +236,28 @@
         [
           {
             "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "柏拉图": {
+      "main": [
+        [
+          {
+            "node": "更新视频id",
             "type": "main",
             "index": 0
           }
@@ -648,7 +664,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer sk-fWu4HlyIpLFOK7EhX2fNKsZ3mOAeh8ivPoa2SezZZw85wqgw"
+              "value": "Bearer sk-lK2rdLAfU3wU5OqR42ijUv0xmrBtZ2wIpe7brHQQmSGeRwei"
             },
             {
               "name": "Content-Type",
@@ -668,8 +684,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1104,
-        416
+        1056,
+        432
       ],
       "id": "652940cc-0c2d-4f3e-a2f2-98700f8fff04",
       "name": "6 AI"
@@ -942,7 +958,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 获取所有输入的数据\nconst items = $input.all();\n\nreturn items.map(item => {\n  \n  // 1. 先把图片提取出来，过滤掉空的\n  // 请将 item.json.images2 换成你实际的第二列列名\n  const rawImages = [item.json.images, item.json.images2];\n  // 这一步会把 undefined, null, 或空字符串 \"\" 踢掉\n  const validImages = rawImages.filter(img => img && img.trim() !== \"\");\n\n  return {\n    json: {\n      prompt: item.json.prompt,\n      \n      // 2. 使用处理好的图片数组\n      images: validImages, \n      \n      orientation: \"portrait\",\n      duration: 15,\n      size: \"large\",\n      model: \"sora-2\",\n      watermark: false\n    }\n  };\n});"
+        "jsCode": "// 获取所有输入的数据\nconst items = $input.all();\n\nreturn items.map(item => {\n  \n  // 1. 先把图片提取出来，过滤掉空的\n  // 请将 item.json.images2 换成你实际的第二列列名\n  const rawImages = [item.json.images, item.json.images2];\n  // 这一步会把 undefined, null, 或空字符串 \"\" 踢掉\n  const validImages = rawImages.filter(img => img && img.trim() !== \"\");\n\n  return {\n    json: {\n      prompt: item.json.prompt,\n      \n      // 2. 使用处理好的图片数组\n      images: validImages, \n      \n      aspect_ratio: \"16:9\",\n      duration: 15,\n      hd: \"true\",\n      model: \"sora-2\",\n      watermark: false,\n      private: true\n    }\n  };\n});"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1167,7 +1183,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.id }}",
+            "id": "={{ $json.task_id }}",
             "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}"
           },
           "matchingColumns": [
@@ -1244,8 +1260,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1312,
-        416
+        1344,
+        448
       ],
       "id": "1503c53d-77a5-49f4-8f03-74d56c8b9c9d",
       "name": "更新视频id",
@@ -1304,6 +1320,89 @@
       "id": "4410d75f-c4bf-486f-9601-a6f7a48be38b",
       "name": "Wait",
       "webhookId": "ff0ad515-0e53-4cd0-b199-1b07d482b097"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        224
+      ],
+      "id": "14148bde-3ca9-4fbe-b9a5-d4f19ffd9a7c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        880,
+        432
+      ],
+      "id": "01252b62-b905-48de-8dad-0232722f6439",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "p1ZNB9S0Yqvi2zxo",
+          "name": "柏拉图api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.bltcy.ai/v2/videos/generations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-lK2rdLAfU3wU5OqR42ijUv0xmrBtZ2wIpe7brHQQmSGeRwei"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        592
+      ],
+      "id": "aefd9adb-ec78-4e80-a223-9212d9a61304",
+      "name": "柏拉图",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "AeBPCwNwR3Xj98Tp",
+          "name": "柏拉图"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1313,6 +1412,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-23T09:05:41.000Z",
-  "versionId": "1eb0fff6-decb-40f5-8f24-05352ac1fc0e"
+  "updatedAt": "2026-01-16T14:12:04.000Z",
+  "versionId": "c6142ae1-9f0e-4126-acd4-605fb23e9390"
 }
